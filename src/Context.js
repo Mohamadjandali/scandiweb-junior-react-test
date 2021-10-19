@@ -1,19 +1,47 @@
 import React, { Component } from 'react'
 import { createContext } from 'react/cjs/react.development';
 
-export const APIContext = createContext();
+export const APIContext = createContext({});
 
-export default class Context extends Component {
+export default class ContextProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null
+            categories: []
         }
     }
 
+    async componentDidMount() {
+        try {
+          const response = await fetch('http://localhost:4000', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              query: `
+                query {
+                  categories {
+                    name
+                  }
+                }
+              `
+            })
+          });
+    
+          if (!response.ok) {
+            throw Error('Something went wrong!');
+          }
+          const data = await response.json();
+          console.log(data.data.categories);
+          this.setState({ categories: data.data.categories })
+
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
     render() {
         return (
-            <APIContext.Provider value={{ data: this.state.data }}>
+            <APIContext.Provider value={this.state.categories}>
                 {this.props.children}
             </APIContext.Provider>
         )
