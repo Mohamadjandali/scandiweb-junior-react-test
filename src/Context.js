@@ -19,9 +19,28 @@ export default class ContextProvider extends Component {
             body: JSON.stringify({
               query: `
                 query {
-                  categories {
-                    name
-                  }
+                    categories {
+                        name,
+                        products {
+                          id,
+                          name,
+                          inStock,
+                          description,
+                          category,
+                          brand,
+                          gallery,
+                          attributes {
+                            id,
+                            name,
+                            type,
+                            items {
+                              displayValue,
+                              value,
+                              id
+                            }
+                          }
+                        }
+                    }
                 }
               `
             })
@@ -31,7 +50,8 @@ export default class ContextProvider extends Component {
             throw Error('Something went wrong!');
           }
           const data = await response.json();
-          console.log(data.data.categories);
+          console.log(data);
+
           this.setState({ categories: data.data.categories })
 
         } catch (error) {
