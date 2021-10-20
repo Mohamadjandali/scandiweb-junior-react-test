@@ -7,7 +7,8 @@ export default class ContextProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            categories: []
+            categories: [],
+            currencies: []
         }
     }
 
@@ -41,6 +42,7 @@ export default class ContextProvider extends Component {
                           }
                         }
                     }
+                    currencies
                 }
               `
             })
@@ -52,7 +54,10 @@ export default class ContextProvider extends Component {
           const data = await response.json();
           console.log(data);
 
-          this.setState({ categories: data.data.categories })
+          this.setState({ 
+            categories: data.data.categories,
+            currencies: data.data.currencies
+          });
 
         } catch (error) {
           console.log(error);

@@ -1,0 +1,18 @@
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+li {
+  list-style: none;
+}
+
+.nav-bar-cart {
+  display: flex;
+  margin-right: 3rem;
+}
+
+.nav-bar-cart li {
+  margin: 1rem;
+}

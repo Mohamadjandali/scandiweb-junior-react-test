@@ -1,0 +1,27 @@
+.categories-list {
+  margin-left: 3rem;
+  display: flex;
+}
+
+.categories-list span {
+  position: relative;
+  padding: 1rem;
+  outline: none;
+  border: none;
+  background-color: none;
+  cursor: pointer;
+}
+
+.underline-overlay {
+  color: #30e324;
+}
+
+.underline-overlay::before {
+  content: '';
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  height: 2px;
+  background-color: #30e324;
+}
