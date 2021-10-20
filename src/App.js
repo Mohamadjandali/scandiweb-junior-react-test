@@ -10,7 +10,6 @@ export class App extends Component {
     return (
       <ContextProvider>
         <Navbar />
-        <Currencies />
       </ContextProvider>
     )
   }

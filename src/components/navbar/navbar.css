@@ -13,6 +13,10 @@ li {
   margin-right: 3rem;
 }
 
-.nav-bar-cart li {
+.nav-bar-cart div {
   margin: 1rem;
+}
+
+.currencies {
+  position: relative;
 }

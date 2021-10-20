@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { APIContext } from '../../Context'
+import './currencies.css'
 
 export default class Currencies extends Component {
     render() {
         return (
             <React.Fragment>
-                <ul>
+                <ul className="currencies-list">
                     <APIContext.Consumer>
                         {({ currencies }) => {
                             return currencies.map((currency) => (        
