@@ -10,7 +10,9 @@ export default class Categories extends Component {
                     {(categories) => {
                         return categories.map(category => (
                             <li key={category.name}>
-                                <h1>{category.name}</h1>
+                                <a href={category.name}>
+                                    {category.name}
+                                </a>
                             </li>
                         )) 
                     }}
