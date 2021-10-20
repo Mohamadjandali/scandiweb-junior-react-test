@@ -4,8 +4,7 @@ import Categories from '../categories/Categories'
 import Currencies from '../currencies/Currencies'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, 
-    faDollarSign, 
-    faArrowDown,
+    faDollarSign,
     faSortDown
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -31,11 +30,11 @@ export default class Navbar extends Component {
                     <div className='currencies'>
                         <div
                             className='currency-icon'
-                            onClick={this.handleCurrencies}>
+                            onClick={this.handleCurrencies}
+                        >
                             <div className='dollar-sign'>
                                 <FontAwesomeIcon 
                                     icon={faDollarSign}
-                                    className='dollar-sign'
                                 ></FontAwesomeIcon>
                             </div>
                             <div className={`arrow-down ${this.state.toggleCurrency ? 'transform' : ''}`}>
@@ -47,7 +46,8 @@ export default class Navbar extends Component {
                         <Currencies toggleCurrency={this.state.toggleCurrency} />
                     </div>
                     <div className='cart'>
-                        <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>                
+                        <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                        <div className='items'><span>1</span></div>         
                     </div>
                 </div>    
             </nav>

@@ -34,3 +34,17 @@ li {
 .transform {
   transform: rotate(-180deg);
 }
+
+.cart {
+  display: flex;
+}
+
+.cart .items {
+  background-color: #0e0a11;
+  color: white;
+  text-align: center;
+  /* padding: 1rem; */
+  height: 1.2rem;
+  width: 1.2rem;
+  border-radius: 50%;
+}
