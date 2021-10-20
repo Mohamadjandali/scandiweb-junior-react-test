@@ -19,7 +19,6 @@ export default class Navbar extends Component {
 
     handleCurrencies() {
         this.setState({ toggleCurrency: !this.state.toggleCurrency })
-        console.log(this.state.toggleCurrency);
     }
 
     render() {
