@@ -1,0 +1,23 @@
+.currencies-list {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: 1rem;
+  position: absolute;
+  left: -45px;
+  top: 10;
+  box-shadow: 2px 4px 4px 2px #ddd;
+}
+
+.currencies-list li {
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.currencies-list li:hover {
+  color: #30e324;
+}
+
+.hide {
+  display: none;
+}

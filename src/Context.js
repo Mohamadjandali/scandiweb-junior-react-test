@@ -66,7 +66,10 @@ export default class ContextProvider extends Component {
 
     render() {
         return (
-            <APIContext.Provider value={this.state.categories}>
+            <APIContext.Provider value={{
+              categories: this.state.categories,
+              currencies: this.state.currencies
+            }}>
                 {this.props.children}
             </APIContext.Provider>
         )

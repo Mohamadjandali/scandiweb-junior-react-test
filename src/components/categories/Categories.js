@@ -19,7 +19,7 @@ export default class Categories extends Component {
         return (
             <div className='categories-list'>
                 <APIContext.Consumer>
-                    {(categories) => {
+                    {({ categories }) => {
                         return categories.map((category, index) => (
                             <span 
                             key={category.name}

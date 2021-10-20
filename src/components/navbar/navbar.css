@@ -8,11 +8,42 @@ li {
   list-style: none;
 }
 
-.nav-bar-cart {
+.nav-bar-items {
   display: flex;
   margin-right: 3rem;
 }
 
-.nav-bar-cart li {
+.nav-bar-items .currencies,
+.cart {
   margin: 1rem;
+}
+
+.currencies {
+  position: relative;
+}
+
+.currency-icon {
+  display: flex;
+  cursor: pointer;
+}
+
+.arrow-down {
+  margin-left: 0.4rem;
+}
+
+.transform {
+  transform: rotate(-180deg);
+}
+
+.cart {
+  display: flex;
+}
+
+.cart .items {
+  background-color: #0e0a11;
+  color: white;
+  text-align: center;
+  height: 1.2rem;
+  width: 1.2rem;
+  border-radius: 50%;
 }
