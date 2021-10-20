@@ -6,7 +6,7 @@ export default class Categories extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            toggle: 1
+            toggle: 0
         }
         this.handleClass = this.handleClass.bind(this);
     }

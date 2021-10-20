@@ -10,6 +10,7 @@ li {
 
 .nav-bar-cart {
   display: flex;
+  margin-right: 3rem;
 }
 
 .nav-bar-cart li {
