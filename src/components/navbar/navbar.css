@@ -8,12 +8,13 @@ li {
   list-style: none;
 }
 
-.nav-bar-cart {
+.nav-bar-items {
   display: flex;
   margin-right: 3rem;
 }
 
-.nav-bar-cart div {
+.nav-bar-items .currencies,
+.cart {
   margin: 1rem;
 }
 
@@ -21,6 +22,15 @@ li {
   position: relative;
 }
 
-.currencies span {
+.currency-icon {
+  display: flex;
   cursor: pointer;
+}
+
+.arrow-down {
+  margin-left: 0.4rem;
+}
+
+.transform {
+  transform: rotate(-180deg);
 }

@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import './navbar.css'
 import Categories from '../categories/Categories'
 import Currencies from '../currencies/Currencies'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faShoppingCart, 
+    faDollarSign, 
+    faArrowDown,
+    faSortDown
+} from '@fortawesome/free-solid-svg-icons'
 
 export default class Navbar extends Component {
     constructor() {
@@ -21,13 +27,27 @@ export default class Navbar extends Component {
         return (
             <nav className='nav-bar'>
                 <Categories />
-                <div className='nav-bar-cart'>
+                <div className='nav-bar-items'>
                     <div className='currencies'>
-                        <span onClick={this.handleCurrencies}>Currencies</span>
+                        <div
+                            className='currency-icon'
+                            onClick={this.handleCurrencies}>
+                            <div className='dollar-sign'>
+                                <FontAwesomeIcon 
+                                    icon={faDollarSign}
+                                    className='dollar-sign'
+                                ></FontAwesomeIcon>
+                            </div>
+                            <div className={`arrow-down ${this.state.toggleCurrency ? 'transform' : ''}`}>
+                                <FontAwesomeIcon
+                                    icon={faSortDown}
+                                ></FontAwesomeIcon>
+                            </div>
+                        </div>
                         <Currencies toggleCurrency={this.state.toggleCurrency} />
                     </div>
                     <div className='cart'>
-                        <span>Cart</span>                   
+                        <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>                
                     </div>
                 </div>    
             </nav>
