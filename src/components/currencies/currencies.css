@@ -17,3 +17,7 @@
 .currencies-list li:hover {
   color: #30e324;
 }
+
+.hide {
+  display: none;
+}

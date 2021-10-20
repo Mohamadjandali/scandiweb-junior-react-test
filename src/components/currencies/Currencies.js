@@ -3,10 +3,14 @@ import { APIContext } from '../../Context'
 import './currencies.css'
 
 export default class Currencies extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <React.Fragment>
-                <ul className="currencies-list">
+                <ul className={this.props.toggleCurrency ? 'currencies-list' : 'hide'}>
                     <APIContext.Consumer>
                         {({ currencies }) => {
                             return currencies.map((currency) => (        
