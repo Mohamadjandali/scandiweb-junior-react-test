@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { APIContext } from '../../Context'
+import './products.css'
 
 export default class Products extends Component {
 
-    handleProductOutput({ name, id, gallery, category, prices}, selectedCategory, currency) {
+    handleProductOutput({ name, id, gallery, category, prices, inStock}, selectedCategory, currency) {
         return category === selectedCategory && 
             <li key={id}>
-                <div>
+                <div className={`product ${inStock ? '' : 'unavailable-product'}`}>
+                    {inStock ? '' : <span className='out-of-stock' >Out of stock</span>}
                     <img src={gallery[0]} />
                     <h3>{name}</h3>
                     <span>{this.handleProductPriceOutput(prices, currency)}</span>
@@ -24,13 +26,13 @@ export default class Products extends Component {
 
     render() {
         return (
-            <ul>
+            <div className="products-list">
                 <APIContext.Consumer>
                     {({ products, currentCurrency }) => {
                         return products.map((product) => this.handleProductOutput(product, 'tech', currentCurrency))
                     }}
                </APIContext.Consumer>
-            </ul>
+            </div>
         )
     }
 }

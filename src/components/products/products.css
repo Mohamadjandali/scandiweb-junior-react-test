@@ -1,0 +1,23 @@
+.products-list {
+  display: grid;
+  grid-template-columns: 30% 30% 30%;
+  margin: auto;
+}
+
+.unavailable-product {
+  opacity: 0.5;
+  position: relative;
+}
+
+.unavailable-product .out-of-stock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -35px 0 0 -35px;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
