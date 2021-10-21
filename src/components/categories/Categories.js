@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 import { APIContext } from '../../Context'
 import './categories.css'
 
@@ -25,9 +26,9 @@ export default class Categories extends Component {
                             key={category.name}
                             className={this.state.toggle === index ? 'underline-overlay' : ''}
                             onClick={() => this.handleClass(index)}>
-                                <li>
+                                <NavLink to={category.name}>
                                     {category.name}
-                                </li>
+                                </NavLink>
                             </span>
                         )) 
                     }}

@@ -7,3 +7,22 @@
 img {
   width: 200px;
 }
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+a.active {
+  color: #30e324;
+}
+
+a.active::before {
+  content: '';
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  height: 2px;
+  background-color: #30e324;
+}

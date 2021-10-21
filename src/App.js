@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css';
 import ContextProvider from './Context';
 import Navbar from './components/navbar/Navbar';
@@ -9,10 +10,12 @@ export class App extends Component {
 
   render() {
     return (
-      <ContextProvider>
-        <Navbar />
-        <Products />
-      </ContextProvider>
+      <Router>
+        <ContextProvider>
+          <Navbar />
+          <Products />
+        </ContextProvider>
+      </Router>
     )
   }
 }
