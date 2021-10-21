@@ -31,15 +31,9 @@ export default class ContextProvider extends Component {
                           category,
                           brand,
                           gallery,
-                          attributes {
-                            id,
-                            name,
-                            type,
-                            items {
-                              displayValue,
-                              value,
-                              id
-                            }
+                          prices {
+                            currency,
+                            amount
                           }
                         }
                     }

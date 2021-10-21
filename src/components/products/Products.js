@@ -3,8 +3,15 @@ import { APIContext } from '../../Context'
 
 export default class Products extends Component {
 
-    handleProduct(product, selectedCategory) {
-        return product.category === selectedCategory && <li>{product.name}</li>;
+    handleProductOutput({ name, gallery, category, prices: { currency, amount }}, selectedCategory) {
+        return category === selectedCategory && 
+            <li>
+                <div>
+                    <img src={gallery[0]} />
+                    <h3>{name}</h3>
+                    <span></span>
+                </div>
+            </li>
     }
 
     render() {
@@ -12,7 +19,7 @@ export default class Products extends Component {
             <ul>
                 <APIContext.Consumer>
                     {({ products }) => {
-                        return products.map((product) => this.handleProduct(product, 'tech'))
+                        return products.map((product) => this.handleProductOutput(product, 'tech'))
                     }}
                </APIContext.Consumer>
             </ul>
