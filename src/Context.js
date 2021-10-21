@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { createContext } from 'react/cjs/react.development';
+import React, { Component, createContext } from 'react'
 
 export const APIContext = createContext({});
 
