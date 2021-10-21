@@ -8,7 +8,9 @@ export default class ContextProvider extends Component {
         super(props);
         this.state = {
             categories: [],
-            currencies: []
+            products: [],
+            currencies: [],
+            currentCurrency: "USD"
         }
     }
 
@@ -30,15 +32,9 @@ export default class ContextProvider extends Component {
                           category,
                           brand,
                           gallery,
-                          attributes {
-                            id,
-                            name,
-                            type,
-                            items {
-                              displayValue,
-                              value,
-                              id
-                            }
+                          prices {
+                            currency,
+                            amount
                           }
                         }
                     }
@@ -54,10 +50,18 @@ export default class ContextProvider extends Component {
           const data = await response.json();
           console.log(data);
 
+          let productsArray = data.data.categories.map((category) => {
+            return category.products;
+          });
+          let allProducts = productsArray[0].concat(productsArray[1]);
+
           this.setState({ 
             categories: data.data.categories,
+            products: allProducts,
             currencies: data.data.currencies
           });
+
+          console.log(this.state.products)
 
         } catch (error) {
           console.log(error);
@@ -68,7 +72,10 @@ export default class ContextProvider extends Component {
         return (
             <APIContext.Provider value={{
               categories: this.state.categories,
-              currencies: this.state.currencies
+              products: this.state.products,
+              currencies: this.state.currencies,
+              currentCurrency: this.state.currentCurrency,
+              setCurrency: (currency) => this.setState({ currentCurrency: currency })
             }}>
                 {this.props.children}
             </APIContext.Provider>
