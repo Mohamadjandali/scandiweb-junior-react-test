@@ -8,6 +8,7 @@ export default class ContextProvider extends Component {
         super(props);
         this.state = {
             categories: [],
+            products: [],
             currencies: []
         }
     }
@@ -54,10 +55,18 @@ export default class ContextProvider extends Component {
           const data = await response.json();
           console.log(data);
 
+          let productsArray = data.data.categories.map((category) => {
+            return category.products;
+          });
+          let allProducts = productsArray[0].concat(productsArray[1]);
+
           this.setState({ 
             categories: data.data.categories,
+            products: allProducts,
             currencies: data.data.currencies
           });
+
+          console.log(this.state.products)
 
         } catch (error) {
           console.log(error);
@@ -68,6 +77,7 @@ export default class ContextProvider extends Component {
         return (
             <APIContext.Provider value={{
               categories: this.state.categories,
+              products: this.state.products,
               currencies: this.state.currencies
             }}>
                 {this.props.children}
