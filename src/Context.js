@@ -9,7 +9,8 @@ export default class ContextProvider extends Component {
         this.state = {
             categories: [],
             products: [],
-            currencies: []
+            currencies: [],
+            currentCurrency: "USD"
         }
     }
 
@@ -72,7 +73,9 @@ export default class ContextProvider extends Component {
             <APIContext.Provider value={{
               categories: this.state.categories,
               products: this.state.products,
-              currencies: this.state.currencies
+              currencies: this.state.currencies,
+              currentCurrency: this.state.currentCurrency,
+              setCurrency: (currency) => this.setState({ currentCurrency: currency })
             }}>
                 {this.props.children}
             </APIContext.Provider>

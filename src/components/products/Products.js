@@ -3,23 +3,31 @@ import { APIContext } from '../../Context'
 
 export default class Products extends Component {
 
-    handleProductOutput({ name, gallery, category, prices: { currency, amount }}, selectedCategory) {
+    handleProductOutput({ name, id, gallery, category, prices}, selectedCategory, currency) {
         return category === selectedCategory && 
-            <li>
+            <li key={id}>
                 <div>
                     <img src={gallery[0]} />
                     <h3>{name}</h3>
-                    <span></span>
+                    <span>{this.handleProductPriceOutput(prices, currency)}</span>
                 </div>
             </li>
+    }
+
+    handleProductPriceOutput(availableCurrencies, selectedCurrency) {
+        const productPrice = availableCurrencies.find((currency) => {
+            return currency.currency === selectedCurrency
+        });
+        
+        return `${productPrice.amount} ${productPrice.currency}`
     }
 
     render() {
         return (
             <ul>
                 <APIContext.Consumer>
-                    {({ products }) => {
-                        return products.map((product) => this.handleProductOutput(product, 'tech'))
+                    {({ products, currentCurrency }) => {
+                        return products.map((product) => this.handleProductOutput(product, 'tech', currentCurrency))
                     }}
                </APIContext.Consumer>
             </ul>

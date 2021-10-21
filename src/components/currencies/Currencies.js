@@ -9,9 +9,12 @@ export default class Currencies extends Component {
             <React.Fragment>
                 <ul className={this.props.toggleCurrency ? 'currencies-list' : 'hide'}>
                     <APIContext.Consumer>
-                        {({ currencies }) => {
+                        {({ currencies, setCurrency }) => {
                             return currencies.map((currency) => (        
-                                <li key={currency} >{currency}</li>                    
+                                <li 
+                                    key={currency}
+                                    onClick={() => setCurrency(currency)}
+                                >{currency}</li>                
                             ))
                         }}
                     </APIContext.Consumer>
