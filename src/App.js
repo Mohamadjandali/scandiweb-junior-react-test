@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 import ContextProvider from './Context';
 import Navbar from './components/navbar/Navbar';

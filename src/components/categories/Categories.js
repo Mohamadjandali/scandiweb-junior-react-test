@@ -26,7 +26,7 @@ export default class Categories extends Component {
                             key={category.name}
                             className={this.state.toggle === index ? 'underline-overlay' : ''}
                             onClick={() => this.handleClass(index)}>
-                                <NavLink to={category.name}>
+                                <NavLink to={`/categories/${category.name}`}>
                                     {category.name}
                                 </NavLink>
                             </span>

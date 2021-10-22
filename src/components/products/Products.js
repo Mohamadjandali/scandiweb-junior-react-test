@@ -30,7 +30,7 @@ export default class Products extends Component {
             <div className="products-list">
                 <APIContext.Consumer>
                     {({ products, currentCurrency }) => {
-                        return products.map((product) => this.handleProductOutput(product, 'tech', currentCurrency))
+                        return products.map((product) => this.handleProductOutput(product, category, currentCurrency))
                     }}
                </APIContext.Consumer>
             </div>
