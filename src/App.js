@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import './App.css';
 import ContextProvider from './Context';
 import Navbar from './components/navbar/Navbar';
@@ -14,7 +14,8 @@ export class App extends Component {
         <Switch>
           <ContextProvider>
             <Navbar />
-            <Route path='/categories/:category' component={Products} />
+            <Route path='/' exact render={() => <Redirect to='/tech' />} />
+            <Route path='/:category' component={Products} />
           </ContextProvider>
         </Switch >
       </Router>
