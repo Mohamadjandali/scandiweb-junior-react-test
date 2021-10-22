@@ -8,6 +8,10 @@
   z-index: 2;
   background-color: #fff;
   height: 60vh;
+}
+
+.mini-cart-items-container {
+  height: 65%;
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -32,7 +36,6 @@
   justify-content: space-around;
   align-items: center;
   margin-left: 1.5rem;
-  /* width: 10%; */
 }
 
 .mini-cart-item-image img {
@@ -98,4 +101,8 @@
 
 .btn-bag:hover {
   opacity: 0.7;
+}
+
+.cart-controlls-container {
+  border-top: 2px solid #c0c1bf;
 }
