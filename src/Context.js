@@ -10,6 +10,11 @@ export default class ContextProvider extends Component {
             categories: [],
             products: [],
             currencies: [],
+            cart: [
+              { name: 'jacket', price: '50$' },
+              { name: 'shoes', price: '70$' }, 
+              { name: 'playstation', price: '300$' }
+            ],
             currentCurrency: "USD"
         }
     }
@@ -70,14 +75,17 @@ export default class ContextProvider extends Component {
 
     render() {
         return (
-            <APIContext.Provider value={{
-              categories: this.state.categories,
-              products: this.state.products,
-              currencies: this.state.currencies,
-              currentCurrency: this.state.currentCurrency,
-              setCurrency: (currency) => this.setState({ currentCurrency: currency })
-            }}>
-                {this.props.children}
+            <APIContext.Provider 
+              value={{
+                categories: this.state.categories,
+                products: this.state.products,
+                currencies: this.state.currencies,
+                currentCurrency: this.state.currentCurrency,
+                setCurrency: (currency) => this.setState({ currentCurrency: currency }),
+                cart: this.state.cart
+              }}
+            >
+              {this.props.children}
             </APIContext.Provider>
         )
     }

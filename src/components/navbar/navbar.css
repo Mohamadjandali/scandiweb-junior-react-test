@@ -37,9 +37,10 @@ li {
 
 .cart {
   display: flex;
+  position: relative;
 }
 
-.cart .items {
+.cart .items-count {
   background-color: #0e0a11;
   color: white;
   text-align: center;

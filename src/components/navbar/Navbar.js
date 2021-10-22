@@ -7,6 +7,7 @@ import { faShoppingCart,
     faDollarSign,
     faSortDown
 } from '@fortawesome/free-solid-svg-icons'
+import MiniCart from '../cart/MiniCart'
 
 export default class Navbar extends Component {
     constructor() {
@@ -46,7 +47,8 @@ export default class Navbar extends Component {
                     </div>
                     <div className='cart'>
                         <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                        <div className='items'><span>1</span></div>         
+                        <div className='items-count'><span>1</span></div>
+                        <MiniCart />
                     </div>
                 </div>    
             </nav>
