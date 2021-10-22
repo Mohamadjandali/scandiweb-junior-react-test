@@ -13,7 +13,8 @@ export default class ContextProvider extends Component {
             cart: [
               { name: 'jacket', price: '50$' },
               { name: 'shoes', price: '70$' }, 
-              { name: 'playstation', price: '300$' }
+              { name: 'playstation', price: '300$' },
+              { name: 'XBOX', price: '300$' }
             ],
             currentCurrency: "USD"
         }
