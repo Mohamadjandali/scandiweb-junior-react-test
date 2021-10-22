@@ -6,13 +6,13 @@ export default class MiniCart extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className='cart-list'>
+                <div className='mini-cart-list'>
                     <APIContext.Consumer>
                         {({ cart }) => {
                             return cart.length ? 
                                 cart.map((item) => (
-                                    <div className='cart-item'>
-                                        <div className='cart-item-info'>
+                                    <div className='mini-cart-item'>
+                                        <div className='mini-cart-item-info'>
                                             <div className='item-desc'>
                                                 <p className='item-name'>{item.name}</p>
                                                 <span>{item.price}</span>
@@ -21,18 +21,18 @@ export default class MiniCart extends Component {
                                                 <span className='item-size'>S</span>
                                             </div>
                                         </div>
-                                        <div className='cart-item-counter'>
+                                        <div className='mini-cart-item-counter'>
                                             <span className='increment'>+</span>
                                             <span className='item-count'>2</span>
                                             <span className='decrement'>-</span>
                                         </div>
-                                        <div className='cart-item-image'>
+                                        <div className='mini-cart-item-image'>
                                             <img src='https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airtag-double-select-202104?wid=445&hei=370&fmt=jpeg&qlt=95&.v=1617761672000' />
                                         </div>
                                     </div>
                                 ))
                             :
-                                <h3 className='empty-cart'>Your Bag is empty</h3>
+                                <h3 className='empty-mini-cart'>Your Bag is empty</h3>
                         }}
                     </APIContext.Consumer>
                 </div>

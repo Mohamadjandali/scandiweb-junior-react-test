@@ -48,8 +48,10 @@ export default class Navbar extends Component {
                             <Currencies toggleCurrency={this.state.toggleCurrency} />
                         </div>
                         <div className='cart'>
-                            <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                            <div className='items-count'><span>1</span></div>
+                            <div className='cart-logo'>
+                                <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                                <div className='items-count'><span>1</span></div>
+                            </div>
                             <MiniCart />
                         </div>
                     </div>    
