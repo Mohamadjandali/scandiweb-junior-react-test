@@ -32,7 +32,7 @@ export default class MiniCart extends Component {
                                     </div>
                                 ))
                             :
-                                <span>Add a product to your cart</span>
+                                <h3 className='empty-cart'>Your Bag is empty</h3>
                         }}
                     </APIContext.Consumer>
                 </div>

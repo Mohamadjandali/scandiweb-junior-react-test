@@ -56,3 +56,8 @@
   padding: 0.2rem;
   border: 2px solid black;
 }
+
+.empty-cart {
+  text-align: center;
+  padding: 0rem 1rem 1rem 1rem;
+}
