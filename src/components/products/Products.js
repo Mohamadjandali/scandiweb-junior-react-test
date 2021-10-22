@@ -25,6 +25,7 @@ export default class Products extends Component {
     }
 
     render() {
+        const { category } = this.props.match.params;
         return (
             <div className="products-list">
                 <APIContext.Consumer>
