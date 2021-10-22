@@ -6,7 +6,6 @@ export default class MiniCart extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className='overlay'></div>
                 <div className='cart-list'>
                     <APIContext.Consumer>
                         {({ cart }) => {
@@ -15,7 +14,7 @@ export default class MiniCart extends Component {
                                     <div className='cart-item'>
                                         <div className='cart-item-info'>
                                             <div className='item-desc'>
-                                                <h5>{item.name}</h5>
+                                                <p className='item-name'>{item.name}</p>
                                                 <span>{item.price}</span>
                                             </div>
                                             <div>

@@ -10,8 +10,8 @@ import { faShoppingCart,
 import MiniCart from '../cart/MiniCart'
 
 export default class Navbar extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props)
         this.state = {
             toggleCurrency: false
         }
@@ -24,34 +24,37 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <nav className='nav-bar'>
-                <Categories />
-                <div className='nav-bar-items'>
-                    <div className='currencies'>
-                        <div
-                            className='currency-icon'
-                            onClick={this.handleCurrencies}
-                        >
-                            <div className='dollar-sign'>
-                                <FontAwesomeIcon 
-                                    icon={faDollarSign}
-                                ></FontAwesomeIcon>
+            <React.Fragment>
+                <div className='overlay'></div>
+                <nav className='nav-bar'>
+                    <Categories />
+                    <div className='nav-bar-items'>
+                        <div className='currencies'>
+                            <div
+                                className='currency-icon'
+                                onClick={this.handleCurrencies}
+                            >
+                                <div className='dollar-sign'>
+                                    <FontAwesomeIcon 
+                                        icon={faDollarSign}
+                                    ></FontAwesomeIcon>
+                                </div>
+                                <div className={`arrow-down ${this.state.toggleCurrency ? 'transform' : ''}`}>
+                                    <FontAwesomeIcon
+                                        icon={faSortDown}
+                                    ></FontAwesomeIcon>
+                                </div>
                             </div>
-                            <div className={`arrow-down ${this.state.toggleCurrency ? 'transform' : ''}`}>
-                                <FontAwesomeIcon
-                                    icon={faSortDown}
-                                ></FontAwesomeIcon>
-                            </div>
+                            <Currencies toggleCurrency={this.state.toggleCurrency} />
                         </div>
-                        <Currencies toggleCurrency={this.state.toggleCurrency} />
-                    </div>
-                    <div className='cart'>
-                        <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                        <div className='items-count'><span>1</span></div>
-                        <MiniCart />
-                    </div>
-                </div>    
-            </nav>
+                        <div className='cart'>
+                            <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                            <div className='items-count'><span>1</span></div>
+                            <MiniCart />
+                        </div>
+                    </div>    
+                </nav>
+            </React.Fragment>
         )
     }
 }
