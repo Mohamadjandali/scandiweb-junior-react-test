@@ -35,6 +35,14 @@ export default class MiniCart extends Component {
                                 <h3 className='empty-mini-cart'>Your Bag is empty</h3>
                         }}
                     </APIContext.Consumer>
+                    <div className='total-price'>
+                        <span>Total:</span>
+                        <span>$100</span>
+                    </div>
+                    <div className='cart-control'>
+                        <button className='btn-bag'>VIEW BAG</button>
+                        <button className='checkout'>CHECK OUT</button>
+                    </div>
                 </div>
             </React.Fragment>
         )
