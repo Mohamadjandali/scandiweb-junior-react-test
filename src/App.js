@@ -5,6 +5,7 @@ import ContextProvider from './Context';
 import Navbar from './components/navbar/Navbar';
 import Products from './components/products/Products';
 import Cart from './components/cart/Cart';
+import ProductPage from './components/products/ProductPage';
 
 
 export class App extends Component {
@@ -16,7 +17,8 @@ export class App extends Component {
           <ContextProvider>
             <Navbar />
             <Route path='/' exact render={() => <Redirect to='/tech' />} />
-            <Route path='/:category' component={Products} />
+            <Route path='/:category' exact component={Products} />
+            <Route path='/:category/:productId' component={ProductPage} />
             <Route path='/cart' component={Cart} />
           </ContextProvider>
         </Switch >

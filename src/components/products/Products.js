@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 import { APIContext } from '../../Context'
 import './products.css'
 
@@ -7,12 +8,14 @@ export default class Products extends Component {
     handleProductOutput({ name, id, gallery, category, prices, inStock}, selectedCategory, currency) {
         return category === selectedCategory && 
             <li key={id}>
-                <div className={`product ${inStock ? '' : 'unavailable-product'}`}>
-                    {inStock ? '' : <span className='out-of-stock' >Out of stock</span>}
-                    <img src={gallery[0]} />
-                    <h3>{name}</h3>
-                    <span>{this.handleProductPriceOutput(prices, currency)}</span>
-                </div>
+                <Link to={`/${category}/${id}`}>
+                    <div className={`product ${inStock ? '' : 'unavailable-product'}`}>
+                        {inStock ? '' : <span className='out-of-stock' >Out of stock</span>}
+                        <img src={gallery[0]} />
+                        <h3>{name}</h3>
+                        <span>{this.handleProductPriceOutput(prices, currency)}</span>
+                    </div>
+                </Link>
             </li>
     }
 
