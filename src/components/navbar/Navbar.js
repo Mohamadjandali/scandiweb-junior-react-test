@@ -13,19 +13,27 @@ export default class Navbar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            toggleCurrency: false
+            toggleCurrency: false,
+            toggleCart: false
         }
         this.handleCurrencies = this.handleCurrencies.bind(this);
+        this.toggleMiniCart = this.toggleMiniCart.bind(this);
     }
 
     handleCurrencies() {
         this.setState({ toggleCurrency: !this.state.toggleCurrency })
     }
 
+    toggleMiniCart() {
+        this.setState({ toggleCart: !this.state.toggleCart });
+    }
+
     render() {
         return (
             <React.Fragment>
-                <div className='overlay'></div>
+                <div 
+                    className={ this.state.toggleCart ? 'overlay' : '' }
+                    onClick={this.toggleMiniCart}></div>
                 <nav className='nav-bar'>
                     <Categories />
                     <div className='nav-bar-items'>
@@ -45,14 +53,18 @@ export default class Navbar extends Component {
                                     ></FontAwesomeIcon>
                                 </div>
                             </div>
-                            <Currencies toggleCurrency={this.state.toggleCurrency} />
+                            <Currencies 
+                                toggleCurrency={this.state.toggleCurrency}
+                                handleCurrencies={this.handleCurrencies} />
                         </div>
                         <div className='cart'>
-                            <div className='cart-logo'>
+                            <div 
+                                className='cart-logo'
+                                onClick={this.toggleMiniCart}>
                                 <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
                                 <div className='items-count'><span>1</span></div>
                             </div>
-                            <MiniCart />
+                            { this.state.toggleCart && <MiniCart /> }
                         </div>
                     </div>    
                 </nav>

@@ -16,7 +16,10 @@ export default class Currencies extends Component {
                             return currencies.map((currency) => (        
                                 <li 
                                     key={currency}
-                                    onClick={() => setCurrency(currency)}
+                                    onClick={() => {
+                                        setCurrency(currency)
+                                        return this.props.handleCurrencies();
+                                    }}
                                 >{currency}</li>                
                             ))
                         }}
