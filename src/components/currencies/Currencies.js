@@ -3,6 +3,9 @@ import { APIContext } from '../../Context'
 import './currencies.css'
 
 export default class Currencies extends Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
@@ -13,7 +16,10 @@ export default class Currencies extends Component {
                             return currencies.map((currency) => (        
                                 <li 
                                     key={currency}
-                                    onClick={() => setCurrency(currency)}
+                                    onClick={() => {
+                                        setCurrency(currency)
+                                        return this.props.handleCurrencies();
+                                    }}
                                 >{currency}</li>                
                             ))
                         }}

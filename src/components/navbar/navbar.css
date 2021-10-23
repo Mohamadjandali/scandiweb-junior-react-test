@@ -2,6 +2,9 @@
   display: flex;
   justify-content: space-between;
   font-weight: bold;
+  z-index: 5;
+  background-color: #fff;
+  position: relative;
 }
 
 li {
@@ -37,13 +40,29 @@ li {
 
 .cart {
   display: flex;
+  position: relative;
 }
 
-.cart .items {
+.cart .items-count {
   background-color: #0e0a11;
   color: white;
   text-align: center;
   height: 1.2rem;
   width: 1.2rem;
   border-radius: 50%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.cart-logo {
+  display: flex;
+  cursor: pointer;
 }
