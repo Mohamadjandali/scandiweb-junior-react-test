@@ -29,7 +29,7 @@
   flex-direction: column;
   align-content: space-around;
   justify-content: space-around;
-  height: 60vh;
+  height: 80vh;
 }
 
 .product-attribute-items {
@@ -76,4 +76,8 @@
   max-width: 400px;
   overflow: hidden;
   overflow-y: scroll;
+}
+
+.product-price {
+  margin-bottom: 1rem;
 }

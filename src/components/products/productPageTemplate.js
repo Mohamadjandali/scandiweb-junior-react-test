@@ -1,7 +1,8 @@
 import React from 'react'
 import parse from 'html-react-parser'
+import { APIContext } from '../../Context'
 
-export default function productPageTemplate({ name, brand, description, gallery, attributes }) {
+export default function productPageTemplate({ name, brand, description, gallery, attributes, prices }) {
     return (
         <div className="product-container">
         <div className="images-list">
@@ -34,10 +35,22 @@ export default function productPageTemplate({ name, brand, description, gallery,
               )
             }) }
           </div>
+          <div className="product-price">
+            <APIContext.Consumer>
+              {({ currentCurrency }) => {
+                // formattig the price based on the selected currency
+                const productPrice = prices.find((price) => {
+                  return price.currency === currentCurrency;
+                })
+                return <span>{productPrice.amount} {currentCurrency}</span>
+              }}
+            </APIContext.Consumer>
+          </div>
           <div className="add-product">
             <button>ADD TO CART</button>
           </div>
           <div className="product-description">
+            {/* Parsing the desciption */}
             {parse(description)}
           </div>
         </div> 
