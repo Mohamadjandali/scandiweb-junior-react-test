@@ -1,6 +1,7 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import doAPIRequest from '../../request';
-import productPageTemplate from './productPageTemplate';
+import { APIContext } from '../../Context';
+import parse from 'html-react-parser';
 import './productpage.css';
 
 export default class ProductPage extends Component {
@@ -9,9 +10,9 @@ export default class ProductPage extends Component {
     this.state = {
       product: null,
     };
+    this.handleProductDisplay = this.handleProductDisplay.bind(this);
   }
 
-  // send an api request and set the state to the product
   async componentDidMount() {
     const [data, error] = await doAPIRequest(
       'http://localhost:4000',
@@ -55,8 +56,64 @@ export default class ProductPage extends Component {
     this.setState({ product: data.data.product });
   }
 
+  handleProductDisplay({ name, brand, description, gallery, attributes, prices }) {
+    return (
+      <div className="product-container">
+        <div className="images-list">
+          {gallery.map((image) => (
+            <img src={image} alt="product-image" />
+          ))}
+        </div>
+        <div className="image-container">
+          <img src={gallery[0]} />
+        </div>
+        <div className="product-status">
+          <div className="product-info">
+            <h2>{brand}</h2>
+            <h3>{name}</h3>
+          </div>
+          <div className="product-attributes">
+            {attributes.map(({ id, name, items }) => {
+              return (
+                <li className="product-attribute-items" key={id}>
+                  <span className="attribute-name">{name}:</span>
+                  <div className="attributes">
+                    {items.map(({ id, value }) => {
+                      return (
+                        <span className="attribute-id" key={id}>
+                          {value}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </li>
+              );
+            })}
+          </div>
+          <div className="product-price">
+            <APIContext.Consumer>
+              {({ currentCurrency }) => {
+                // formattig the price based on the selected currency
+                const productPrice = prices.find((price) => {
+                  return price.currency === currentCurrency;
+                })
+                return <span>{productPrice.amount} {currentCurrency}</span>
+              }}
+            </APIContext.Consumer>
+          </div>
+          <div className="add-product">
+            <button>ADD TO CART</button>
+          </div>
+          <div className="product-description">
+            {/* Parsing the desciption */}
+            {parse(description)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    // check it the state does not equal to null and call a template function
-    return this.state.product && productPageTemplate(this.state.product);
+    return this.state.product && this.handleProductDisplay(this.state.product);
   }
 }
