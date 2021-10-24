@@ -9,6 +9,7 @@ export default class ProductPage extends Component {
     super();
     this.state = {
       product: null,
+      productImageIndex: 0
     };
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
   }
@@ -60,12 +61,14 @@ export default class ProductPage extends Component {
     return (
       <div className="product-container">
         <div className="images-list">
-          {gallery.map((image) => (
-            <img src={image} alt="product-image" />
+          {gallery.map((image, index) => (
+            <div onClick={() => this.setState({ productImageIndex: index })}>
+              <img src={image} alt="product-image" />
+            </div>
           ))}
         </div>
         <div className="image-container">
-          <img src={gallery[0]} />
+          <img src={gallery[this.state.productImageIndex]} />
         </div>
         <div className="product-status">
           <div className="product-info">
