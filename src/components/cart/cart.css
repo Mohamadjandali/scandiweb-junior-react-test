@@ -1,0 +1,25 @@
+.cart-list {
+  width: 1000px;
+  margin: auto;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  border-top: 0.5px solid rgb(199, 199, 199);
+  padding: 1rem 0rem;
+}
+
+.cart-count {
+  display: flex;
+  justify-content: space-around;
+  width: 35%;
+}
+
+.cart-item-counter {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  align-items: center;
+  justify-content: space-around;
+}
