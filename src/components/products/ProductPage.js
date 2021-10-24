@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import doAPIRequest from '../../request';
+import parse from 'html-react-parser'
 import './productpage.css';
 
 export default class ProductPage extends Component {
@@ -94,7 +95,7 @@ export default class ProductPage extends Component {
             <button>ADD TO CART</button>
           </div>
           <div className="product-description">
-            {this.state.product.description}
+            {parse(this.state.product.description)}
           </div>
         </div> 
       </div>
