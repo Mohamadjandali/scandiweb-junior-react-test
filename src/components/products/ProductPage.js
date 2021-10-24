@@ -9,9 +9,13 @@ export default class ProductPage extends Component {
     super();
     this.state = {
       product: null,
-      productImageIndex: 0
+      productImageIndex: 0,
+      attributeValue: null,
     };
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
+    this.displayProductAttributes = this.displayProductAttributes.bind(this);
+    this.displayProductPrice = this.displayProductPrice.bind(this);
+    this.displayProductImages= this.displayProductImages.bind(this);
   }
 
   async componentDidMount() {
@@ -57,15 +61,20 @@ export default class ProductPage extends Component {
     this.setState({ product: data.data.product });
   }
 
-  handleProductDisplay({ name, brand, description, gallery, attributes, prices }) {
+  handleProductDisplay({
+    name,
+    brand,
+    description,
+    gallery,
+    attributes,
+    prices,
+  }) {
     return (
       <div className="product-container">
         <div className="images-list">
-          {gallery.map((image, index) => (
-            <div onClick={() => this.setState({ productImageIndex: index })}>
-              <img src={image} alt="product-image" />
-            </div>
-          ))}
+          {gallery.map((image, index) =>
+            this.displayProductImages(image, index)
+          )}
         </div>
         <div className="image-container">
           <img src={gallery[this.state.productImageIndex]} />
@@ -76,32 +85,15 @@ export default class ProductPage extends Component {
             <h3>{name}</h3>
           </div>
           <div className="product-attributes">
-            {attributes.map(({ id, name, items }) => {
-              return (
-                <li className="product-attribute-items" key={id}>
-                  <span className="attribute-name">{name}:</span>
-                  <div className="attributes">
-                    {items.map(({ id, value }) => {
-                      return (
-                        <span className="attribute-id" key={id}>
-                          {value}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </li>
-              );
-            })}
+            {attributes.map((attribute) =>
+              this.displayProductAttributes(attribute)
+            )}
           </div>
           <div className="product-price">
             <APIContext.Consumer>
-              {({ currentCurrency }) => {
-                // formattig the price based on the selected currency
-                const productPrice = prices.find((price) => {
-                  return price.currency === currentCurrency;
-                })
-                return <span>{productPrice.amount} {currentCurrency}</span>
-              }}
+              {({ currentCurrency }) =>
+                this.displayProductPrice(prices, currentCurrency)
+              }
             </APIContext.Consumer>
           </div>
           <div className="add-product">
@@ -112,6 +104,42 @@ export default class ProductPage extends Component {
             {parse(description)}
           </div>
         </div>
+      </div>
+    );
+  }
+
+  displayProductAttributes({ id, name, items }) {
+    return (
+      <li className="product-attribute-items" key={id}>
+        <span className="attribute-name">{name}:</span>
+        <div className="attributes">
+          {items.map(({ id, value }) => {
+            return (
+              <span 
+                onClick={() => this.setState({ toggleAttribute: id })}
+                className={`attribute-id ${this.state.toggleAttribute === id ? "activated-attribute" : ""}`} key={id}>
+                {value}
+              </span>
+            );
+          })}
+        </div>
+      </li>
+    );
+  }
+
+  displayProductPrice(availablePrices, selectedCurrency) {
+    // checking the current selected currency and finding the right price based on the currency
+    const productPrice = availablePrices.find((price) => {
+      return price.price === selectedCurrency;
+    });
+
+    return <span>{productPrice}</span>;
+  }
+
+  displayProductImages(image, imageIndex) {
+    return (
+      <div onClick={() => this.setState({ productImageIndex: imageIndex })}>
+        <img src={image} alt="product-image" />
       </div>
     );
   }
