@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { APIContext } from '../../Context';
 import './minicart.css';
 
@@ -44,7 +45,9 @@ export default class MiniCart extends Component {
               <span>$100</span>
             </div>
             <div className="cart-control">
-              <button className="btn-bag">VIEW BAG</button>
+              <button className="btn-bag">
+                <Link to='/cart' >VIEW BAG</Link>
+              </button>
               <button className="checkout">CHECK OUT</button>
             </div>
           </div>

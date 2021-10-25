@@ -15,7 +15,7 @@ export default class ProductPage extends Component {
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
     this.displayProductAttributes = this.displayProductAttributes.bind(this);
     this.displayProductPrice = this.displayProductPrice.bind(this);
-    this.displayProductImages= this.displayProductImages.bind(this);
+    this.displayProductImages = this.displayProductImages.bind(this);
   }
 
   async componentDidMount() {
@@ -70,41 +70,45 @@ export default class ProductPage extends Component {
     prices,
   }) {
     return (
-      <div className="product-container">
-        <div className="images-list">
-          {gallery.map((image, index) =>
-            this.displayProductImages(image, index)
-          )}
-        </div>
-        <div className="image-container">
-          <img src={gallery[this.state.productImageIndex]} />
-        </div>
-        <div className="product-status">
-          <div className="product-info">
-            <h2>{brand}</h2>
-            <h3>{name}</h3>
-          </div>
-          <div className="product-attributes">
-            {attributes.map((attribute) =>
-              this.displayProductAttributes(attribute)
-            )}
-          </div>
-          <div className="product-price">
-            <APIContext.Consumer>
-              {({ currentCurrency }) =>
-                this.displayProductPrice(prices, currentCurrency)
-              }
-            </APIContext.Consumer>
-          </div>
-          <div className="add-product">
-            <button>ADD TO CART</button>
-          </div>
-          <div className="product-description">
-            {/* Parsing the desciption */}
-            {parse(description)}
-          </div>
-        </div>
-      </div>
+      <APIContext.Consumer>
+        {({ currentCurrency, setCart }) => {
+          return (
+            <div className="product-container">
+              <div className="images-list">
+                {gallery.map((image, index) =>
+                  this.displayProductImages(image, index)
+                )}
+              </div>
+              <div className="image-container">
+                <img src={gallery[this.state.productImageIndex]} />
+              </div>
+              <div className="product-status">
+                <div className="product-info">
+                  <h2>{brand}</h2>
+                  <h3>{name}</h3>
+                </div>
+                <div className="product-attributes">
+                  {attributes.map((attribute) =>
+                    this.displayProductAttributes(attribute)
+                  )}
+                </div>
+                <div className="product-price">
+                  {this.displayProductPrice(prices, currentCurrency)}
+                </div>
+                <div className="add-product">
+                  <button onClick={() => setCart(this.state.product)}>
+                    ADD TO CART
+                  </button>
+                </div>
+                <div className="product-description">
+                  {/* Parsing the desciption */}
+                  {parse(description)}
+                </div>
+              </div>
+            </div>
+          );
+        }}
+      </APIContext.Consumer>
     );
   }
 
@@ -115,9 +119,13 @@ export default class ProductPage extends Component {
         <div className="attributes">
           {items.map(({ id, value }) => {
             return (
-              <span 
+              <span
                 onClick={() => this.setState({ toggleAttribute: id })}
-                className={`attribute-id ${this.state.toggleAttribute === id ? "activated-attribute" : ""}`} key={id}>
+                className={`attribute-id ${
+                  this.state.toggleAttribute === id ? 'activated-attribute' : ''
+                }`}
+                key={id}
+              >
                 {value}
               </span>
             );

@@ -10,14 +10,10 @@ export default class ContextProvider extends Component {
       categories: [],
       products: [],
       currencies: [],
-      cart: [
-        { name: 'jacket', price: '50$' },
-        { name: 'shoes', price: '70$' },
-        { name: 'playstation', price: '300$' },
-        { name: 'XBOX', price: '300$' },
-      ],
+      cart: [],
       currentCurrency: 'USD',
     };
+    this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
   }
 
   async componentDidMount() {
@@ -68,6 +64,16 @@ export default class ContextProvider extends Component {
     });
   }
 
+  handleAddItemToCart(item) {
+    this.setState((prevState) => {
+      return {
+        cart: [item, ...prevState.cart]
+      }
+    })
+
+    return console.log(this.state.cart);
+  }
+
   render() {
     return (
       <APIContext.Provider
@@ -79,6 +85,7 @@ export default class ContextProvider extends Component {
           setCurrency: (currency) =>
             this.setState({ currentCurrency: currency }),
           cart: this.state.cart,
+          setCart: this.handleAddItemToCart
         }}
       >
         {this.props.children}
