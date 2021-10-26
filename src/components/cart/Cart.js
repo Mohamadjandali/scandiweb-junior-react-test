@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 import './cart.css';
+import CartItem from './CartItem';
 
 export default class Cart extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      quantity: 1
+    }
+  }
+
   render() {
     return (
       <ul className="cart-list">
         <APIContext.Consumer>
           {({ cart }) => {
-            return cart.map((item) => (
-              <React.Fragment>
-                <div className="cart-item">
-                  <div className="cart-item-info">
-                    <div>
-                      <h2>{item.name}</h2>
-                      <h2>{item.price}</h2>
-                    </div>
-                  </div>
-                  <div className="cart-count">
-                    <div className="cart-item-counter">
-                      <span className="increment">+</span>
-                      <span className="item-count">2</span>
-                      <span className="decrement">-</span>
-                    </div>
-                    <div>
-                      <img src={item.gallery} />
-                    </div>
-                  </div>
-                </div>
-              </React.Fragment>
-            ));
+            return cart.map((item) => 
+              <CartItem 
+                product={item} 
+              />);
           }}
         </APIContext.Consumer>
       </ul>

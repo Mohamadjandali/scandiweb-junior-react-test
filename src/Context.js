@@ -65,12 +65,23 @@ export default class ContextProvider extends Component {
   }
 
   handleAddItemToCart(item) {
+    // checks if the product is already in cart
+    const foundProduct = this.state.cart.find((product) => {
+      return product.name === item.name;
+    }) 
+
+    if (foundProduct) {
+      return alert('this product is already in your cart');
+    }
+    
+    // add a product to the cart
     this.setState((prevState) => {
       return {
         cart: [item, ...prevState.cart]
       }
     })
 
+    alert(`added ${item.name} to the cart`)
     return console.log(this.state.cart);
   }
 
@@ -85,7 +96,7 @@ export default class ContextProvider extends Component {
           setCurrency: (currency) =>
             this.setState({ currentCurrency: currency }),
           cart: this.state.cart,
-          setCart: this.handleAddItemToCart
+          setCart: this.handleAddItemToCart,
         }}
       >
         {this.props.children}
