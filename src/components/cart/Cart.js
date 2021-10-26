@@ -24,7 +24,7 @@ export default class Cart extends Component {
                       <span className="decrement">-</span>
                     </div>
                     <div>
-                      <img src="https://images-na.ssl-images-amazon.com/images/I/510VSJ9mWDL._SL1262_.jpg" />
+                      <img src={item.gallery} />
                     </div>
                   </div>
                 </div>
