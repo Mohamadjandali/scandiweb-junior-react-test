@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import doAPIRequest from '../../request';
 import { APIContext } from '../../Context';
+import ProductAttributes from './ProductAttributes';
 import parse from 'html-react-parser';
 import './productpage.css';
 
@@ -10,10 +11,8 @@ export default class ProductPage extends Component {
     this.state = {
       product: null,
       productImageIndex: 0,
-      attributeValue: null,
     };
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
-    this.displayProductAttributes = this.displayProductAttributes.bind(this);
     this.displayProductPrice = this.displayProductPrice.bind(this);
     this.displayProductImages = this.displayProductImages.bind(this);
   }
@@ -90,7 +89,7 @@ export default class ProductPage extends Component {
                 </div>
                 <div className="product-attributes">
                   {attributes.map((attribute) =>
-                    this.displayProductAttributes(attribute)
+                    <ProductAttributes attribute={attribute} />
                   )}
                 </div>
                 <div className="product-price">
@@ -114,29 +113,6 @@ export default class ProductPage extends Component {
           );
         }}
       </APIContext.Consumer>
-    );
-  }
-
-  displayProductAttributes({ id, name, items }) {
-    return (
-      <li className="product-attribute-items" key={id}>
-        <span className="attribute-name">{name}:</span>
-        <div className="attributes">
-          {items.map(({ id, value }) => {
-            return (
-              <span
-                onClick={() => this.setState({ toggleAttribute: id })}
-                className={`attribute-id ${
-                  this.state.toggleAttribute === id ? 'activated-attribute' : ''
-                }`}
-                key={id}
-              >
-                {value}
-              </span>
-            );
-          })}
-        </div>
-      </li>
     );
   }
 
