@@ -8,6 +8,7 @@
   z-index: 2;
   background-color: #fff;
   height: 60vh;
+  padding: 0rem 1rem;
 }
 
 .mini-cart-items-container {
@@ -44,9 +45,13 @@
 
 .increment,
 .decrement {
+  background: none;
+  color: inherit;
+  border: 2px solid rgb(0, 0, 0);
   padding: 0.2rem;
-  border: 2px solid black;
+  font: inherit;
   cursor: pointer;
+  outline: inherit;
 }
 
 .item-size {
@@ -68,7 +73,7 @@
 
 .cart-control {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 2rem;
 }
 
@@ -89,7 +94,7 @@
 }
 
 .btn-bag {
-  border: none;
+  border: 2px solid rgb(0, 0, 0);
   color: rgb(0, 0, 0);
   padding: 15px 32px;
   text-align: center;

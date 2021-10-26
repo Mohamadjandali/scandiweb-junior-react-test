@@ -68,6 +68,7 @@ export default class ProductPage extends Component {
     gallery,
     attributes,
     prices,
+    inStock,
   }) {
     return (
       <APIContext.Consumer>
@@ -96,9 +97,13 @@ export default class ProductPage extends Component {
                   {this.displayProductPrice(prices, currentCurrency)}
                 </div>
                 <div className="add-product">
-                  <button onClick={() => setCart(this.state.product)}>
-                    ADD TO CART
-                  </button>
+                  { inStock ? 
+                    <button onClick={() => setCart(this.state.product)}>
+                      ADD TO CART
+                    </button>
+                    :
+                    <h3>This product is out of stock</h3>
+                  }
                 </div>
                 <div className="product-description">
                   {/* Parsing the desciption */}
