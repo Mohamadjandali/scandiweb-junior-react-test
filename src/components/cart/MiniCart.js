@@ -5,6 +5,10 @@ import MiniCartItem from './MiniCartItem';
 import './minicart.css';
 
 export default class MiniCart extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -26,9 +30,13 @@ export default class MiniCart extends Component {
               <span>$100</span>
             </div>
             <div className="cart-control">
-              <div className="btn-bag">
-                <Link to='/cart' >VIEW BAG</Link>
-              </div>
+              <Link to='/cart'>
+                <div 
+                  className="btn-bag"
+                  onClick={() => this.props.toggleMiniCart()}>
+                    VIEW BAG
+                </div>
+              </Link>
               <button className="checkout">CHECK OUT</button>
             </div>
           </div>

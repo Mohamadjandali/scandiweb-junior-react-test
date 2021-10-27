@@ -70,7 +70,7 @@ export default class Navbar extends Component {
                     }}
                   </APIContext.Consumer>
               </div>
-              {this.state.toggleCart && <MiniCart />}
+              {this.state.toggleCart && <MiniCart toggleMiniCart={this.toggleMiniCart} />}
             </div>
           </div>
         </nav>
