@@ -8,8 +8,17 @@ export default class MiniCartItem extends Component {
         }
     }
 
+    handleProductPrice(availableCurrencies, selectedCurrency) {
+        const productPrice = availableCurrencies.find((currency) => {
+          return currency.currency === selectedCurrency;
+        });
+    
+        return `${Math.round(productPrice.amount) * this.state.quantity} ${productPrice.currency}`;
+      }
+
     render() {
-        const { name, brand, gallery, price } = this.props.product;
+        const { product: { name, brand, gallery, prices }, currentCurrency } = this.props;
+        console.log(this.props.product)
         return (
             <React.Fragment>
                 <div className="mini-cart-item">
@@ -17,8 +26,10 @@ export default class MiniCartItem extends Component {
                         <div className="item-desc">
                             <p>{brand}</p>
                             <p className="item-name">{name}</p>
-                            <span>{price}</span>
                         </div>
+                        <span className="mini-cart-item-price">
+                            {this.handleProductPrice(prices, currentCurrency)}
+                        </span>
                         <div>
                             <span className="item-size">S</span>
                         </div>

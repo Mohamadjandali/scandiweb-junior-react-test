@@ -11,9 +11,9 @@ export default class MiniCart extends Component {
         <div className="mini-cart-list">
           <div className="mini-cart-items-container">
             <APIContext.Consumer>
-              {({ cart }) => {
+              {({ cart, currentCurrency }) => {
                 return cart.length ? 
-                  cart.map((item) => <MiniCartItem product={item} />)
+                  cart.map((item) => <MiniCartItem product={item} currentCurrency={currentCurrency} />)
                 : (
                   <h3 className="empty-mini-cart">Your Bag is empty</h3>
                 );
