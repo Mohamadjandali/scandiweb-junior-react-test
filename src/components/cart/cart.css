@@ -34,3 +34,7 @@
   cursor: pointer;
   outline: inherit;
 }
+
+.product-price {
+  margin-top: 1.5rem;
+}
