@@ -93,7 +93,7 @@ export default class ProductPage extends Component {
                   )}
                 </div>
                 <div className="product-price">
-                  {this.displayProductPrice(prices, currentCurrency)}
+                  <h3>{this.displayProductPrice(prices, currentCurrency)}</h3>
                 </div>
                 <div className="add-product">
                   { inStock ? 
@@ -116,13 +116,12 @@ export default class ProductPage extends Component {
     );
   }
 
-  displayProductPrice(availablePrices, selectedCurrency) {
-    // checking the current selected currency and finding the right price based on the currency
-    const productPrice = availablePrices.find((price) => {
-      return price.price === selectedCurrency;
+  displayProductPrice(availableCurrencies, selectedCurrency) {
+    const productPrice = availableCurrencies.find((currency) => {
+      return currency.currency === selectedCurrency;
     });
 
-    return <span>{productPrice}</span>;
+    return `${productPrice.amount} ${productPrice.currency}`;
   }
 
   displayProductImages(image, imageIndex) {
