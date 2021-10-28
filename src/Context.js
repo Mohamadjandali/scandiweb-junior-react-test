@@ -12,6 +12,7 @@ export default class ContextProvider extends Component {
       currencies: [],
       cart: [],
       currentCurrency: 'USD',
+      totalPrice: [],
     };
     this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
   }
@@ -97,6 +98,7 @@ export default class ContextProvider extends Component {
             this.setState({ currentCurrency: currency }),
           cart: this.state.cart,
           setCart: this.handleAddItemToCart,
+          totalPrice: this.state.totalPrice,
         }}
       >
         {this.props.children}
