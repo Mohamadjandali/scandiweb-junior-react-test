@@ -61,16 +61,21 @@ export default class Navbar extends Component {
             <div className="cart">
               <div className="cart-logo" onClick={this.toggleMiniCart}>
                 <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                  <APIContext.Consumer>
-                    {({ cart }) => {
-                      return cart.length >= 1 && 
+                <APIContext.Consumer>
+                  {({ cart }) => {
+                    return (
+                      cart.length >= 1 && (
                         <div className="items-count">
                           <span>{cart.length}</span>
                         </div>
-                    }}
-                  </APIContext.Consumer>
+                      )
+                    );
+                  }}
+                </APIContext.Consumer>
               </div>
-              {this.state.toggleCart && <MiniCart toggleMiniCart={this.toggleMiniCart} />}
+              {this.state.toggleCart && (
+                <MiniCart toggleMiniCart={this.toggleMiniCart} />
+              )}
             </div>
           </div>
         </nav>

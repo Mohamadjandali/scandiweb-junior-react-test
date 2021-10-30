@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 
 export default class CartItem extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   displayProductPrice(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
@@ -15,7 +12,10 @@ export default class CartItem extends Component {
   }
 
   render() {
-    const { product: { name, prices, gallery, brand }, quantity } = this.props;
+    const {
+      product: { name, prices, gallery, brand },
+      quantity,
+    } = this.props;
     return (
       <div className="cart-item">
         <APIContext.Consumer>
@@ -27,7 +27,9 @@ export default class CartItem extends Component {
                     <h2>{brand}</h2>
                     <h2>{name}</h2>
                   </div>
-                  <h3 className="product-price">{this.displayProductPrice(prices, currentCurrency)}</h3>
+                  <h3 className="product-price">
+                    {this.displayProductPrice(prices, currentCurrency)}
+                  </h3>
                 </div>
                 <div className="cart-count">
                   <div className="cart-item-counter">
@@ -38,14 +40,10 @@ export default class CartItem extends Component {
                       +
                     </button>
                     <span className="item-count">{quantity}</span>
-                    <button
-                      className="decrement"
-                    >
-                      -
-                    </button>
+                    <button className="decrement">-</button>
                   </div>
                   <div>
-                    <img src={gallery} />
+                    <img src={gallery} alt="cart item" />
                   </div>
                 </div>
               </React.Fragment>

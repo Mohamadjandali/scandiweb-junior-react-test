@@ -10,15 +10,15 @@ export default class ProductAttributes extends Component {
 
   render() {
     return (
-      <li className="product-attribute-items" key={this.props.attribute.id}>
+      <li className="product-attribute-items">
         <span className="attribute-name">{this.props.attribute.name}:</span>
         <div className="attributes">
           {this.props.attribute.items.map(({ id, value }) => {
             return (
               <span
-                onClick={() => this.setState({ toggleAttribute: id })}
+                onClick={() => this.setState({ attributeValue: id })}
                 className={`attribute-id ${
-                  this.state.toggleAttribute === id ? 'activated-attribute' : ''
+                  this.state.attributeValue === id ? 'activated-attribute' : ''
                 }`}
                 key={id}
               >

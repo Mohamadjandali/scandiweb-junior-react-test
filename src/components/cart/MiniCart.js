@@ -12,39 +12,33 @@ export default class MiniCart extends Component {
     };
   }
 
-  handlePrice(cart) {
-    const newPrice = cart.reduce((total, item) => {
-      return total + item.item.prices[0].amount * item.quantity;
-    }, 0);
-
-    return Math.round(newPrice);
-  }
-
   render() {
     return (
       <React.Fragment>
         <div className="mini-cart-list">
           <APIContext.Consumer>
-            {({ cart, currentCurrency }) => {
+            {({ cart, currentCurrency, handleTotalPrice }) => {
               return (
                 <React.Fragment>
-                <div className="mini-cart-items-container">
-                  {cart.length ? (
-                    cart.map(({item, quantity}) => (
-                      <MiniCartItem
-                        quantity={quantity}
-                        product={item}
-                        currentCurrency={currentCurrency}
-                      />
-                    ))
-                  ) : (
-                    <h3 className="empty-mini-cart">Your Bag is empty</h3>
-                  )}
-                </div>
-                <div className="cart-controlls-container">
+                  <div className="mini-cart-items-container">
+                    {cart.length ? (
+                      cart.map(({ item, quantity }) => (
+                        <MiniCartItem
+                          quantity={quantity}
+                          product={item}
+                          currentCurrency={currentCurrency}
+                        />
+                      ))
+                    ) : (
+                      <h3 className="empty-mini-cart">Your Bag is empty</h3>
+                    )}
+                  </div>
+                  <div className="cart-controlls-container">
                     <div className="total-price">
                       <span>Total:</span>
-                      <span>{this.handlePrice(cart)} {currentCurrency}</span>
+                      <span>
+                        {handleTotalPrice(cart)} {currentCurrency}
+                      </span>
                     </div>
                     <div className="cart-control">
                       <Link to="/cart">

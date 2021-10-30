@@ -3,9 +3,6 @@ import { APIContext } from '../../Context';
 import './currencies.css';
 
 export default class Currencies extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

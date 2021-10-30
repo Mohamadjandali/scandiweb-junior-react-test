@@ -16,6 +16,7 @@ export default class ContextProvider extends Component {
     };
     this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
+    this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
   }
 
   async componentDidMount() {
@@ -70,20 +71,20 @@ export default class ContextProvider extends Component {
     // checks if the product is already in cart
     const foundProduct = this.state.cart.find((product) => {
       return product.name === item.name;
-    }) 
+    });
 
     if (foundProduct) {
       return alert('this product is already in your cart');
     }
-    
+
     // add a product to the cart
     this.setState((prevState) => {
       return {
-        cart: [{ item, quantity: 1}, ...prevState.cart]
-      }
-    })
+        cart: [{ item, quantity: 1 }, ...prevState.cart],
+      };
+    });
 
-    alert(`added ${item.name} to the cart`)
+    alert(`added ${item.name} to the cart`);
     return console.log(this.state.cart);
   }
 
@@ -91,10 +92,32 @@ export default class ContextProvider extends Component {
     this.setState((prevState) => {
       return {
         cart: prevState.cart.map((product) => {
-          return product.item.name === name ? { item: product.item, quantity: product.quantity + 1 } : product;
-        })
-      }
-    })
+          return product.item.name === name
+            ? { item: product.item, quantity: product.quantity + 1 }
+            : product;
+        }),
+      };
+    });
+  }
+
+  handleTotalPrice(cart) {
+    const newPrice = cart.reduce((total, item) => {
+      return total + item.item.prices[0].amount * item.quantity;
+    }, 0);
+
+    return Math.round(newPrice);
+  }
+
+  handleCurrencyChange(currency) {
+    return this.setState({ currentCurrency: currency });
+  }
+
+  handleDisplayProductPrice(availableCurrencies, selectedCurrency) {
+    const productPrice = availableCurrencies.find((currency) => {
+      return currency.currency === selectedCurrency;
+    });
+
+    return `${productPrice.amount} ${productPrice.currency}`;
   }
 
   render() {
@@ -105,12 +128,13 @@ export default class ContextProvider extends Component {
           products: this.state.products,
           currencies: this.state.currencies,
           currentCurrency: this.state.currentCurrency,
-          setCurrency: (currency) =>
-            this.setState({ currentCurrency: currency }),
           cart: this.state.cart,
-          setCart: this.handleAddItemToCart,
           totalPrice: this.state.totalPrice,
-          handleIncrement: this.handleIncrement
+          setCurrency: this.handleCurrencyChange,
+          setCart: this.handleAddItemToCart,
+          handleIncrement: this.handleIncrement,
+          handleTotalPrice: this.handleTotalPrice,
+          handleDisplayProductPrice: this.handleDisplayProductPrice,
         }}
       >
         {this.props.children}
