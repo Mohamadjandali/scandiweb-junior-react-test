@@ -93,6 +93,7 @@ export default class ProductPage extends Component {
                   )}
                 </div>
                 <div className="product-price">
+                  <h3>Price:</h3>
                   <h3>{this.displayProductPrice(prices, currentCurrency)}</h3>
                 </div>
                 <div className="add-product">

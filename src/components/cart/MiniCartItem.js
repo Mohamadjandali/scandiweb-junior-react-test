@@ -19,7 +19,6 @@ export default class MiniCartItem extends Component {
 
     render() {
         const { product: { name, brand, gallery, prices }, currentCurrency } = this.props;
-        console.log(this.props.product)
         return (
             <React.Fragment>
                 <div className="mini-cart-item">
