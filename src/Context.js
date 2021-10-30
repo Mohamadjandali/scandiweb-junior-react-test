@@ -15,6 +15,7 @@ export default class ContextProvider extends Component {
       totalPrice: [],
     };
     this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
+    this.handleIncrement = this.handleIncrement.bind(this);
   }
 
   async componentDidMount() {
@@ -78,12 +79,22 @@ export default class ContextProvider extends Component {
     // add a product to the cart
     this.setState((prevState) => {
       return {
-        cart: [item, ...prevState.cart]
+        cart: [{ item, quantity: 1}, ...prevState.cart]
       }
     })
 
     alert(`added ${item.name} to the cart`)
     return console.log(this.state.cart);
+  }
+
+  handleIncrement(name) {
+    this.setState((prevState) => {
+      return {
+        cart: prevState.cart.map((product) => {
+          return product.item.name === name ? { item: product.item, quantity: product.quantity + 1 } : product;
+        })
+      }
+    })
   }
 
   render() {
@@ -99,6 +110,7 @@ export default class ContextProvider extends Component {
           cart: this.state.cart,
           setCart: this.handleAddItemToCart,
           totalPrice: this.state.totalPrice,
+          handleIncrement: this.handleIncrement
         }}
       >
         {this.props.children}

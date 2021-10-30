@@ -4,9 +4,6 @@ import { APIContext } from '../../Context';
 export default class CartItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      quantity: 1,
-    };
   }
 
   displayProductPrice(availableCurrencies, selectedCurrency) {
@@ -14,15 +11,15 @@ export default class CartItem extends Component {
       return currency.currency === selectedCurrency;
     });
 
-    return `${productPrice.amount * this.state.quantity} ${productPrice.currency}`;
+    return `${productPrice.amount} ${productPrice.currency}`;
   }
 
   render() {
-    const { name, prices, gallery, brand } = this.props.product;
+    const { product: { name, prices, gallery, brand }, quantity } = this.props;
     return (
       <div className="cart-item">
         <APIContext.Consumer>
-          {({ currentCurrency }) => {
+          {({ currentCurrency, handleIncrement }) => {
             return (
               <React.Fragment>
                 <div className="cart-item-info">
@@ -36,19 +33,13 @@ export default class CartItem extends Component {
                   <div className="cart-item-counter">
                     <button
                       className="increment"
-                      onClick={() =>
-                        this.setState({ quantity: this.state.quantity + 1 })
-                      }
+                      onClick={() => handleIncrement(name)}
                     >
                       +
                     </button>
-                    <span className="item-count">{this.state.quantity}</span>
+                    <span className="item-count">{quantity}</span>
                     <button
                       className="decrement"
-                      onClick={() =>
-                        this.setState({ quantity: this.state.quantity - 1 })
-                      }
-                      disabled={this.state.quantity === 1}
                     >
                       -
                     </button>

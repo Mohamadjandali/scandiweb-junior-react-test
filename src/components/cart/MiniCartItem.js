@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { APIContext } from '../../Context';
 
 export default class MiniCartItem extends Component {
     constructor(props) {
@@ -35,11 +36,18 @@ export default class MiniCartItem extends Component {
                         </div>
                     </div>
                     <div className="mini-cart-item-counter">
-                        <button 
-                            className="increment"
-                            onClick={() => this.setState({ quantity: this.state.quantity + 1 })}
-                        >+</button>
-                        <span className="item-count">{this.state.quantity}</span>
+                        <APIContext.Consumer>
+                            {({ handleIncrement }) => {
+                                return (
+                                    <button 
+                                    onClick={() => handleIncrement(name)}
+                                    className="increment">
+                                    +
+                                    </button>
+                                )
+                            }}
+                        </APIContext.Consumer>
+                        <span className="item-count">{this.props.quantity}</span>
                         <button 
                             className="decrement"
                             onClick={() => this.setState({ quantity: this.state.quantity - 1 })}
@@ -47,7 +55,7 @@ export default class MiniCartItem extends Component {
                         >-</button>
                     </div>
                     <div className="mini-cart-item-image">
-                        <img src={gallery} />
+                        <img src={gallery} alt="product" />
                     </div>
                 </div>
             </React.Fragment>

@@ -10,16 +10,14 @@ export default class MiniCart extends Component {
     this.state = {
       total: 0,
     };
-    // this.handlePrice = this.handlePrice.bind(this);
   }
 
   handlePrice(cart) {
     const newPrice = cart.reduce((total, item) => {
-      return total + item.prices[0].amount;
+      return total + item.item.prices[0].amount * item.quantity;
     }, 0);
 
-    console.log(newPrice);
-    return newPrice;
+    return Math.round(newPrice);
   }
 
   render() {
@@ -29,10 +27,12 @@ export default class MiniCart extends Component {
           <APIContext.Consumer>
             {({ cart, currentCurrency }) => {
               return (
+                <React.Fragment>
                 <div className="mini-cart-items-container">
                   {cart.length ? (
-                    cart.map((item) => (
+                    cart.map(({item, quantity}) => (
                       <MiniCartItem
+                        quantity={quantity}
                         product={item}
                         currentCurrency={currentCurrency}
                       />
@@ -40,7 +40,8 @@ export default class MiniCart extends Component {
                   ) : (
                     <h3 className="empty-mini-cart">Your Bag is empty</h3>
                   )}
-                  <div className="cart-controlls-container">
+                </div>
+                <div className="cart-controlls-container">
                     <div className="total-price">
                       <span>Total:</span>
                       <span>{this.handlePrice(cart)}</span>
@@ -57,7 +58,7 @@ export default class MiniCart extends Component {
                       <button className="checkout">CHECK OUT</button>
                     </div>
                   </div>
-                </div>
+                </React.Fragment>
               );
             }}
           </APIContext.Consumer>

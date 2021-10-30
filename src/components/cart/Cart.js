@@ -7,19 +7,40 @@ export default class Cart extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      quantity: 1
+      total: 1
     }
+  }
+
+  handlePrice(cart) {
+    const newPrice = cart.reduce((total, item) => {
+      return total + item.item.prices[0].amount * item.quantity;
+    }, 0);
+
+    return Math.round(newPrice);
   }
 
   render() {
     return (
       <ul className="cart-list">
         <APIContext.Consumer>
-          {({ cart }) => {
-            return cart.map((item) => 
-              <CartItem 
-                product={item} 
-              />);
+          {({ cart, currentCurrency }) => {
+            return (
+              <React.Fragment>
+                {!cart.length ? <h2>Your bag is empty! :(</h2> :
+                  <div>
+                  {cart.map(({item, quantity}) => 
+                  <CartItem 
+                  quantity={quantity}
+                  product={item} 
+                  />)}
+                  <div className="cart-list-controlls">
+                    <h2>TOTAL: {this.handlePrice(cart)} {currentCurrency}</h2>
+                    <button className="checkout">CHECKOUT</button>
+                  </div>
+                  </div>
+                }
+              </React.Fragment>
+            )
           }}
         </APIContext.Consumer>
       </ul>
