@@ -11,8 +11,8 @@ export default class ContextProvider extends Component {
       products: [],
       currencies: [],
       cart: [],
-      currentCurrency: 'USD',
       totalPrice: [],
+      currentCurrency: 'USD',
     };
     this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
@@ -53,8 +53,6 @@ export default class ContextProvider extends Component {
       return console.log(error);
     }
 
-    console.log(data);
-
     let productsArray = data.data.categories.map((category) => {
       return category.products;
     });
@@ -84,8 +82,7 @@ export default class ContextProvider extends Component {
       };
     });
 
-    alert(`added ${item.name} to the cart`);
-    return console.log(this.state.cart);
+    return alert(`added ${item.name} to the cart`);
   }
 
   handleIncrement(name) {
@@ -101,10 +98,13 @@ export default class ContextProvider extends Component {
   }
 
   handleTotalPrice(cart, prices, selectedCurrency) {
-    const currency = prices[0].findIndex((price) => price.currency === selectedCurrency);
+    /*  looping over the cart items to get all prices and getting the first element 
+    currency is equal to the selected state currenct  */
+    const cartItemsPrices = prices[0].findIndex((price) => price.currency === selectedCurrency);
 
+    // getting the total price
     const newPrice = cart.reduce((total, item) => {
-      return total + item.item.prices[currency].amount * item.quantity;
+      return total + item.item.prices[cartItemsPrices].amount * item.quantity;
     }, 0);
 
     return Math.round(newPrice);

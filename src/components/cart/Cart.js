@@ -17,11 +17,15 @@ export default class Cart extends Component {
                 ) : (
                   <div>
                     {cart.map(({ item, quantity }) => (
-                      <CartItem quantity={quantity} product={item} />
+                      <CartItem 
+                        key={item.name}
+                        quantity={quantity} 
+                        product={item} 
+                      />
                     ))}
                     <div className="cart-list-controlls">
                       <h2>
-                        TOTAL: {handleTotalPrice(cart)} {currentCurrency}
+                        TOTAL: {handleTotalPrice(cart, cart.map(({item}) => item.prices), currentCurrency)} {currentCurrency}
                       </h2>
                       <button className="checkout">CHECKOUT</button>
                     </div>

@@ -24,6 +24,7 @@ export default class MiniCart extends Component {
                     {cart.length ? (
                       cart.map(({ item, quantity }) => (
                         <MiniCartItem
+                          key={item.name}
                           quantity={quantity}
                           product={item}
                           currentCurrency={currentCurrency}
@@ -36,8 +37,8 @@ export default class MiniCart extends Component {
                   <div className="cart-controlls-container">
                     <div className="total-price">
                       <span>Total:</span>
-                      <span>
-                        {handleTotalPrice(cart, cart.map(({item}) => item.prices), currentCurrency) } {currentCurrency}
+                      <span onClick={() => this.handleGetProductsCurrencies(cart)}>
+                        { cart.length && handleTotalPrice(cart, cart.map(({item}) => item.prices), currentCurrency) } {currentCurrency}
                       </span>
                     </div>
                     <div className="cart-control">
