@@ -37,7 +37,7 @@ export default class MiniCart extends Component {
                     <div className="total-price">
                       <span>Total:</span>
                       <span>
-                        {handleTotalPrice(cart)} {currentCurrency}
+                        {handleTotalPrice(cart, cart.map(({item}) => item.prices), currentCurrency) } {currentCurrency}
                       </span>
                     </div>
                     <div className="cart-control">

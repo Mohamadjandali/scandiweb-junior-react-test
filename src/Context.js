@@ -70,7 +70,7 @@ export default class ContextProvider extends Component {
   handleAddItemToCart(item) {
     // checks if the product is already in cart
     const foundProduct = this.state.cart.find((product) => {
-      return product.name === item.name;
+      return product.item.name === item.name;
     });
 
     if (foundProduct) {
@@ -100,9 +100,11 @@ export default class ContextProvider extends Component {
     });
   }
 
-  handleTotalPrice(cart) {
+  handleTotalPrice(cart, prices, selectedCurrency) {
+    const currency = prices[0].findIndex((price) => price.currency === selectedCurrency);
+
     const newPrice = cart.reduce((total, item) => {
-      return total + item.item.prices[0].amount * item.quantity;
+      return total + item.item.prices[currency].amount * item.quantity;
     }, 0);
 
     return Math.round(newPrice);
@@ -131,7 +133,7 @@ export default class ContextProvider extends Component {
           cart: this.state.cart,
           totalPrice: this.state.totalPrice,
           setCurrency: this.handleCurrencyChange,
-          setCart: this.handleAddItemToCart,
+          handleAddItemToCart: this.handleAddItemToCart,
           handleIncrement: this.handleIncrement,
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
