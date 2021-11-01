@@ -65,7 +65,21 @@ export default class ContextProvider extends Component {
     });
   }
 
-  handleAddItemToCart(item) {
+  
+
+  handleAddItemToCart(item, attributes) {
+
+    // Checking if the product has any available attributes
+    if (item.attributes.length) {
+      // getting the attribute that are available for the specific product
+      const attribute = item.attributes.map((attr) => attr.name);
+
+      // check if the user selected an attribute
+      if (!attributes.length) {
+        return alert(`Please select a specific ${attribute}`)
+      }
+    }
+
     // checks if the product is already in cart
     const foundProduct = this.state.cart.find((product) => {
       return product.item.name === item.name;
@@ -78,12 +92,16 @@ export default class ContextProvider extends Component {
     // add a product to the cart
     this.setState((prevState) => {
       return {
-        cart: [{ item, quantity: 1 }, ...prevState.cart],
+        cart: [{ item, quantity: 1, itemAttributes: attributes }, ...prevState.cart],
       };
     });
 
+    console.log(item);
+
     return alert(`added ${item.name} to the cart`);
   }
+
+
 
   handleIncrement(name) {
     this.setState((prevState) => {
@@ -110,9 +128,13 @@ export default class ContextProvider extends Component {
     return Math.round(newPrice);
   }
 
+
+
   handleCurrencyChange(currency) {
     return this.setState({ currentCurrency: currency });
   }
+
+
 
   handleDisplayProductPrice(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
@@ -121,6 +143,8 @@ export default class ContextProvider extends Component {
 
     return `${productPrice.amount} ${productPrice.currency}`;
   }
+
+
 
   render() {
     return (

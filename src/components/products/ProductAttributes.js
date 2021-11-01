@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
 
 export default class ProductAttributes extends Component {
-  constructor() {
-    super();
-    this.state = {
-      attributeValue: null,
-    };
-  }
 
   render() {
+    const { attribute: { name, items }, handleProductAttributes, productAttributes } = this.props;
     return (
       <li className="product-attribute-items">
-        <span className="attribute-name">{this.props.attribute.name}:</span>
+        <span className="attribute-name">{name}:</span>
         <div className="attributes">
-          {this.props.attribute.items.map(({ id, value }) => {
+          {items.map((item) => {
             return (
               <span
-                onClick={() => this.setState({ attributeValue: id })}
+                onClick={() => handleProductAttributes(item)}
                 className={`attribute-id ${
-                  this.state.attributeValue === id ? 'activated-attribute' : ''
+                  productAttributes.find((attr) => attr.id === item.id) ? 'activated-attribute' : ''
                 }`}
-                key={id}
+                key={item.id}
               >
-                {value}
+                {item.value}
               </span>
             );
           })}

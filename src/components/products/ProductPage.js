@@ -10,10 +10,12 @@ export default class ProductPage extends Component {
     super();
     this.state = {
       product: null,
+      productAttributes: [],
       productImageIndex: 0,
     };
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
     this.displayProductImages = this.displayProductImages.bind(this);
+    this.handleProductAttributes = this.handleProductAttributes.bind(this);
   }
 
   async componentDidMount() {
@@ -56,6 +58,8 @@ export default class ProductPage extends Component {
       return console.log(error);
     }
 
+    console.log(data)
+
     this.setState({ product: data.data.product });
   }
 
@@ -88,7 +92,12 @@ export default class ProductPage extends Component {
                 </div>
                 <ul className="product-attributes">
                   {attributes.map((attribute) => (
-                    <ProductAttributes key={attribute.id} attribute={attribute} />
+                    <ProductAttributes 
+                      handleProductAttributes={this.handleProductAttributes}
+                      productAttributes={this.state.productAttributes}
+                      key={attribute.id} 
+                      attribute={attribute} 
+                    />
                   ))}
                 </ul>
                 <div className="product-price">
@@ -97,7 +106,7 @@ export default class ProductPage extends Component {
                 </div>
                 <div className="add-product">
                   {inStock ? (
-                    <button onClick={() => handleAddItemToCart(this.state.product)}>
+                    <button onClick={() => handleAddItemToCart(this.state.product, this.state.productAttributes)}>
                       ADD TO CART
                     </button>
                   ) : (
@@ -116,6 +125,8 @@ export default class ProductPage extends Component {
     );
   }
 
+
+
   displayProductImages(image, imageIndex) {
     return (
       <div key={imageIndex} onClick={() => this.setState({ productImageIndex: imageIndex })}>
@@ -124,6 +135,18 @@ export default class ProductPage extends Component {
     );
   }
 
+
+  handleProductAttributes(attributes) {
+    this.setState((prevState) => {
+      return {
+        productAttributes: [{ id: attributes.id, value: attributes.value }, ...prevState.productAttributes],
+      }
+    });
+
+    return console.log(this.state.productAttributes);
+  }
+
+  
   render() {
     return this.state.product && this.handleProductDisplay(this.state.product);
   }
