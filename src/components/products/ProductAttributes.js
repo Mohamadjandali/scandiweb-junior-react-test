@@ -11,10 +11,10 @@ export default class ProductAttributes extends Component {
           {items.map((item) => {
             return (
               <span
-                onClick={() => handleProductAttributes(item)}
-                className={`attribute-id ${
-                  productAttributes.find((attr) => attr.id === item.id) ? 'activated-attribute' : ''
-                }`}
+                onClick={() => handleProductAttributes(name, item.value)}
+                // className={`attribute-id ${
+                //   productAttributes.find((attr) => attr.id === item.id) ? 'activated-attribute' : ''
+                // }`}
                 key={item.id}
               >
                 {item.value}

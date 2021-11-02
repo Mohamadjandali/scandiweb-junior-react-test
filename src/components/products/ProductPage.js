@@ -60,7 +60,10 @@ export default class ProductPage extends Component {
 
     console.log(data)
 
-    this.setState({ product: data.data.product });
+    this.setState({ 
+      product: data.data.product,
+      productAttributes: data.data.product.attributes,
+    });
   }
 
   handleProductDisplay({
@@ -136,10 +139,14 @@ export default class ProductPage extends Component {
   }
 
 
-  handleProductAttributes(attributes) {
+  handleProductAttributes(attributeName, attributeValue) {
     this.setState((prevState) => {
       return {
-        productAttributes: [{ id: attributes.id, value: attributes.value }, ...prevState.productAttributes],
+        productAttributes: prevState.productAttributes.map((attribute) => {
+          return attribute.name === attributeName
+            ? { name: attribute.name, item: attributeValue }
+            : attribute
+        })
       }
     });
 
