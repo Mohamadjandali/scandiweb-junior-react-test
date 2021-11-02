@@ -56,10 +56,8 @@ export default class ProductPage extends Component {
     );
 
     if (error) {
-      return this.setState({ err: error });
+      return this.setState({ err: error.message });
     }
-
-    console.log(data);
 
     this.setState({
       product: data.data.product,
@@ -164,8 +162,6 @@ export default class ProductPage extends Component {
         }),
       };
     });
-
-    return console.log(this.state.productAttributes);
   }
 
   render() {
@@ -174,6 +170,6 @@ export default class ProductPage extends Component {
         {this.state.product && this.handleProductDisplay(this.state.product)}
         {this.state.err && <h3>{this.state.err}</h3>}
       </React.Fragment>
-    )
+    );
   }
 }

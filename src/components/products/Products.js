@@ -42,15 +42,16 @@ export default class Products extends Component {
     return (
       <div className="products-list">
         <APIContext.Consumer>
-          {({ products, currentCurrency, error }) => {
+          {({ products, currentCurrency, err }) => {
             return (
               <React.Fragment>
-                {products && products.map((product) =>
+                {products &&
+                  products.map((product) =>
                     this.handleProductOutput(product, category, currentCurrency)
-                )}
-                {error && <h3>{error}</h3>}
+                  )}
+                {err && <h3>{err}</h3>}
               </React.Fragment>
-            )
+            );
           }}
         </APIContext.Consumer>
       </div>

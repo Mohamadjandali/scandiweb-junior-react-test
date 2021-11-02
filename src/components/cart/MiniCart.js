@@ -22,6 +22,7 @@ export default class MiniCart extends Component {
               currentCurrency,
               handleTotalPrice,
               handleCheckoutOut,
+              err,
             }) => {
               return (
                 <React.Fragment>

@@ -12,7 +12,7 @@ export default class ContextProvider extends Component {
       currencies: [],
       cart: [],
       totalPrice: [],
-      error: null,
+      err: null,
       currentCurrency: 'USD',
     };
     this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
@@ -54,7 +54,7 @@ export default class ContextProvider extends Component {
     );
 
     if (error) {
-      return this.setState({ error: error })
+      return this.setState({ err: error.message });
     }
 
     let productsArray = data.data.categories.map((category) => {
@@ -187,7 +187,7 @@ export default class ContextProvider extends Component {
           currentCurrency: this.state.currentCurrency,
           cart: this.state.cart,
           totalPrice: this.state.totalPrice,
-          error: this.state.error,
+          err: this.state.err,
           setCurrency: this.handleCurrencyChange,
           handleAddItemToCart: this.handleAddItemToCart,
           handleIncrement: this.handleIncrement,
