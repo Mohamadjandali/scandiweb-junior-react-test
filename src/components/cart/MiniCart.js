@@ -22,11 +22,12 @@ export default class MiniCart extends Component {
                 <React.Fragment>
                   <div className="mini-cart-items-container">
                     {cart.length ? (
-                      cart.map(({ item, quantity }) => (
+                      cart.map(({ item, quantity, attributes }) => (
                         <MiniCartItem
                           key={item.name}
                           quantity={quantity}
                           product={item}
+                          attributes={attributes}
                           currentCurrency={currentCurrency}
                         />
                       ))

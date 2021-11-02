@@ -8,6 +8,7 @@ export default class MiniCartItem extends Component {
       product: { name, brand, gallery, prices },
       currentCurrency,
       quantity,
+      attributes
     } = this.props;
     return (
       <div className="mini-cart-item">
@@ -23,9 +24,15 @@ export default class MiniCartItem extends Component {
                   <span className="mini-cart-item-price">
                     {handleDisplayProductPrice(prices, currentCurrency)}
                   </span>
-                  <div>
-                    <span className="item-size">S</span>
-                  </div>
+                  {attributes.length ?
+                    <div>
+                      <span className="item-size">
+                        {attributes[0].item}
+                      </span>
+                    </div>
+                    :
+                    ''
+                  }
                 </div>
                 <div className="mini-cart-item-counter">
                   <button
