@@ -12,6 +12,7 @@ export default class ProductPage extends Component {
       product: null,
       productAttributes: [],
       productImageIndex: 0,
+      err: null,
     };
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
     this.displayProductImages = this.displayProductImages.bind(this);
@@ -55,7 +56,7 @@ export default class ProductPage extends Component {
     );
 
     if (error) {
-      return console.log(error);
+      return this.setState({ err: error });
     }
 
     console.log(data);
@@ -168,6 +169,11 @@ export default class ProductPage extends Component {
   }
 
   render() {
-    return this.state.product && this.handleProductDisplay(this.state.product);
+    return (
+      <React.Fragment>
+        {this.state.product && this.handleProductDisplay(this.state.product)}
+        {this.state.err && <h3>{this.state.err}</h3>}
+      </React.Fragment>
+    )
   }
 }
