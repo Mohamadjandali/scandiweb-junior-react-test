@@ -17,6 +17,7 @@ export default class ContextProvider extends Component {
     this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
+    this.handleDecrement = this.handleDecrement.bind(this);
   }
 
   async componentDidMount() {
@@ -117,6 +118,20 @@ export default class ContextProvider extends Component {
     console.log(this.state.cart)
   }
 
+  handleDecrement(name) {
+    this.setState((prevState) => {
+      return {
+        cart: prevState.cart.map((product) => {
+          return product.item.name === name
+            ? { item: product.item, quantity: product.quantity - 1, attributes: product.attributes }
+            : product;
+        }),
+      };
+    });
+
+    console.log(this.state.cart)
+  }
+
   handleTotalPrice(cart, prices, selectedCurrency) {
     /*  looping over the cart items to get all prices and getting the first element 
     currency is equal to the selected state currenct  */
@@ -161,6 +176,7 @@ export default class ContextProvider extends Component {
           setCurrency: this.handleCurrencyChange,
           handleAddItemToCart: this.handleAddItemToCart,
           handleIncrement: this.handleIncrement,
+          handleDecrement: this.handleDecrement,
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
         }}

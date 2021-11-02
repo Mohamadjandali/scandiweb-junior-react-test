@@ -20,7 +20,7 @@ export default class CartItem extends Component {
     return (
       <div className="cart-item">
         <APIContext.Consumer>
-          {({ currentCurrency, handleIncrement }) => {
+          {({ currentCurrency, handleIncrement, handleDecrement }) => {
             return (
               <React.Fragment>
                 <div className="cart-item-info">
@@ -50,7 +50,11 @@ export default class CartItem extends Component {
                       +
                     </button>
                     <span className="item-count">{quantity}</span>
-                    <button className="decrement">-</button>
+                    <button 
+                      className="decrement"
+                      disabled={quantity === 1}
+                      onClick={() => handleDecrement(name)}>-
+                      </button>
                   </div>
                   <div>
                     <img src={gallery} alt="cart item" />

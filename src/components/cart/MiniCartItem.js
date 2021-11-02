@@ -13,7 +13,7 @@ export default class MiniCartItem extends Component {
     return (
       <div className="mini-cart-item">
         <APIContext.Consumer>
-          {({ handleIncrement, handleDisplayProductPrice }) => {
+          {({ handleIncrement, handleDecrement, handleDisplayProductPrice }) => {
             return (
               <React.Fragment>
                 <div className="mini-cart-item-info">
@@ -42,7 +42,10 @@ export default class MiniCartItem extends Component {
                     +
                   </button>
                   <span className="item-count">{quantity}</span>
-                  <button className="decrement">-</button>
+                  <button 
+                    className="decrement"
+                    disabled={quantity === 1}
+                    onClick={() => handleDecrement(name)}>-</button>
                 </div>
                 <div className="mini-cart-item-image">
                   <img src={gallery} alt="product" />
