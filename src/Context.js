@@ -67,7 +67,7 @@ export default class ContextProvider extends Component {
 
   
 
-  handleAddItemToCart(item, attributes) {
+  handleAddItemToCart(item, attributes, toggleAttributtes) {
 
     // Checking if the product has any available attributes
     if (item.attributes.length) {
@@ -75,7 +75,7 @@ export default class ContextProvider extends Component {
       const attribute = item.attributes.map((attr) => attr.name);
 
       // check if the user selected an attribute
-      if (!attributes.length) {
+      if (!toggleAttributtes) {
         return alert(`Please select a specific ${attribute}`)
       }
     }
