@@ -15,6 +15,7 @@ export default class CartItem extends Component {
     const {
       product: { name, prices, gallery, brand },
       quantity,
+      attributes,
     } = this.props;
     return (
       <div className="cart-item">
@@ -30,6 +31,15 @@ export default class CartItem extends Component {
                   <h3 className="product-price">
                     {this.displayProductPrice(prices, currentCurrency)}
                   </h3>
+                  {attributes.length ?
+                    <div>
+                      <span className="item-size">
+                        {attributes[0].item}
+                      </span>
+                    </div>
+                    :
+                    ''
+                  }
                 </div>
                 <div className="cart-count">
                   <div className="cart-item-counter">
