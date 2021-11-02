@@ -11,7 +11,6 @@ export default class ProductPage extends Component {
     this.state = {
       product: null,
       productAttributes: [],
-      selectedAttributes: false,
       productImageIndex: 0,
     };
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
@@ -110,7 +109,7 @@ export default class ProductPage extends Component {
                 </div>
                 <div className="add-product">
                   {inStock ? (
-                    <button onClick={() => handleAddItemToCart(this.state.product, this.state.productAttributes, this.state.selectedAttributes)}>
+                    <button onClick={() => handleAddItemToCart(this.state.product, this.state.productAttributes)}>
                       ADD TO CART
                     </button>
                   ) : (
@@ -143,7 +142,6 @@ export default class ProductPage extends Component {
   handleProductAttributes(attributeName, attributeValue) {
     this.setState((prevState) => {
       return {
-        selectedAttributes: true,
         productAttributes: prevState.productAttributes.map((attribute) => {
           return attribute.name === attributeName
             ? { name: attribute.name, item: attributeValue }

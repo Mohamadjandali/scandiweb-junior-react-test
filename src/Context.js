@@ -67,16 +67,16 @@ export default class ContextProvider extends Component {
 
   
 
-  handleAddItemToCart(item, attributes, toggleAttributtes) {
+  handleAddItemToCart(item, attributes) {
 
     // Checking if the product has any available attributes
     if (item.attributes.length) {
-      // getting the attribute that are available for the specific product
-      const attribute = item.attributes.map((attr) => attr.name);
+      //  checking if all the attributes are selected
+      const attribute = attributes.every((attr) => attr.hasOwnProperty('item'));
 
-      // check if the user selected an attribute
-      if (!toggleAttributtes) {
-        return alert(`Please select a specific ${attribute}`)
+      // if the user didnt add an attribute an alert will occuer and cancel the operation
+      if (!attribute) {
+        return alert('Please select all the properites for this product!');
       }
     }
 
