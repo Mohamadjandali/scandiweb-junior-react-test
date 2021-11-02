@@ -92,11 +92,11 @@ export default class ContextProvider extends Component {
     // add a product to the cart
     this.setState((prevState) => {
       return {
-        cart: [{ item, quantity: 1, itemAttributes: attributes }, ...prevState.cart],
+        cart: [{ item, quantity: 1, attributes }, ...prevState.cart],
       };
     });
 
-    console.log(item);
+    console.log(this.state.cart);
 
     return alert(`added ${item.name} to the cart`);
   }
@@ -108,11 +108,13 @@ export default class ContextProvider extends Component {
       return {
         cart: prevState.cart.map((product) => {
           return product.item.name === name
-            ? { item: product.item, quantity: product.quantity + 1 }
+            ? { item: product.item, quantity: product.quantity + 1, attributes: product.attributes }
             : product;
         }),
       };
     });
+
+    console.log(this.state.cart)
   }
 
   handleTotalPrice(cart, prices, selectedCurrency) {
