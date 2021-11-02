@@ -9,7 +9,7 @@ export default class Cart extends Component {
     return (
       <ul className="cart-list">
         <APIContext.Consumer>
-          {({ cart, currentCurrency, handleTotalPrice }) => {
+          {({ cart, currentCurrency, handleTotalPrice, handleCheckoutOut }) => {
             return (
               <React.Fragment>
                 {!cart.length ? (
@@ -29,7 +29,10 @@ export default class Cart extends Component {
                       <h2>
                         TOTAL: {handleTotalPrice(cart, cart.map(({item}) => item.prices), currentCurrency)} {currentCurrency}
                       </h2>
-                      <button className="checkout">CHECKOUT</button>
+                      <button 
+                        className="checkout"
+                        onClick={() => handleCheckoutOut()}
+                      >CHECKOUT</button>
                     </div>
                   </div>
                 )}

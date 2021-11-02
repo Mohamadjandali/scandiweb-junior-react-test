@@ -19,6 +19,7 @@ export default class ContextProvider extends Component {
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
     this.handleRemoveItemCart = this.handleRemoveItemCart.bind(this);
+    this.handleCheckoutOut = this.handleCheckoutOut.bind(this);
   }
 
   async componentDidMount() {
@@ -170,6 +171,10 @@ export default class ContextProvider extends Component {
     return `${productPrice.amount} ${productPrice.currency}`;
   }
 
+  handleCheckoutOut() {
+    this.setState({ cart: [] });
+    alert('Thanks for your shopping');
+  }
 
 
   render() {
@@ -189,6 +194,7 @@ export default class ContextProvider extends Component {
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
           handleRemoveItemCart: this.handleRemoveItemCart,
+          handleCheckoutOut: this.handleCheckoutOut,
         }}
       >
         {this.props.children}

@@ -17,7 +17,7 @@ export default class MiniCart extends Component {
       <React.Fragment>
         <div className="mini-cart-list">
           <APIContext.Consumer>
-            {({ cart, currentCurrency, handleTotalPrice }) => {
+            {({ cart, currentCurrency, handleTotalPrice, handleCheckoutOut }) => {
               return (
                 <React.Fragment>
                   <div className="mini-cart-items-container">
@@ -52,7 +52,10 @@ export default class MiniCart extends Component {
                           VIEW BAG
                         </div>
                       </Link>
-                      <button className="checkout">CHECK OUT</button>
+                      <button 
+                        className="checkout"
+                        disabled={!cart.length}
+                        onClick={() => handleCheckoutOut(this.state.total)}>CHECK OUT</button>
                     </div>
                   </div>
                 </React.Fragment>
