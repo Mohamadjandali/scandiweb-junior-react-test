@@ -16,12 +16,13 @@ export default class Cart extends Component {
                   <h2>Your bag is empty! :(</h2>
                 ) : (
                   <div>
-                    {cart.map(({ item, quantity, attributes }) => (
+                    {cart.map(({ id, item, quantity, attributes }) => (
                       <CartItem 
                         key={item.name}
                         quantity={quantity} 
                         product={item}
                         attributes={attributes}
+                        id={id}
                       />
                     ))}
                     <div className="cart-list-controlls">

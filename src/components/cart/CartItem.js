@@ -16,11 +16,12 @@ export default class CartItem extends Component {
       product: { name, prices, gallery, brand },
       quantity,
       attributes,
+      id,
     } = this.props;
     return (
       <div className="cart-item">
         <APIContext.Consumer>
-          {({ currentCurrency, handleIncrement, handleDecrement }) => {
+          {({ currentCurrency, handleIncrement, handleDecrement, handleRemoveItemCart }) => {
             return (
               <React.Fragment>
                 <div className="cart-item-info">
@@ -31,6 +32,11 @@ export default class CartItem extends Component {
                   <h3 className="product-price">
                     {this.displayProductPrice(prices, currentCurrency)}
                   </h3>
+                  <button 
+                    onClick={() => handleRemoveItemCart(id)}
+                    className="cart-delete-product">
+                    remove
+                  </button>
                   {attributes.length ?
                     <div>
                       <span className="item-size">

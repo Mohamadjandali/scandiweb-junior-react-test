@@ -8,12 +8,13 @@ export default class MiniCartItem extends Component {
       product: { name, brand, gallery, prices },
       currentCurrency,
       quantity,
-      attributes
+      attributes,
+      id
     } = this.props;
     return (
       <div className="mini-cart-item">
         <APIContext.Consumer>
-          {({ handleIncrement, handleDecrement, handleDisplayProductPrice }) => {
+          {({ handleIncrement, handleDecrement, handleDisplayProductPrice, handleRemoveItemCart }) => {
             return (
               <React.Fragment>
                 <div className="mini-cart-item-info">
@@ -23,6 +24,11 @@ export default class MiniCartItem extends Component {
                   </div>
                   <span className="mini-cart-item-price">
                     {handleDisplayProductPrice(prices, currentCurrency)}
+                  </span>
+                  <span 
+                    onClick={() => handleRemoveItemCart(id)}
+                    className="delete-product">
+                    remove
                   </span>
                   {attributes.length ?
                     <div>

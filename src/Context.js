@@ -18,6 +18,7 @@ export default class ContextProvider extends Component {
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
+    this.handleRemoveItemCart = this.handleRemoveItemCart.bind(this);
   }
 
   async componentDidMount() {
@@ -93,7 +94,7 @@ export default class ContextProvider extends Component {
     // add a product to the cart
     this.setState((prevState) => {
       return {
-        cart: [{ item, quantity: 1, attributes }, ...prevState.cart],
+        cart: [{ id: item.id, item, quantity: 1, attributes }, ...prevState.cart],
       };
     });
 
@@ -109,7 +110,7 @@ export default class ContextProvider extends Component {
       return {
         cart: prevState.cart.map((product) => {
           return product.item.name === name
-            ? { item: product.item, quantity: product.quantity + 1, attributes: product.attributes }
+            ? { id: product.id, item: product.item, quantity: product.quantity + 1, attributes: product.attributes }
             : product;
         }),
       };
@@ -123,13 +124,21 @@ export default class ContextProvider extends Component {
       return {
         cart: prevState.cart.map((product) => {
           return product.item.name === name
-            ? { item: product.item, quantity: product.quantity - 1, attributes: product.attributes }
+            ? { id: product.id, item: product.item, quantity: product.quantity - 1, attributes: product.attributes }
             : product;
         }),
       };
     });
 
     console.log(this.state.cart)
+  }
+
+  handleRemoveItemCart(productId) {
+    this.setState((prevState) => {
+      return {
+        cart: prevState.cart.filter((product) => product.id !== productId)
+      }
+    })
   }
 
   handleTotalPrice(cart, prices, selectedCurrency) {
@@ -179,6 +188,7 @@ export default class ContextProvider extends Component {
           handleDecrement: this.handleDecrement,
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
+          handleRemoveItemCart: this.handleRemoveItemCart,
         }}
       >
         {this.props.children}
