@@ -8,6 +8,7 @@
   z-index: 2;
   background-color: #fff;
   height: 60vh;
+  padding: 0rem 2rem;
 }
 
 .mini-cart-items-container {
@@ -44,9 +45,13 @@
 
 .increment,
 .decrement {
+  background: none;
+  color: inherit;
+  border: 2px solid rgb(0, 0, 0);
   padding: 0.2rem;
-  border: 2px solid black;
+  font: inherit;
   cursor: pointer;
+  outline: inherit;
 }
 
 .item-size {
@@ -68,7 +73,7 @@
 
 .cart-control {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 2rem;
 }
 
@@ -89,9 +94,10 @@
 }
 
 .btn-bag {
-  border: none;
+  border: 2px solid rgb(0, 0, 0);
   color: rgb(0, 0, 0);
   padding: 15px 32px;
+  margin-right: 1rem;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -101,4 +107,21 @@
 
 .btn-bag:hover {
   opacity: 0.7;
+}
+
+.item-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.delete-product {
+  background-color: rgb(214, 19, 19);
+  color: rgb(252, 252, 252);
+  padding: 0.2rem;
+  border: 4px solid rgb(214, 19, 19);
+  margin-bottom: 0.4rem;
+  font-size: 16px;
+  cursor: pointer;
 }

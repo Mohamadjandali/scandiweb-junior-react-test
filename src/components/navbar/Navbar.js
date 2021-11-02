@@ -3,6 +3,7 @@ import './navbar.css';
 import Categories from '../categories/Categories';
 import Currencies from '../currencies/Currencies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { APIContext } from '../../Context';
 import {
   faShoppingCart,
   faDollarSign,
@@ -60,11 +61,21 @@ export default class Navbar extends Component {
             <div className="cart">
               <div className="cart-logo" onClick={this.toggleMiniCart}>
                 <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                <div className="items-count">
-                  <span>1</span>
-                </div>
+                <APIContext.Consumer>
+                  {({ cart }) => {
+                    return (
+                      cart.length >= 1 && (
+                        <div className="items-count">
+                          <span>{cart.length}</span>
+                        </div>
+                      )
+                    );
+                  }}
+                </APIContext.Consumer>
               </div>
-              {this.state.toggleCart && <MiniCart />}
+              {this.state.toggleCart && (
+                <MiniCart toggleMiniCart={this.toggleMiniCart} />
+              )}
             </div>
           </div>
         </nav>

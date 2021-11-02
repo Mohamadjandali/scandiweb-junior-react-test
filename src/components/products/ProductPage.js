@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import doAPIRequest from '../../request';
 import { APIContext } from '../../Context';
+import ProductAttributes from './ProductAttributes';
 import parse from 'html-react-parser';
 import './productpage.css';
 
@@ -9,13 +10,12 @@ export default class ProductPage extends Component {
     super();
     this.state = {
       product: null,
+      productAttributes: [],
       productImageIndex: 0,
-      attributeValue: null,
     };
     this.handleProductDisplay = this.handleProductDisplay.bind(this);
-    this.displayProductAttributes = this.displayProductAttributes.bind(this);
-    this.displayProductPrice = this.displayProductPrice.bind(this);
-    this.displayProductImages= this.displayProductImages.bind(this);
+    this.displayProductImages = this.displayProductImages.bind(this);
+    this.handleProductAttributes = this.handleProductAttributes.bind(this);
   }
 
   async componentDidMount() {
@@ -58,7 +58,12 @@ export default class ProductPage extends Component {
       return console.log(error);
     }
 
-    this.setState({ product: data.data.product });
+    console.log(data);
+
+    this.setState({
+      product: data.data.product,
+      productAttributes: data.data.product.attributes,
+    });
   }
 
   handleProductDisplay({
@@ -68,80 +73,98 @@ export default class ProductPage extends Component {
     gallery,
     attributes,
     prices,
+    inStock,
   }) {
     return (
-      <div className="product-container">
-        <div className="images-list">
-          {gallery.map((image, index) =>
-            this.displayProductImages(image, index)
-          )}
-        </div>
-        <div className="image-container">
-          <img src={gallery[this.state.productImageIndex]} />
-        </div>
-        <div className="product-status">
-          <div className="product-info">
-            <h2>{brand}</h2>
-            <h3>{name}</h3>
-          </div>
-          <div className="product-attributes">
-            {attributes.map((attribute) =>
-              this.displayProductAttributes(attribute)
-            )}
-          </div>
-          <div className="product-price">
-            <APIContext.Consumer>
-              {({ currentCurrency }) =>
-                this.displayProductPrice(prices, currentCurrency)
-              }
-            </APIContext.Consumer>
-          </div>
-          <div className="add-product">
-            <button>ADD TO CART</button>
-          </div>
-          <div className="product-description">
-            {/* Parsing the desciption */}
-            {parse(description)}
-          </div>
-        </div>
-      </div>
+      <APIContext.Consumer>
+        {({
+          currentCurrency,
+          handleAddItemToCart,
+          handleDisplayProductPrice,
+        }) => {
+          return (
+            <div className="product-container">
+              <div className="images-list">
+                {gallery.map((image, index) =>
+                  this.displayProductImages(image, index)
+                )}
+              </div>
+              <div className="image-container">
+                <img
+                  src={gallery[this.state.productImageIndex]}
+                  alt="product"
+                />
+              </div>
+              <div className="product-status">
+                <div className="product-info">
+                  <h2>{brand}</h2>
+                  <h3>{name}</h3>
+                </div>
+                <ul className="product-attributes">
+                  {attributes.map((attribute) => (
+                    <ProductAttributes
+                      handleProductAttributes={this.handleProductAttributes}
+                      productAttributes={this.state.productAttributes}
+                      key={attribute.id}
+                      attribute={attribute}
+                    />
+                  ))}
+                </ul>
+                <div className="product-price">
+                  <h3>Price:</h3>
+                  <h3>{handleDisplayProductPrice(prices, currentCurrency)}</h3>
+                </div>
+                <div className="add-product">
+                  {inStock ? (
+                    <button
+                      onClick={() =>
+                        handleAddItemToCart(
+                          this.state.product,
+                          this.state.productAttributes
+                        )
+                      }
+                    >
+                      ADD TO CART
+                    </button>
+                  ) : (
+                    <h3>This product is out of stock</h3>
+                  )}
+                </div>
+                <div className="product-description">
+                  {/* Parsing the desciption */}
+                  {parse(description)}
+                </div>
+              </div>
+            </div>
+          );
+        }}
+      </APIContext.Consumer>
     );
-  }
-
-  displayProductAttributes({ id, name, items }) {
-    return (
-      <li className="product-attribute-items" key={id}>
-        <span className="attribute-name">{name}:</span>
-        <div className="attributes">
-          {items.map(({ id, value }) => {
-            return (
-              <span 
-                onClick={() => this.setState({ toggleAttribute: id })}
-                className={`attribute-id ${this.state.toggleAttribute === id ? "activated-attribute" : ""}`} key={id}>
-                {value}
-              </span>
-            );
-          })}
-        </div>
-      </li>
-    );
-  }
-
-  displayProductPrice(availablePrices, selectedCurrency) {
-    // checking the current selected currency and finding the right price based on the currency
-    const productPrice = availablePrices.find((price) => {
-      return price.price === selectedCurrency;
-    });
-
-    return <span>{productPrice}</span>;
   }
 
   displayProductImages(image, imageIndex) {
     return (
-      <div onClick={() => this.setState({ productImageIndex: imageIndex })}>
-        <img src={image} alt="product-image" />
+      <div
+        key={imageIndex}
+        onClick={() => this.setState({ productImageIndex: imageIndex })}
+      >
+        <img src={image} alt="product" />
       </div>
     );
+  }
+
+  handleProductAttributes(attributeName, attributeValue) {
+    this.setState((prevState) => {
+      return {
+        productAttributes: prevState.productAttributes.map((attribute) => {
+          return attribute.name === attributeName
+            ? { name: attribute.name, item: attributeValue }
+            : attribute;
+        }),
+      };
+    });
+
+    return console.log(this.state.productAttributes);
   }
 
   render() {
