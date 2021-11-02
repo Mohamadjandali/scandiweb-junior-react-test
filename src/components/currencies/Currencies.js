@@ -3,7 +3,6 @@ import { APIContext } from '../../Context';
 import './currencies.css';
 
 export default class Currencies extends Component {
-
   render() {
     return (
       <React.Fragment>

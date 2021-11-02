@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 
 export default class MiniCartItem extends Component {
-
   render() {
     const {
       product: { name, brand, gallery, prices },
       currentCurrency,
       quantity,
       attributes,
-      id
+      id,
     } = this.props;
     return (
       <div className="mini-cart-item">
         <APIContext.Consumer>
-          {({ handleIncrement, handleDecrement, handleDisplayProductPrice, handleRemoveItemCart }) => {
+          {({
+            handleIncrement,
+            handleDecrement,
+            handleDisplayProductPrice,
+            handleRemoveItemCart,
+          }) => {
             return (
               <React.Fragment>
                 <div className="mini-cart-item-info">
@@ -25,20 +29,19 @@ export default class MiniCartItem extends Component {
                   <span className="mini-cart-item-price">
                     {handleDisplayProductPrice(prices, currentCurrency)}
                   </span>
-                  <span 
+                  <span
                     onClick={() => handleRemoveItemCart(id)}
-                    className="delete-product">
+                    className="delete-product"
+                  >
                     remove
                   </span>
-                  {attributes.length ?
+                  {attributes.length ? (
                     <div>
-                      <span className="item-size">
-                        {attributes[0].item}
-                      </span>
+                      <span className="item-size">{attributes[0].item}</span>
                     </div>
-                    :
+                  ) : (
                     ''
-                  }
+                  )}
                 </div>
                 <div className="mini-cart-item-counter">
                   <button
@@ -48,10 +51,13 @@ export default class MiniCartItem extends Component {
                     +
                   </button>
                   <span className="item-count">{quantity}</span>
-                  <button 
+                  <button
                     className="decrement"
                     disabled={quantity === 1}
-                    onClick={() => handleDecrement(name)}>-</button>
+                    onClick={() => handleDecrement(name)}
+                  >
+                    -
+                  </button>
                 </div>
                 <div className="mini-cart-item-image">
                   <img src={gallery} alt="product" />

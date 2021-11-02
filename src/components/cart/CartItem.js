@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 
 export default class CartItem extends Component {
-
   displayProductPrice(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
       return currency.currency === selectedCurrency;
@@ -21,7 +20,12 @@ export default class CartItem extends Component {
     return (
       <div className="cart-item">
         <APIContext.Consumer>
-          {({ currentCurrency, handleIncrement, handleDecrement, handleRemoveItemCart }) => {
+          {({
+            currentCurrency,
+            handleIncrement,
+            handleDecrement,
+            handleRemoveItemCart,
+          }) => {
             return (
               <React.Fragment>
                 <div className="cart-item-info">
@@ -32,20 +36,19 @@ export default class CartItem extends Component {
                   <h3 className="product-price">
                     {this.displayProductPrice(prices, currentCurrency)}
                   </h3>
-                  <button 
+                  <button
                     onClick={() => handleRemoveItemCart(id)}
-                    className="cart-delete-product">
+                    className="cart-delete-product"
+                  >
                     remove
                   </button>
-                  {attributes.length ?
+                  {attributes.length ? (
                     <div>
-                      <span className="item-size">
-                        {attributes[0].item}
-                      </span>
+                      <span className="item-size">{attributes[0].item}</span>
                     </div>
-                    :
+                  ) : (
                     ''
-                  }
+                  )}
                 </div>
                 <div className="cart-count">
                   <div className="cart-item-counter">
@@ -56,11 +59,13 @@ export default class CartItem extends Component {
                       +
                     </button>
                     <span className="item-count">{quantity}</span>
-                    <button 
+                    <button
                       className="decrement"
                       disabled={quantity === 1}
-                      onClick={() => handleDecrement(name)}>-
-                      </button>
+                      onClick={() => handleDecrement(name)}
+                    >
+                      -
+                    </button>
                   </div>
                   <div>
                     <img src={gallery} alt="cart item" />

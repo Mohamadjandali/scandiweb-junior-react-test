@@ -4,7 +4,6 @@ import './cart.css';
 import CartItem from './CartItem';
 
 export default class Cart extends Component {
-
   render() {
     return (
       <ul className="cart-list">
@@ -17,9 +16,9 @@ export default class Cart extends Component {
                 ) : (
                   <div>
                     {cart.map(({ id, item, quantity, attributes }) => (
-                      <CartItem 
+                      <CartItem
                         key={item.name}
-                        quantity={quantity} 
+                        quantity={quantity}
                         product={item}
                         attributes={attributes}
                         id={id}
@@ -27,12 +26,20 @@ export default class Cart extends Component {
                     ))}
                     <div className="cart-list-controlls">
                       <h2>
-                        TOTAL: {handleTotalPrice(cart, cart.map(({item}) => item.prices), currentCurrency)} {currentCurrency}
+                        TOTAL:{' '}
+                        {handleTotalPrice(
+                          cart,
+                          cart.map(({ item }) => item.prices),
+                          currentCurrency
+                        )}{' '}
+                        {currentCurrency}
                       </h2>
-                      <button 
+                      <button
                         className="checkout"
                         onClick={() => handleCheckoutOut()}
-                      >CHECKOUT</button>
+                      >
+                        CHECKOUT
+                      </button>
                     </div>
                   </div>
                 )}

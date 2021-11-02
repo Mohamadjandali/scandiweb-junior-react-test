@@ -17,7 +17,12 @@ export default class MiniCart extends Component {
       <React.Fragment>
         <div className="mini-cart-list">
           <APIContext.Consumer>
-            {({ cart, currentCurrency, handleTotalPrice, handleCheckoutOut }) => {
+            {({
+              cart,
+              currentCurrency,
+              handleTotalPrice,
+              handleCheckoutOut,
+            }) => {
               return (
                 <React.Fragment>
                   <div className="mini-cart-items-container">
@@ -39,8 +44,16 @@ export default class MiniCart extends Component {
                   <div className="cart-controlls-container">
                     <div className="total-price">
                       <span>Total:</span>
-                      <span onClick={() => this.handleGetProductsCurrencies(cart)}>
-                        { cart.length && handleTotalPrice(cart, cart.map(({item}) => item.prices), currentCurrency) } {currentCurrency}
+                      <span
+                        onClick={() => this.handleGetProductsCurrencies(cart)}
+                      >
+                        {cart.length &&
+                          handleTotalPrice(
+                            cart,
+                            cart.map(({ item }) => item.prices),
+                            currentCurrency
+                          )}{' '}
+                        {currentCurrency}
                       </span>
                     </div>
                     <div className="cart-control">
@@ -52,10 +65,13 @@ export default class MiniCart extends Component {
                           VIEW BAG
                         </div>
                       </Link>
-                      <button 
+                      <button
                         className="checkout"
                         disabled={!cart.length}
-                        onClick={() => handleCheckoutOut(this.state.total)}>CHECK OUT</button>
+                        onClick={() => handleCheckoutOut()}
+                      >
+                        CHECK OUT
+                      </button>
                     </div>
                   </div>
                 </React.Fragment>

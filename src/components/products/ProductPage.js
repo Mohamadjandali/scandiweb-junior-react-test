@@ -58,9 +58,9 @@ export default class ProductPage extends Component {
       return console.log(error);
     }
 
-    console.log(data)
+    console.log(data);
 
-    this.setState({ 
+    this.setState({
       product: data.data.product,
       productAttributes: data.data.product.attributes,
     });
@@ -77,7 +77,11 @@ export default class ProductPage extends Component {
   }) {
     return (
       <APIContext.Consumer>
-        {({ currentCurrency, handleAddItemToCart, handleDisplayProductPrice }) => {
+        {({
+          currentCurrency,
+          handleAddItemToCart,
+          handleDisplayProductPrice,
+        }) => {
           return (
             <div className="product-container">
               <div className="images-list">
@@ -86,7 +90,10 @@ export default class ProductPage extends Component {
                 )}
               </div>
               <div className="image-container">
-                <img src={gallery[this.state.productImageIndex]} alt="product" />
+                <img
+                  src={gallery[this.state.productImageIndex]}
+                  alt="product"
+                />
               </div>
               <div className="product-status">
                 <div className="product-info">
@@ -95,11 +102,11 @@ export default class ProductPage extends Component {
                 </div>
                 <ul className="product-attributes">
                   {attributes.map((attribute) => (
-                    <ProductAttributes 
+                    <ProductAttributes
                       handleProductAttributes={this.handleProductAttributes}
                       productAttributes={this.state.productAttributes}
-                      key={attribute.id} 
-                      attribute={attribute} 
+                      key={attribute.id}
+                      attribute={attribute}
                     />
                   ))}
                 </ul>
@@ -109,7 +116,14 @@ export default class ProductPage extends Component {
                 </div>
                 <div className="add-product">
                   {inStock ? (
-                    <button onClick={() => handleAddItemToCart(this.state.product, this.state.productAttributes)}>
+                    <button
+                      onClick={() =>
+                        handleAddItemToCart(
+                          this.state.product,
+                          this.state.productAttributes
+                        )
+                      }
+                    >
                       ADD TO CART
                     </button>
                   ) : (
@@ -128,16 +142,16 @@ export default class ProductPage extends Component {
     );
   }
 
-
-
   displayProductImages(image, imageIndex) {
     return (
-      <div key={imageIndex} onClick={() => this.setState({ productImageIndex: imageIndex })}>
+      <div
+        key={imageIndex}
+        onClick={() => this.setState({ productImageIndex: imageIndex })}
+      >
         <img src={image} alt="product" />
       </div>
     );
   }
-
 
   handleProductAttributes(attributeName, attributeValue) {
     this.setState((prevState) => {
@@ -145,15 +159,14 @@ export default class ProductPage extends Component {
         productAttributes: prevState.productAttributes.map((attribute) => {
           return attribute.name === attributeName
             ? { name: attribute.name, item: attributeValue }
-            : attribute
-        })
-      }
+            : attribute;
+        }),
+      };
     });
 
     return console.log(this.state.productAttributes);
   }
 
-  
   render() {
     return this.state.product && this.handleProductDisplay(this.state.product);
   }

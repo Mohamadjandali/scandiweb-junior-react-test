@@ -68,10 +68,7 @@ export default class ContextProvider extends Component {
     });
   }
 
-  
-
   handleAddItemToCart(item, attributes) {
-
     // Checking if the product has any available attributes
     if (item.attributes.length) {
       //  checking if all the attributes are selected
@@ -95,7 +92,10 @@ export default class ContextProvider extends Component {
     // add a product to the cart
     this.setState((prevState) => {
       return {
-        cart: [{ id: item.id, item, quantity: 1, attributes }, ...prevState.cart],
+        cart: [
+          { id: item.id, item, quantity: 1, attributes },
+          ...prevState.cart,
+        ],
       };
     });
 
@@ -104,20 +104,23 @@ export default class ContextProvider extends Component {
     return alert(`added ${item.name} to the cart`);
   }
 
-
-
   handleIncrement(name) {
     this.setState((prevState) => {
       return {
         cart: prevState.cart.map((product) => {
           return product.item.name === name
-            ? { id: product.id, item: product.item, quantity: product.quantity + 1, attributes: product.attributes }
+            ? {
+                id: product.id,
+                item: product.item,
+                quantity: product.quantity + 1,
+                attributes: product.attributes,
+              }
             : product;
         }),
       };
     });
 
-    console.log(this.state.cart)
+    console.log(this.state.cart);
   }
 
   handleDecrement(name) {
@@ -125,27 +128,34 @@ export default class ContextProvider extends Component {
       return {
         cart: prevState.cart.map((product) => {
           return product.item.name === name
-            ? { id: product.id, item: product.item, quantity: product.quantity - 1, attributes: product.attributes }
+            ? {
+                id: product.id,
+                item: product.item,
+                quantity: product.quantity - 1,
+                attributes: product.attributes,
+              }
             : product;
         }),
       };
     });
 
-    console.log(this.state.cart)
+    console.log(this.state.cart);
   }
 
   handleRemoveItemCart(productId) {
     this.setState((prevState) => {
       return {
-        cart: prevState.cart.filter((product) => product.id !== productId)
-      }
-    })
+        cart: prevState.cart.filter((product) => product.id !== productId),
+      };
+    });
   }
 
   handleTotalPrice(cart, prices, selectedCurrency) {
     /*  looping over the cart items to get all prices and getting the first element 
     currency is equal to the selected state currenct  */
-    const cartItemsPrices = prices[0].findIndex((price) => price.currency === selectedCurrency);
+    const cartItemsPrices = prices[0].findIndex(
+      (price) => price.currency === selectedCurrency
+    );
 
     // getting the total price
     const newPrice = cart.reduce((total, item) => {
@@ -155,13 +165,9 @@ export default class ContextProvider extends Component {
     return Math.round(newPrice);
   }
 
-
-
   handleCurrencyChange(currency) {
     return this.setState({ currentCurrency: currency });
   }
-
-
 
   handleDisplayProductPrice(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
@@ -175,7 +181,6 @@ export default class ContextProvider extends Component {
     this.setState({ cart: [] });
     alert('Thanks for your shopping');
   }
-
 
   render() {
     return (
