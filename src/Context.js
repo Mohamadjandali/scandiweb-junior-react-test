@@ -67,6 +67,8 @@ export default class ContextProvider extends Component {
       products: allProducts,
       currencies: data.data.currencies,
     });
+
+    console.log(this.state.products);
   }
 
   handleAddItemToCart(item, attributes) {

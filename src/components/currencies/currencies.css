@@ -22,3 +22,7 @@
 .hide {
   display: none;
 }
+
+.currency-overlay {
+  height: 100vh;
+}

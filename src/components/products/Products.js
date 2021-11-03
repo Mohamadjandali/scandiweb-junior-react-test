@@ -5,7 +5,7 @@ import './products.css';
 
 export default class Products extends Component {
   handleProductOutput(
-    { name, id, gallery, category, prices, inStock },
+    { name, id, gallery, category, prices, inStock, brand },
     selectedCategory,
     currency
   ) {
@@ -20,8 +20,8 @@ export default class Products extends Component {
                 <span className="out-of-stock">Out of stock</span>
               )}
               <img src={gallery[0]} />
-              <h3>{name}</h3>
-              <span>{this.handleProductPriceOutput(prices, currency)}</span>
+              <span>{`${brand} ${name}`}</span>
+              <span className="product-list-price">{this.handleProductPriceOutput(prices, currency)}</span>
             </div>
           </Link>
         </li>
