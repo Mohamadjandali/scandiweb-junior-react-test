@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { APIContext } from '../../Context';
+import currencyIcons from '../navbar/CurrencyIcons';
 import './products.css';
 
 export default class Products extends Component {
@@ -11,7 +12,7 @@ export default class Products extends Component {
   ) {
     return (
       category === selectedCategory && (
-        <li key={id}>
+        <li className="list-product-item" key={id}>
           <Link to={`/${category}/${id}`}>
             <div className={`product ${inStock ? '' : 'unavailable-product'}`}>
               {inStock ? (
@@ -20,8 +21,10 @@ export default class Products extends Component {
                 <span className="out-of-stock">Out of stock</span>
               )}
               <img src={gallery[0]} />
-              <span>{`${brand} ${name}`}</span>
-              <span className="product-list-price">{this.handleProductPriceOutput(prices, currency)}</span>
+              <div>
+                <span>{`${brand} ${name}`}</span>
+                {this.handleProductPriceOutput(prices, currency)}
+              </div>
             </div>
           </Link>
         </li>
@@ -34,7 +37,12 @@ export default class Products extends Component {
       return currency.currency === selectedCurrency;
     });
 
-    return `${productPrice.amount} ${productPrice.currency}`;
+    return (
+      <div className="product-amount">
+        <span>{currencyIcons(selectedCurrency)}</span>
+        <span>{productPrice.amount}</span>
+      </div>
+    )
   }
 
   render() {

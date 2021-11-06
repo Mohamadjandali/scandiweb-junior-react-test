@@ -25,3 +25,17 @@
 .product-list-price {
   font-weight: 500;
 }
+
+.product-amount {
+  display: flex;
+  margin-top: 5px;
+}
+
+.list-product-item {
+  margin: 0.5rem;
+}
+
+.list-product-item:hover {
+  background-color: #fff;
+  box-shadow: 3px 3px 5px 2px #ddd;
+}
