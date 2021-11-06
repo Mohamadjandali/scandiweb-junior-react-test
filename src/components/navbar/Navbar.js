@@ -18,12 +18,13 @@ export default class Navbar extends Component {
       toggleCurrency: false,
       toggleCart: false,
     };
+    this.wrapperRef = React.createRef();
     this.handleCurrencies = this.handleCurrencies.bind(this);
     this.toggleMiniCart = this.toggleMiniCart.bind(this);
   }
 
-  handleCurrencies() {
-    this.setState({ toggleCurrency: !this.state.toggleCurrency });
+  handleCurrencies(toggle = true) {
+    this.setState({ toggleCurrency: toggle });
   }
 
   toggleMiniCart() {
@@ -44,10 +45,12 @@ export default class Navbar extends Component {
                 <nav className="nav-bar">
                   <Categories />
                   <div className="nav-bar-items">
-                    <div className="currencies">
+                    <div 
+                      className="currencies"
+                      ref={this.wrapperRef}>
                       <div
                         className="currency-icon"
-                        onClick={this.handleCurrencies}
+                        onClick={() => this.setState({ toggleCurrency: !this.state.toggleCurrency })}
                       >
                         <div className="dollar-sign">
                           <FontAwesomeIcon
@@ -65,6 +68,7 @@ export default class Navbar extends Component {
                       <Currencies
                         toggleCurrency={this.state.toggleCurrency}
                         handleCurrencies={this.handleCurrencies}
+                        wrapperRef={this.wrapperRef}
                       />
                     </div>
                     <div className="cart">

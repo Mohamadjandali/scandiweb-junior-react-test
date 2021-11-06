@@ -18,15 +18,15 @@ export default class Currencies extends Component {
   }
 
   handleClickOutside(event) {
-    if (this.wrapperRef.current.className === 'currencies-list' && !this.wrapperRef.current.contains(event.target)) {
-        this.props.handleCurrencies();
+    if (!this.props.wrapperRef.current.contains(event.target)) {
+        this.props.handleCurrencies(false);
     }
   }
 
   render() {
     return (
       <React.Fragment>
-        <ul ref={this.wrapperRef} className={this.props.toggleCurrency ? 'currencies-list' : 'hide'}>
+        <ul className={this.props.toggleCurrency ? 'currencies-list' : 'hide'}>
           <APIContext.Consumer>
             {({ currencies, setCurrency }) => {
               return currencies.map((currency) => (
