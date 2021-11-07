@@ -20,7 +20,7 @@ export default class Currencies extends Component {
 
   handleClickOutside(event) {
     if (!this.props.wrapperRef.current.contains(event.target)) {
-        this.props.handleCurrencies(false);
+      this.props.handleCurrencies(false);
     }
   }
 
@@ -39,7 +39,9 @@ export default class Currencies extends Component {
                   }}
                 >
                   <div className="currency-item-list">
-                    <span className="currency-icon">{currencyIcons(currency)}</span>
+                    <span className="currency-icon">
+                      {currencyIcons(currency)}
+                    </span>
                     <span>{currency}</span>
                   </div>
                 </li>

@@ -45,12 +45,14 @@ export default class Navbar extends Component {
                 <nav className="nav-bar">
                   <Categories />
                   <div className="nav-bar-items">
-                    <div 
-                      className="currencies"
-                      ref={this.wrapperRef}>
+                    <div className="currencies" ref={this.wrapperRef}>
                       <div
                         className="currency-icon"
-                        onClick={() => this.setState({ toggleCurrency: !this.state.toggleCurrency })}
+                        onClick={() =>
+                          this.setState({
+                            toggleCurrency: !this.state.toggleCurrency,
+                          })
+                        }
                       >
                         <div className="dollar-sign">
                           <FontAwesomeIcon

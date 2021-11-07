@@ -12,19 +12,16 @@ export default class Products extends Component {
   ) {
     return (
       category === selectedCategory && (
-        <li className="products-item" key={id}>
+        <li
+          key={id}
+          className={`products-item ${inStock ? '' : 'unavailable-product'}`}
+        >
           <Link to={`/${category}/${id}`}>
-            <div className={`product ${inStock ? '' : 'unavailable-product'}`}>
-              {inStock ? (
-                ''
-              ) : (
-                <span className="out-of-stock">Out of stock</span>
-              )}
-              <img src={gallery[0]} />
-              <div>
-                <span>{`${brand} ${name}`}</span>
-                {this.handleProductPriceDisplay(prices, currency)}
-              </div>
+            {inStock ? '' : <span className="out-of-stock">Out of stock</span>}
+            <img src={gallery[0]} />
+            <div>
+              <span>{`${brand} ${name}`}</span>
+              {this.handleProductPriceDisplay(prices, currency)}
             </div>
           </Link>
         </li>
@@ -42,7 +39,7 @@ export default class Products extends Component {
         <span>{currencyIcons(selectedCurrency)}</span>
         <span>{productPrice.amount}</span>
       </div>
-    )
+    );
   }
 
   render() {
@@ -55,7 +52,11 @@ export default class Products extends Component {
               <ul className="products-list">
                 {products &&
                   products.map((product) =>
-                    this.handleProductDisplay(product, category, currentCurrency)
+                    this.handleProductDisplay(
+                      product,
+                      category,
+                      currentCurrency
+                    )
                   )}
                 {err && <h3>{err}</h3>}
               </ul>
