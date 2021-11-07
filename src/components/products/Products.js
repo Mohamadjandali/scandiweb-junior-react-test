@@ -5,14 +5,14 @@ import currencyIcons from '../navbar/CurrencyIcons';
 import './products.css';
 
 export default class Products extends Component {
-  handleProductOutput(
+  handleProductDisplay(
     { name, id, gallery, category, prices, inStock, brand },
     selectedCategory,
     currency
   ) {
     return (
       category === selectedCategory && (
-        <li className="list-product-item" key={id}>
+        <li className="products-item" key={id}>
           <Link to={`/${category}/${id}`}>
             <div className={`product ${inStock ? '' : 'unavailable-product'}`}>
               {inStock ? (
@@ -23,7 +23,7 @@ export default class Products extends Component {
               <img src={gallery[0]} />
               <div>
                 <span>{`${brand} ${name}`}</span>
-                {this.handleProductPriceOutput(prices, currency)}
+                {this.handleProductPriceDisplay(prices, currency)}
               </div>
             </div>
           </Link>
@@ -32,7 +32,7 @@ export default class Products extends Component {
     );
   }
 
-  handleProductPriceOutput(availableCurrencies, selectedCurrency) {
+  handleProductPriceDisplay(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
       return currency.currency === selectedCurrency;
     });
@@ -48,21 +48,21 @@ export default class Products extends Component {
   render() {
     const { category } = this.props.match.params;
     return (
-      <div className="products-list">
+      <React.Fragment>
         <APIContext.Consumer>
           {({ products, currentCurrency, err }) => {
             return (
-              <React.Fragment>
+              <ul className="products-list">
                 {products &&
                   products.map((product) =>
-                    this.handleProductOutput(product, category, currentCurrency)
+                    this.handleProductDisplay(product, category, currentCurrency)
                   )}
                 {err && <h3>{err}</h3>}
-              </React.Fragment>
+              </ul>
             );
           }}
         </APIContext.Consumer>
-      </div>
+      </React.Fragment>
     );
   }
 }
