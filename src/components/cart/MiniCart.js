@@ -10,12 +10,27 @@ export default class MiniCart extends Component {
     this.state = {
       total: 0,
     };
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  handleClickOutside(event) {
+    if (this.props.miniCartRef && !this.props.miniCartRef.current.contains(event.target)) {
+      this.props.toggleMiniCart()
+    }
   }
 
   render() {
     return (
       <React.Fragment>
-        <div className="mini-cart-list">
+        <div className={this.props.toggleCart ? 'mini-cart-list' : ''}>
           <APIContext.Consumer>
             {({
               cart,
@@ -53,7 +68,7 @@ export default class MiniCart extends Component {
                             cart,
                             cart.map(({ item }) => item.prices),
                             currentCurrency
-                          )}{' '}
+                          )}{''}
                         {currentCurrency}
                       </span>
                     </div>

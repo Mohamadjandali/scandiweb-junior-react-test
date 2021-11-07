@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIContext } from '../../Context';
 import {
   faShoppingCart,
-  faDollarSign,
   faSortDown,
 } from '@fortawesome/free-solid-svg-icons';
 import MiniCart from '../cart/MiniCart';
@@ -20,6 +19,7 @@ export default class Navbar extends Component {
       toggleCart: false,
     };
     this.wrapperRef = React.createRef();
+    this.miniCartRef= React.createRef();
     this.handleCurrencies = this.handleCurrencies.bind(this);
     this.toggleMiniCart = this.toggleMiniCart.bind(this);
   }
@@ -38,10 +38,7 @@ export default class Navbar extends Component {
         {({ cart, err, currentCurrency }) => {
           return (
             <React.Fragment>
-              <div
-                className={this.state.toggleCart ? 'overlay' : ''}
-                onClick={this.toggleMiniCart}
-              ></div>
+              <div className={this.state.toggleCart ? 'overlay' : ''}></div>
               {!err && (
                 <nav className="nav-bar">
                   <Categories />
@@ -72,7 +69,7 @@ export default class Navbar extends Component {
                         wrapperRef={this.wrapperRef}
                       />
                     </div>
-                    <div className="cart">
+                    <div className="cart" ref={this.miniCartRef}>
                       <div className="cart-logo" onClick={this.toggleMiniCart}>
                         <FontAwesomeIcon
                           icon={faShoppingCart}
@@ -83,9 +80,13 @@ export default class Navbar extends Component {
                           </div>
                         )}
                       </div>
-                      {this.state.toggleCart && (
-                        <MiniCart toggleMiniCart={this.toggleMiniCart} />
-                      )}
+                      {this.state.toggleCart && 
+                        <MiniCart
+                          toggleMiniCart={this.toggleMiniCart} 
+                          toggleCart={this.state.toggleCart}
+                          miniCartRef={this.miniCartRef}
+                        />
+                      }
                     </div>
                   </div>
                 </nav>
