@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
+import currencyIcons from '../navbar/CurrencyIcons';
 import './currencies.css';
 
 export default class Currencies extends Component {
@@ -34,10 +35,13 @@ export default class Currencies extends Component {
                   key={currency}
                   onClick={() => {
                     setCurrency(currency);
-                    return this.props.handleCurrencies();
+                    return this.props.handleCurrencies(false);
                   }}
                 >
-                  {currency}
+                  <div className="currency-item-list">
+                    <span className="currency-icon">{currencyIcons(currency)}</span>
+                    <span>{currency}</span>
+                  </div>
                 </li>
               ));
             }}

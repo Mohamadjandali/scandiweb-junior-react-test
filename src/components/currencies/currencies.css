@@ -34,3 +34,11 @@
 .currency-overlay {
   height: 100vh;
 }
+
+.currency-item-list {
+  display: flex;
+}
+
+.currency-icon {
+  margin-right: 4px;
+}
