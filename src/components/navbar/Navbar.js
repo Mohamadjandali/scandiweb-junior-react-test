@@ -10,6 +10,7 @@ import {
   faSortDown,
 } from '@fortawesome/free-solid-svg-icons';
 import MiniCart from '../cart/MiniCart';
+import currencyIcons from './CurrencyIcons';
 
 export default class Navbar extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class Navbar extends Component {
   render() {
     return (
       <APIContext.Consumer>
-        {({ cart, err }) => {
+        {({ cart, err, currentCurrency }) => {
           return (
             <React.Fragment>
               <div
@@ -55,9 +56,7 @@ export default class Navbar extends Component {
                         }
                       >
                         <div className="dollar-sign">
-                          <FontAwesomeIcon
-                            icon={faDollarSign}
-                          ></FontAwesomeIcon>
+                          {currencyIcons(currentCurrency)}
                         </div>
                         <div
                           className={`arrow-down ${
