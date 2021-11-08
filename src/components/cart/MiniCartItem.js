@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
+import currencyIcons from '../navbar/CurrencyIcons';
 
 export default class MiniCartItem extends Component {
   render() {
@@ -26,15 +27,14 @@ export default class MiniCartItem extends Component {
                     <p>{brand}</p>
                     <p className="item-name">{name}</p>
                   </div>
-                  <span className="mini-cart-item-price">
-                    {handleDisplayProductPrice(prices, currentCurrency)}
-                  </span>
-                  <span
-                    onClick={() => handleRemoveItemCart(id)}
-                    className="delete-product"
-                  >
-                    remove
-                  </span>
+                  <div className="item-price">
+                    <span>
+                      {currencyIcons(currentCurrency)}
+                    </span>
+                    <span>
+                      {handleDisplayProductPrice(prices, currentCurrency)}
+                    </span>
+                  </div>
                   {attributes.length ? (
                     <div>
                       <span className="item-size">{attributes[0].item}</span>
@@ -53,7 +53,6 @@ export default class MiniCartItem extends Component {
                   <span className="item-count">{quantity}</span>
                   <button
                     className="decrement"
-                    disabled={quantity === 1}
                     onClick={() => handleDecrement(name)}
                   >
                     -

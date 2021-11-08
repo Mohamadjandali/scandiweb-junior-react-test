@@ -19,7 +19,7 @@ export default class ContextProvider extends Component {
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
-    this.handleRemoveItemCart = this.handleRemoveItemCart.bind(this);
+    this.handleRemoveCartItem = this.handleRemoveCartItem.bind(this);
     this.handleCheckoutOut = this.handleCheckoutOut.bind(this);
   }
 
@@ -71,6 +71,8 @@ export default class ContextProvider extends Component {
     console.log(this.state.products);
   }
 
+
+  // Adds a product to the cart
   handleAddItemToCart(item, attributes) {
     // Checking if the product has any available attributes
     if (item.attributes.length) {
@@ -105,6 +107,8 @@ export default class ContextProvider extends Component {
     return alert(`added ${item.name} to the cart`);
   }
 
+
+  // Increases the cart item count
   handleIncrement(name) {
     this.setState((prevState) => {
       return {
@@ -122,6 +126,8 @@ export default class ContextProvider extends Component {
     });
   }
 
+
+  // Decrease the cart item count
   handleDecrement(name) {
     this.setState((prevState) => {
       return {
@@ -130,7 +136,7 @@ export default class ContextProvider extends Component {
             ? {
                 id: product.id,
                 item: product.item,
-                quantity: product.quantity - 1,
+                quantity: product.quantity === 1 ? this.handleRemoveCartItem(product.id) : product.quantity - 1,
                 attributes: product.attributes,
               }
             : product;
@@ -139,7 +145,9 @@ export default class ContextProvider extends Component {
     });
   }
 
-  handleRemoveItemCart(productId) {
+
+  // Removes the a cart item. THIS FUNCTION ONLY TRIGGERS WHEN THE CART ITEM COUNT REACHES 0
+  handleRemoveCartItem(productId) {
     this.setState((prevState) => {
       return {
         cart: prevState.cart.filter((product) => product.id !== productId),
@@ -147,6 +155,7 @@ export default class ContextProvider extends Component {
     });
   }
 
+  
   handleTotalPrice(cart, prices, selectedCurrency) {
     /*  looping over the cart items to get all prices and getting the first element 
     currency is equal to the selected state currenct  */
@@ -162,22 +171,28 @@ export default class ContextProvider extends Component {
     return Math.round(newPrice);
   }
 
+
+
   handleCurrencyChange(currency) {
     return this.setState({ currentCurrency: currency });
   }
+
+
 
   handleDisplayProductPrice(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
       return currency.currency === selectedCurrency;
     });
 
-    return `${productPrice.amount} ${productPrice.currency}`;
+    return `${productPrice.amount}`;
   }
+
 
   handleCheckoutOut() {
     this.setState({ cart: [] });
     alert('Thanks for your shopping');
   }
+
 
   render() {
     return (
@@ -196,7 +211,6 @@ export default class ContextProvider extends Component {
           handleDecrement: this.handleDecrement,
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
-          handleRemoveItemCart: this.handleRemoveItemCart,
           handleCheckoutOut: this.handleCheckoutOut,
         }}
       >

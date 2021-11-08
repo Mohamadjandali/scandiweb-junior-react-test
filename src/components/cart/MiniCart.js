@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 import { Link } from 'react-router-dom';
+import currencyIcons from '../navbar/CurrencyIcons'
 import MiniCartItem from './MiniCartItem';
 import './minicart.css';
 
@@ -37,7 +38,6 @@ export default class MiniCart extends Component {
               currentCurrency,
               handleTotalPrice,
               handleCheckoutOut,
-              err,
             }) => {
               return (
                 <React.Fragment>
@@ -45,7 +45,7 @@ export default class MiniCart extends Component {
                     {cart.length ? (
                       cart.map(({ id, item, quantity, attributes }) => (
                         <MiniCartItem
-                          key={item.name}
+                          key={id}
                           quantity={quantity}
                           product={item}
                           attributes={attributes}
@@ -60,16 +60,15 @@ export default class MiniCart extends Component {
                   <div className="cart-controlls-container">
                     <div className="total-price">
                       <span>Total:</span>
-                      <span
-                        onClick={() => this.handleGetProductsCurrencies(cart)}
-                      >
-                        {cart.length &&
-                          handleTotalPrice(
-                            cart,
-                            cart.map(({ item }) => item.prices),
-                            currentCurrency
-                          )}{''}
-                        {currentCurrency}
+                      <span className="price">
+                        {currencyIcons(currentCurrency)}
+                          {cart.length &&
+                            handleTotalPrice(
+                              cart,
+                              cart.map(({ item }) => item.prices),
+                              currentCurrency
+                            )
+                          }
                       </span>
                     </div>
                     <div className="cart-control">

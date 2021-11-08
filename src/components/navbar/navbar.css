@@ -3,7 +3,7 @@
   justify-content: space-between;
   font-weight: bold;
   z-index: 5;
-  background-color: #fff;
+  background-color: #ffffff;
   position: relative;
 }
 
@@ -58,7 +58,7 @@ li {
   left: 0px;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #39374838;
   z-index: 1;
 }
 
