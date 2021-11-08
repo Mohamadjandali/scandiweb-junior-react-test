@@ -6,9 +6,10 @@
 
 .products-item {
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  justify-content: center;
+  /* flex-direction: column; */
   margin: 0.5rem;
+  position: relative;
 }
 
 .products-item:hover {
@@ -34,4 +35,27 @@
 .product-amount {
   display: flex;
   margin-top: 5px;
+}
+
+.cart-btn {
+  background: #5ece7b;
+  display: none;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  bottom: 20%;
+  right: 20%;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.cart-btn .cart-svg {
+  display: block;
+  margin: auto;
+}
+
+.products-item:hover .cart-btn {
+  display: flex;
+  justify-content: center;
 }
