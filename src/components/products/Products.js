@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { APIContext } from '../../Context';
 import currencyIcons from '../navbar/CurrencyIcons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import './products.css';
 
 export default class Products extends Component {
@@ -28,11 +28,11 @@ export default class Products extends Component {
               {this.handleProductPriceDisplay(prices, currency)}
             </div>
           </Link>
-          {inStock && 
-                <div className="cart-btn" onClick={() => console.log('hi')}>
-                  <FontAwesomeIcon className="cart-svg" icon={faShoppingCart}/>
-                </div>
-              }
+          {inStock && (
+            <div className="cart-btn" onClick={() => console.log('hi')}>
+              <FontAwesomeIcon className="cart-svg" icon={faShoppingCart} />
+            </div>
+          )}
         </li>
       )
     );

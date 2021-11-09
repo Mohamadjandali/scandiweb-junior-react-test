@@ -17,7 +17,7 @@ export default class ProductAttributes extends Component {
                 onClick={() => handleProductAttributes(name, item.value)}
                 className={`attribute-id ${
                   productAttributes.find(
-                    (attr) => attr.item === item.value && attr.name === name
+                    (attr) => attr.value === item.value && attr.name === name
                   )
                     ? 'activated-attribute'
                     : ''

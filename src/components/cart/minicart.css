@@ -7,7 +7,7 @@
   top: 100%;
   z-index: 2;
   background-color: #fff;
-  max-height: 60vh;
+  max-height: 65vh;
   padding: 0rem 2rem;
   width: 410px;
 }
@@ -41,7 +41,7 @@
 
 .mini-cart-item-image img {
   object-fit: cover;
-  /* width: 150px; */
+  width: 150px;
   height: 157px;
 }
 
@@ -133,4 +133,8 @@
 
 .price {
   display: flex;
+}
+
+.mini-cart-count {
+  padding-bottom: 1rem;
 }

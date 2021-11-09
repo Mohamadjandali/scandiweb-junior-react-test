@@ -78,7 +78,7 @@ export default class ProductPage extends Component {
       <APIContext.Consumer>
         {({
           currentCurrency,
-          handleAddItemToCart,
+          handleAddProductToCart,
           handleDisplayProductPrice,
         }) => {
           return (
@@ -117,7 +117,7 @@ export default class ProductPage extends Component {
                   {inStock ? (
                     <button
                       onClick={() =>
-                        handleAddItemToCart(
+                        handleAddProductToCart(
                           this.state.product,
                           this.state.productAttributes
                         )
@@ -157,7 +157,7 @@ export default class ProductPage extends Component {
       return {
         productAttributes: prevState.productAttributes.map((attribute) => {
           return attribute.name === attributeName
-            ? { name: attribute.name, item: attributeValue }
+            ? { name: attribute.name, value: attributeValue }
             : attribute;
         }),
       };

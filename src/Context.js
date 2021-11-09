@@ -15,7 +15,7 @@ export default class ContextProvider extends Component {
       err: null,
       currentCurrency: 'USD',
     };
-    this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
+    this.handleAddProductToCart = this.handleAddProductToCart.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
@@ -71,23 +71,24 @@ export default class ContextProvider extends Component {
     console.log(this.state.products);
   }
 
-
   // Adds a product to the cart
-  handleAddItemToCart(item, attributes) {
-    // Checking if the product has any available attributes
-    if (item.attributes.length) {
-      //  checking if all the attributes are selected
-      const attribute = attributes.every((attr) => attr.hasOwnProperty('item'));
+  handleAddProductToCart(product, selectedAttributes) {
+    const { attributes } = product;
 
-      // if the user didnt add an attribute an alert will occuer and cancel the operation
-      if (!attribute) {
-        return alert('Please select all the properites for this product!');
-      }
-    }
+    // Checking if the product has any available attributes
+    // if (item.attributes.length) {
+    //   //  checking if all the attributes are selected
+    //   const attribute = attributes.every((attr) => attr.hasOwnProperty('item'));
+
+    //   // if the user didnt add an attribute an alert will occuer and cancel the operation
+    //   if (!attribute) {
+    //     return alert('Please select all the properites for this product!');
+    //   }
+    // }
 
     // checks if the product is already in cart
-    const foundProduct = this.state.cart.find((product) => {
-      return product.item.name === item.name;
+    const foundProduct = this.state.cart.find((cartItem) => {
+      return cartItem.name === product.name;
     });
 
     if (foundProduct) {
@@ -98,53 +99,54 @@ export default class ContextProvider extends Component {
     this.setState((prevState) => {
       return {
         cart: [
-          { id: item.id, item, quantity: 1, attributes },
+          {
+            ...product,
+            quantity: 1,
+            attributes: selectedAttributes || attributes,
+          },
           ...prevState.cart,
         ],
       };
     });
 
-    return alert(`added ${item.name} to the cart`);
+    console.log(this.state.cart);
+    return alert(`added ${product.name} to the cart`);
   }
-
 
   // Increases the cart item count
-  handleIncrement(name) {
+  handleIncrement(productName) {
     this.setState((prevState) => {
       return {
-        cart: prevState.cart.map((product) => {
-          return product.item.name === name
+        cart: prevState.cart.map((cartItem) => {
+          return cartItem.name === productName
             ? {
-                id: product.id,
-                item: product.item,
-                quantity: product.quantity + 1,
-                attributes: product.attributes,
+                ...cartItem,
+                quantity: cartItem.quantity + 1,
               }
-            : product;
+            : cartItem;
         }),
       };
     });
   }
 
-
-  // Decrease the cart item count
-  handleDecrement(name) {
+  // Decreases the cart item count and if the cart item count becomes less than one it will be removed
+  handleDecrement(productName) {
     this.setState((prevState) => {
       return {
-        cart: prevState.cart.map((product) => {
-          return product.item.name === name
+        cart: prevState.cart.map((cartItem) => {
+          return cartItem.name === productName
             ? {
-                id: product.id,
-                item: product.item,
-                quantity: product.quantity === 1 ? this.handleRemoveCartItem(product.id) : product.quantity - 1,
-                attributes: product.attributes,
+                ...cartItem,
+                quantity:
+                  cartItem.quantity === 1
+                    ? this.handleRemoveCartItem(cartItem.id)
+                    : cartItem.quantity - 1,
               }
-            : product;
+            : cartItem;
         }),
       };
     });
   }
-
 
   // Removes the a cart item. THIS FUNCTION ONLY TRIGGERS WHEN THE CART ITEM COUNT REACHES 0
   handleRemoveCartItem(productId) {
@@ -155,7 +157,6 @@ export default class ContextProvider extends Component {
     });
   }
 
-  
   handleTotalPrice(cart, prices, selectedCurrency) {
     /*  looping over the cart items to get all prices and getting the first element 
     currency is equal to the selected state currenct  */
@@ -164,20 +165,16 @@ export default class ContextProvider extends Component {
     );
 
     // getting the total price
-    const newPrice = cart.reduce((total, item) => {
-      return total + item.item.prices[cartItemsPrices].amount * item.quantity;
+    const newPrice = cart.reduce((total, product) => {
+      return total + product.prices[cartItemsPrices].amount * product.quantity;
     }, 0);
 
     return Math.round(newPrice);
   }
 
-
-
   handleCurrencyChange(currency) {
     return this.setState({ currentCurrency: currency });
   }
-
-
 
   handleDisplayProductPrice(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
@@ -187,12 +184,10 @@ export default class ContextProvider extends Component {
     return `${productPrice.amount}`;
   }
 
-
   handleCheckoutOut() {
     this.setState({ cart: [] });
     alert('Thanks for your shopping');
   }
-
 
   render() {
     return (
@@ -206,7 +201,7 @@ export default class ContextProvider extends Component {
           totalPrice: this.state.totalPrice,
           err: this.state.err,
           setCurrency: this.handleCurrencyChange,
-          handleAddItemToCart: this.handleAddItemToCart,
+          handleAddProductToCart: this.handleAddProductToCart,
           handleIncrement: this.handleIncrement,
           handleDecrement: this.handleDecrement,
           handleTotalPrice: this.handleTotalPrice,

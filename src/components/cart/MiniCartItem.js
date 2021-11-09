@@ -5,20 +5,16 @@ import currencyIcons from '../navbar/CurrencyIcons';
 export default class MiniCartItem extends Component {
   render() {
     const {
-      product: { name, brand, gallery, prices },
+      product: { id, name, brand, gallery, prices, quantity, attributes },
       currentCurrency,
-      quantity,
-      attributes,
-      id,
     } = this.props;
     return (
-      <div className="mini-cart-item">
+      <div key={id} className="mini-cart-item">
         <APIContext.Consumer>
           {({
             handleIncrement,
             handleDecrement,
             handleDisplayProductPrice,
-            handleRemoveItemCart,
           }) => {
             return (
               <React.Fragment>
@@ -28,9 +24,7 @@ export default class MiniCartItem extends Component {
                     <p className="item-name">{name}</p>
                   </div>
                   <div className="item-price">
-                    <span>
-                      {currencyIcons(currentCurrency)}
-                    </span>
+                    <span>{currencyIcons(currentCurrency)}</span>
                     <span>
                       {handleDisplayProductPrice(prices, currentCurrency)}
                     </span>

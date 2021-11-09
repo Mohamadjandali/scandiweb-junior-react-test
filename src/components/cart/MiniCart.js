@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 import { Link } from 'react-router-dom';
-import currencyIcons from '../navbar/CurrencyIcons'
+import currencyIcons from '../navbar/CurrencyIcons';
 import MiniCartItem from './MiniCartItem';
 import './minicart.css';
 
@@ -23,8 +23,11 @@ export default class MiniCart extends Component {
   }
 
   handleClickOutside(event) {
-    if (this.props.miniCartRef && !this.props.miniCartRef.current.contains(event.target)) {
-      this.props.toggleMiniCart()
+    if (
+      this.props.miniCartRef &&
+      !this.props.miniCartRef.current.contains(event.target)
+    ) {
+      this.props.toggleMiniCart();
     }
   }
 
@@ -41,34 +44,34 @@ export default class MiniCart extends Component {
             }) => {
               return (
                 <React.Fragment>
-                  <div className="mini-cart-items-container">
-                    {cart.length ? (
-                      cart.map(({ id, item, quantity, attributes }) => (
-                        <MiniCartItem
-                          key={id}
-                          quantity={quantity}
-                          product={item}
-                          attributes={attributes}
-                          currentCurrency={currentCurrency}
-                          id={id}
-                        />
-                      ))
+                  <div className="mini-cart-count">
+                    My Bag.{' '}
+                    {cart.length !== 1 ? (
+                      <span>{cart.length} items</span>
                     ) : (
-                      <h3 className="empty-mini-cart">Your Bag is empty</h3>
+                      <span>{cart.length} item</span>
                     )}
+                  </div>
+                  <div className="mini-cart-items-container">
+                    {cart &&
+                      cart.map((product) => (
+                        <MiniCartItem
+                          product={product}
+                          currentCurrency={currentCurrency}
+                        />
+                      ))}
                   </div>
                   <div className="cart-controlls-container">
                     <div className="total-price">
                       <span>Total:</span>
                       <span className="price">
                         {currencyIcons(currentCurrency)}
-                          {cart.length &&
-                            handleTotalPrice(
-                              cart,
-                              cart.map(({ item }) => item.prices),
-                              currentCurrency
-                            )
-                          }
+                        {cart.length &&
+                          handleTotalPrice(
+                            cart,
+                            cart.map(({ prices }) => prices),
+                            currentCurrency
+                          )}
                       </span>
                     </div>
                     <div className="cart-control">

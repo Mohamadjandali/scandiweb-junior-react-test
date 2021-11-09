@@ -4,10 +4,7 @@ import Categories from '../categories/Categories';
 import Currencies from '../currencies/Currencies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIContext } from '../../Context';
-import {
-  faShoppingCart,
-  faSortDown,
-} from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import MiniCart from '../cart/MiniCart';
 import currencyIcons from './CurrencyIcons';
 
@@ -19,7 +16,7 @@ export default class Navbar extends Component {
       toggleCart: false,
     };
     this.wrapperRef = React.createRef();
-    this.miniCartRef= React.createRef();
+    this.miniCartRef = React.createRef();
     this.handleCurrencies = this.handleCurrencies.bind(this);
     this.toggleMiniCart = this.toggleMiniCart.bind(this);
   }
@@ -80,13 +77,13 @@ export default class Navbar extends Component {
                           </div>
                         )}
                       </div>
-                      {this.state.toggleCart && 
+                      {this.state.toggleCart && (
                         <MiniCart
-                          toggleMiniCart={this.toggleMiniCart} 
+                          toggleMiniCart={this.toggleMiniCart}
                           toggleCart={this.state.toggleCart}
                           miniCartRef={this.miniCartRef}
                         />
-                      }
+                      )}
                     </div>
                   </div>
                 </nav>
