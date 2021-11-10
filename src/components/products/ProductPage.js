@@ -119,7 +119,7 @@ export default class ProductPage extends Component {
                       onClick={() =>
                         handleAddProductToCart(
                           this.state.product,
-                          this.state.productAttributes
+                          this.state.product.attributes
                         )
                       }
                     >

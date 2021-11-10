@@ -8,10 +8,12 @@ import './products.css';
 
 export default class Products extends Component {
   handleProductDisplay(
-    { name, id, gallery, category, prices, inStock, brand },
+    product,
     selectedCategory,
-    currency
+    currency,
+    addProductToCart
   ) {
+    const { name, id, gallery, category, prices, inStock, brand, attributes } = product;
     return (
       category === selectedCategory && (
         <li
@@ -29,7 +31,7 @@ export default class Products extends Component {
             </div>
           </Link>
           {inStock && (
-            <div className="cart-btn" onClick={() => console.log('hi')}>
+            <div className="cart-btn" onClick={() => addProductToCart(product, attributes)}>
               <FontAwesomeIcon className="cart-svg" icon={faShoppingCart} />
             </div>
           )}
@@ -56,7 +58,7 @@ export default class Products extends Component {
     return (
       <React.Fragment>
         <APIContext.Consumer>
-          {({ products, currentCurrency, err }) => {
+          {({ products, currentCurrency, handleAddProductToCart, err }) => {
             return (
               <ul className="products-list">
                 {products &&
@@ -64,7 +66,8 @@ export default class Products extends Component {
                     this.handleProductDisplay(
                       product,
                       category,
-                      currentCurrency
+                      currentCurrency,
+                      handleAddProductToCart,
                     )
                   )}
                 {err && <h3>{err}</h3>}

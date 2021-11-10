@@ -41,6 +41,16 @@ export default class ContextProvider extends Component {
                   category,
                   brand,
                   gallery,
+                  attributes {
+                    id,
+                    name
+                    type,
+                    items {
+                      displayValue,
+                      value,
+                      id,
+                    }
+                  },
                   prices {
                     currency,
                     amount
@@ -71,9 +81,13 @@ export default class ContextProvider extends Component {
     console.log(this.state.products);
   }
 
+  componentDidUpdate(prevState) {
+    console.log(prevState.cart)
+  }
+
   // Adds a product to the cart
   handleAddProductToCart(product, selectedAttributes) {
-    const { attributes } = product;
+    const { name, attributes } = product;
 
     // Checking if the product has any available attributes
     // if (item.attributes.length) {
@@ -88,7 +102,7 @@ export default class ContextProvider extends Component {
 
     // checks if the product is already in cart
     const foundProduct = this.state.cart.find((cartItem) => {
-      return cartItem.name === product.name;
+      return cartItem.name === name;
     });
 
     if (foundProduct) {
@@ -110,7 +124,7 @@ export default class ContextProvider extends Component {
     });
 
     console.log(this.state.cart);
-    return alert(`added ${product.name} to the cart`);
+    return alert(`added ${name} to the cart`);
   }
 
   // Increases the cart item count
