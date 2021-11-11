@@ -23,7 +23,7 @@ export default class ContextProvider extends Component {
     this.handleCheckoutOut = this.handleCheckoutOut.bind(this);
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     const [data, error] = await doAPIRequest(
       'http://localhost:4000',
       'POST',
@@ -157,8 +157,12 @@ export default class ContextProvider extends Component {
         };
       },
       () => {
-        return this.state.cart.map((cartItem) => {
-          if (cartItem.quantity === 0) this.handleRemoveCartItem(cartItem.id);
+        this.state.cart.map((cartItem) => {
+          if (cartItem.quantity === 0) {
+            return this.handleRemoveCartItem(cartItem.id);
+          }
+
+          return cartItem;
         });
       }
     );

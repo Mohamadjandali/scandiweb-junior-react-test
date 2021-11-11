@@ -19,7 +19,7 @@ export default class ProductPage extends Component {
     this.handleProductAttributes = this.handleProductAttributes.bind(this);
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     const [data, error] = await doAPIRequest(
       'http://localhost:4000',
       'POST',

@@ -7,9 +7,6 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import './products.css';
 
 export default class Products extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   handleProductDisplay(product, selectedCategory, currency, addProductToCart) {
     const { name, id, gallery, category, prices, inStock, brand, attributes } =
@@ -23,7 +20,7 @@ export default class Products extends Component {
           <Link to={`/${category}/${id}`}>
             {!inStock && <span className="out-of-stock">Out of stock</span>}
             <div className="product-image">
-              <img src={gallery[0]} />
+              <img src={gallery[0]} alt="product" />
             </div>
             <div>
               <span>{`${brand} ${name}`}</span>
