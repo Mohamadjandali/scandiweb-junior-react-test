@@ -81,10 +81,6 @@ export default class ContextProvider extends Component {
     console.log(this.state.products);
   }
 
-  componentDidUpdate(prevState) {
-    console.log(prevState.cart)
-  }
-
   // Adds a product to the cart
   handleAddProductToCart(product, selectedAttributes) {
     const { name, attributes } = product;
@@ -110,20 +106,22 @@ export default class ContextProvider extends Component {
     }
 
     // add a product to the cart
-    this.setState((prevState) => {
-      return {
-        cart: [
-          {
-            ...product,
-            quantity: 1,
-            attributes: selectedAttributes || attributes,
-          },
-          ...prevState.cart,
-        ],
-      };
-    });
+    this.setState(
+      (prevState) => {
+        return {
+          cart: [
+            {
+              ...product,
+              quantity: 1,
+              attributes: selectedAttributes || attributes,
+            },
+            ...prevState.cart,
+          ],
+        };
+      },
+      () => console.log(this.state.cart)
+    );
 
-    console.log(this.state.cart);
     return alert(`added ${name} to the cart`);
   }
 
@@ -143,23 +141,27 @@ export default class ContextProvider extends Component {
     });
   }
 
-  // Decreases the cart item count and if the cart item count becomes less than one it will be removed
+  // Decreases the cart item count and if the cart item count becomes zero it will be removed
   handleDecrement(productName) {
-    this.setState((prevState) => {
-      return {
-        cart: prevState.cart.map((cartItem) => {
-          return cartItem.name === productName
-            ? {
-                ...cartItem,
-                quantity:
-                  cartItem.quantity === 1
-                    ? this.handleRemoveCartItem(cartItem.id)
-                    : cartItem.quantity - 1,
-              }
-            : cartItem;
-        }),
-      };
-    });
+    this.setState(
+      (prevState) => {
+        return {
+          cart: prevState.cart.map((cartItem) => {
+            return cartItem.name === productName
+              ? {
+                  ...cartItem,
+                  quantity: cartItem.quantity - 1,
+                }
+              : cartItem;
+          }),
+        };
+      },
+      () => {
+        return this.state.cart.map((cartItem) => {
+          if (cartItem.quantity === 0) this.handleRemoveCartItem(cartItem.id);
+        });
+      }
+    );
   }
 
   // Removes the a cart item. THIS FUNCTION ONLY TRIGGERS WHEN THE CART ITEM COUNT REACHES 0

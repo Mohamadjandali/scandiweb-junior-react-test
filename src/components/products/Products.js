@@ -7,13 +7,13 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import './products.css';
 
 export default class Products extends Component {
-  handleProductDisplay(
-    product,
-    selectedCategory,
-    currency,
-    addProductToCart
-  ) {
-    const { name, id, gallery, category, prices, inStock, brand, attributes } = product;
+  constructor(props) {
+    super(props);
+  }
+
+  handleProductDisplay(product, selectedCategory, currency, addProductToCart) {
+    const { name, id, gallery, category, prices, inStock, brand, attributes } =
+      product;
     return (
       category === selectedCategory && (
         <li
@@ -31,7 +31,10 @@ export default class Products extends Component {
             </div>
           </Link>
           {inStock && (
-            <div className="cart-btn" onClick={() => addProductToCart(product, attributes)}>
+            <div
+              className="cart-btn"
+              onClick={() => addProductToCart(product, attributes)}
+            >
               <FontAwesomeIcon className="cart-svg" icon={faShoppingCart} />
             </div>
           )}
@@ -67,7 +70,7 @@ export default class Products extends Component {
                       product,
                       category,
                       currentCurrency,
-                      handleAddProductToCart,
+                      handleAddProductToCart
                     )
                   )}
                 {err && <h3>{err}</h3>}

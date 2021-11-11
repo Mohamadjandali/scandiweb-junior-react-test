@@ -3,6 +3,10 @@ import { APIContext } from '../../Context';
 import currencyIcons from '../navbar/CurrencyIcons';
 
 export default class MiniCartItem extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const {
       product: { id, name, brand, gallery, prices, quantity, attributes },
