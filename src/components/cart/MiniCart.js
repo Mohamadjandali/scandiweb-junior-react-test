@@ -34,70 +34,63 @@ export default class MiniCart extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className={this.props.toggleCart ? 'mini-cart-list' : ''}>
-          <APIContext.Consumer>
-            {({
-              cart,
-              currentCurrency,
-              handleTotalPrice,
-              handleCheckoutOut,
-            }) => {
-              return (
-                <React.Fragment>
-                  <div className="mini-cart-count">
-                    My Bag.{' '}
-                    {cart.length !== 1 ? (
-                      <span>{cart.length} items</span>
-                    ) : (
-                      <span>{cart.length} item</span>
-                    )}
+        <APIContext.Consumer>
+          {({ cart, currentCurrency, handleTotalPrice, handleCheckoutOut }) => {
+            return (
+              <div className={this.props.toggleCart ? 'mini-cart-list' : ''}>
+                <div className="mini-cart-count">
+                  My Bag.{' '}
+                  {cart.length !== 1 ? (
+                    <span>{cart.length} items</span>
+                  ) : (
+                    <span>{cart.length} item</span>
+                  )}
+                </div>
+                <div className="mini-cart-items-container">
+                  {cart &&
+                    cart.map((product) => (
+                      <MiniCartItem
+                        key={product.id}
+                        product={product}
+                        currentCurrency={currentCurrency}
+                      />
+                    ))}
+                </div>
+                <div className="cart-controlls-container">
+                  <div className="total-price">
+                    <span>Total:</span>
+                    <span className="price">
+                      {currencyIcons(currentCurrency)}
+                      {cart.length &&
+                        handleTotalPrice(
+                          cart,
+                          cart.map(({ prices }) => prices),
+                          currentCurrency
+                        )}
+                    </span>
                   </div>
-                  <div className="mini-cart-items-container">
-                    {cart &&
-                      cart.map((product) => (
-                        <MiniCartItem
-                          key={product.id}
-                          product={product}
-                          currentCurrency={currentCurrency}
-                        />
-                      ))}
-                  </div>
-                  <div className="cart-controlls-container">
-                    <div className="total-price">
-                      <span>Total:</span>
-                      <span className="price">
-                        {currencyIcons(currentCurrency)}
-                        {cart.length &&
-                          handleTotalPrice(
-                            cart,
-                            cart.map(({ prices }) => prices),
-                            currentCurrency
-                          )}
-                      </span>
-                    </div>
-                    <div className="cart-control">
-                      <Link to="/cart">
-                        <div
-                          className="btn-bag"
-                          onClick={() => this.props.toggleMiniCart()}
-                        >
-                          VIEW BAG
-                        </div>
-                      </Link>
-                      <button
-                        className="checkout"
-                        disabled={!cart.length}
-                        onClick={() => handleCheckoutOut()}
+                  <div className="cart-control">
+                    <Link to="/cart">
+                      <div
+                        className="btn-bag"
+                        onClick={() => this.props.toggleMiniCart()}
                       >
-                        CHECK OUT
-                      </button>
-                    </div>
+                        VIEW BAG
+                      </div>
+                    </Link>
+                    <button
+                      className="checkout"
+                      disabled={!cart.length}
+                      onClick={() => handleCheckoutOut()}
+                    >
+                      CHECK OUT
+                    </button>
                   </div>
-                </React.Fragment>
-              );
-            }}
-          </APIContext.Consumer>
-        </div>
+                </div>
+              </div>
+            );
+          }}
+        </APIContext.Consumer>
       </React.Fragment>
     );
   }

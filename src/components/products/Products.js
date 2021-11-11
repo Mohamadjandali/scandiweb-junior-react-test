@@ -7,7 +7,6 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import './products.css';
 
 export default class Products extends Component {
-
   handleProductDisplay(product, selectedCategory, currency, addProductToCart) {
     const { name, id, gallery, category, prices, inStock, brand, attributes } =
       product;
