@@ -56,6 +56,7 @@ export default class MiniCart extends Component {
                     {cart &&
                       cart.map((product) => (
                         <MiniCartItem
+                          key={product.id}
                           product={product}
                           currentCurrency={currentCurrency}
                         />

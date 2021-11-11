@@ -23,7 +23,7 @@ export default class ContextProvider extends Component {
     this.handleCheckoutOut = this.handleCheckoutOut.bind(this);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const [data, error] = await doAPIRequest(
       'http://localhost:4000',
       'POST',

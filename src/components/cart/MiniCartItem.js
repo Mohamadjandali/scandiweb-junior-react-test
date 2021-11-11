@@ -6,11 +6,11 @@ export default class MiniCartItem extends Component {
 
   render() {
     const {
-      product: { id, name, brand, gallery, prices, quantity, attributes },
+      product: { name, brand, gallery, prices, quantity, attributes },
       currentCurrency,
     } = this.props;
     return (
-      <div key={id} className="mini-cart-item">
+      <div className="mini-cart-item">
         <APIContext.Consumer>
           {({
             handleIncrement,
