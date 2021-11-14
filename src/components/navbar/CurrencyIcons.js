@@ -6,6 +6,7 @@ import {
   faRubleSign,
   faFont,
 } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 
 export default function currencyIcons(currentCurrency) {
   switch (currentCurrency) {
@@ -15,10 +16,10 @@ export default function currencyIcons(currentCurrency) {
     // It returns a symbol same as the australian dollar symbol, no austrailian dollar symbol available at font awsome
     case 'AUD':
       return (
-        <div style={{ display: 'flex' }}>
+        <React.Fragment>
           <FontAwesomeIcon icon={faFont}></FontAwesomeIcon>
           <FontAwesomeIcon icon={faDollarSign}></FontAwesomeIcon>
-        </div>
+        </React.Fragment>
       );
 
     case 'JPY':

@@ -8,28 +8,29 @@ export default class ProductAttributes extends Component {
       productAttributes,
     } = this.props;
     return (
-      <li className="product-attribute-items">
+      <div className="attributes-container">
         <span className="attribute-name">{name}:</span>
-        <div className="attributes">
+        <ul className="attributes-list">
           {items.map((item) => {
             return (
-              <span
+              <li
                 onClick={() => handleProductAttributes(name, item.value)}
-                className={`attribute-id ${
+                style={name === 'Color' ? { backgroundColor: item.id } : {}}
+                className={`${
                   productAttributes.find(
                     (attr) => attr.value === item.value && attr.name === name
                   )
                     ? 'activated-attribute'
-                    : ''
+                    : 'attribute'
                 }`}
                 key={item.id}
               >
-                {item.value}
-              </span>
+                {name === 'Color' ? <div className="color"></div> : item.id}
+              </li>
             );
           })}
-        </div>
-      </li>
+        </ul>
+      </div>
     );
   }
 }

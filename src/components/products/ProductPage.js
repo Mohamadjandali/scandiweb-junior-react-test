@@ -3,6 +3,7 @@ import doAPIRequest from '../../request';
 import { APIContext } from '../../Context';
 import ProductAttributes from './ProductAttributes';
 import parse from 'html-react-parser';
+import currencyIcons from '../navbar/CurrencyIcons';
 import './productpage.css';
 
 export default class ProductPage extends Component {
@@ -82,56 +83,62 @@ export default class ProductPage extends Component {
           handleDisplayProductPrice,
         }) => {
           return (
-            <div className="product-container">
-              <div className="images-list">
-                {gallery.map((image, index) =>
-                  this.displayProductImages(image, index)
-                )}
-              </div>
-              <div className="image-container">
-                <img
-                  src={gallery[this.state.productImageIndex]}
-                  alt="product"
-                />
-              </div>
-              <div className="product-status">
-                <div className="product-info">
-                  <h2>{brand}</h2>
-                  <h3>{name}</h3>
-                </div>
-                <ul className="product-attributes">
-                  {attributes.map((attribute) => (
-                    <ProductAttributes
-                      handleProductAttributes={this.handleProductAttributes}
-                      productAttributes={this.state.productAttributes}
-                      key={attribute.id}
-                      attribute={attribute}
-                    />
-                  ))}
-                </ul>
-                <div className="product-price">
-                  <h3>Price:</h3>
-                  <h3>{handleDisplayProductPrice(prices, currentCurrency)}</h3>
-                </div>
-                <div className="add-product">
-                  {inStock ? (
-                    <button
-                      onClick={() =>
-                        handleAddProductToCart(
-                          this.state.product,
-                          this.state.product.attributes
-                        )
-                      }
-                    >
-                      ADD TO CART
-                    </button>
-                  ) : (
-                    <h3>This product is out of stock</h3>
+            <div className="product-page-container">
+              <div className="product-container">
+                <div className="product-images-list">
+                  {gallery.map((image, index) =>
+                    this.displayProductImages(image, index, gallery)
                   )}
                 </div>
-                <div className="product-description">
-                  {/* Parsing the desciption */}
-                  {parse(description)}
+                <div className="product-image-container">
+                  <img
+                    src={gallery[this.state.productImageIndex]}
+                    alt="product"
+                  />
+                </div>
+                <div className="product-status">
+                  <div className="product-info">
+                    <h2>{brand}</h2>
+                    <h3>{name}</h3>
+                  </div>
+                  <div className="product-attributes">
+                    {attributes.map((attribute, index) => (
+                      <ProductAttributes
+                        handleProductAttributes={this.handleProductAttributes}
+                        productAttributes={this.state.productAttributes}
+                        key={index}
+                        attribute={attribute}
+                      />
+                    ))}
+                  </div>
+                  <div className="product-price">
+                    <h3>Price:</h3>
+                    <h3>
+                      <span>{currencyIcons(currentCurrency)}</span>
+                      {handleDisplayProductPrice(prices, currentCurrency)}
+                    </h3>
+                  </div>
+                  <div className="add-product">
+                    {inStock ? (
+                      <button
+                        onClick={() =>
+                          handleAddProductToCart(
+                            this.state.product,
+                            this.state.product.attributes
+                          )
+                        }
+                      >
+                        ADD TO CART
+                      </button>
+                    ) : (
+                      <h3>This product is out of stock</h3>
+                    )}
+                  </div>
+                  <div>
+                    <ul className="description-list">
+                      {parse(description.replace(/h3/g, 'li'))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -141,9 +148,10 @@ export default class ProductPage extends Component {
     );
   }
 
-  displayProductImages(image, imageIndex) {
+  displayProductImages(image, imageIndex, images) {
     return (
       <div
+        className="product-image-item"
         key={imageIndex}
         onClick={() => this.setState({ productImageIndex: imageIndex })}
       >
@@ -153,6 +161,7 @@ export default class ProductPage extends Component {
   }
 
   handleProductAttributes(attributeName, attributeValue) {
+    console.log(attributeName, attributeValue);
     this.setState((prevState) => {
       return {
         productAttributes: prevState.productAttributes.map((attribute) => {
