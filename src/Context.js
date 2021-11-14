@@ -21,6 +21,8 @@ export default class ContextProvider extends Component {
     this.handleDecrement = this.handleDecrement.bind(this);
     this.handleRemoveCartItem = this.handleRemoveCartItem.bind(this);
     this.handleCheckoutOut = this.handleCheckoutOut.bind(this);
+    this.handleDisplayCartItemsQuantity =
+      this.handleDisplayCartItemsQuantity.bind(this);
   }
 
   async componentDidMount() {
@@ -211,6 +213,14 @@ export default class ContextProvider extends Component {
     alert('Thanks for your shopping');
   }
 
+  handleDisplayCartItemsQuantity() {
+    const totalCartItemsQuantity = this.state.cart.reduce((total, cartItem) => {
+      return total + cartItem.quantity;
+    }, 0);
+
+    return totalCartItemsQuantity;
+  }
+
   render() {
     return (
       <APIContext.Provider
@@ -229,6 +239,7 @@ export default class ContextProvider extends Component {
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
           handleCheckoutOut: this.handleCheckoutOut,
+          handleDisplayCartItemsQuantity: this.handleDisplayCartItemsQuantity,
         }}
       >
         {this.props.children}

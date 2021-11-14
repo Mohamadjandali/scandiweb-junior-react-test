@@ -32,7 +32,7 @@ export default class Navbar extends Component {
   render() {
     return (
       <APIContext.Consumer>
-        {({ cart, err, currentCurrency }) => {
+        {({ cart, err, currentCurrency, handleDisplayCartItemsQuantity }) => {
           return (
             <React.Fragment>
               <div className={this.state.toggleCart ? 'overlay' : ''}></div>
@@ -73,7 +73,7 @@ export default class Navbar extends Component {
                         ></FontAwesomeIcon>
                         {cart.length >= 1 && (
                           <div className="items-count">
-                            <span>{cart.length}</span>
+                            <span>{handleDisplayCartItemsQuantity()}</span>
                           </div>
                         )}
                       </div>
