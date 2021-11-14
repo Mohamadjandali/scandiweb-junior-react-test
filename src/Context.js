@@ -180,13 +180,15 @@ export default class ContextProvider extends Component {
   handleTotalPrice(cart, prices, selectedCurrency) {
     /*  looping over the cart items to get all prices and getting the first element 
     currency is equal to the selected state currenct  */
-    const cartItemsPrices = prices[0].findIndex(
+    const cartItemsPricesIndex = prices[0].findIndex(
       (price) => price.currency === selectedCurrency
     );
 
     // getting the total price
     const newPrice = cart.reduce((total, product) => {
-      return total + product.prices[cartItemsPrices].amount * product.quantity;
+      return (
+        total + product.prices[cartItemsPricesIndex].amount * product.quantity
+      );
     }, 0);
 
     return Math.round(newPrice);
@@ -196,9 +198,9 @@ export default class ContextProvider extends Component {
     return this.setState({ currentCurrency: currency });
   }
 
-  handleDisplayProductPrice(availableCurrencies, selectedCurrency) {
-    const productPrice = availableCurrencies.find((currency) => {
-      return currency.currency === selectedCurrency;
+  handleDisplayProductPrice(productPrices, selectedCurrency) {
+    const productPrice = productPrices.find((price) => {
+      return price.currency === selectedCurrency;
     });
 
     return `${productPrice.amount}`;

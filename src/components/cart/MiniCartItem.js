@@ -19,7 +19,7 @@ export default class MiniCartItem extends Component {
             return (
               <React.Fragment>
                 <div className="mini-cart-item-info">
-                  <div className="item-desc">
+                  <div className="item-info">
                     <p>{brand}</p>
                     <p className="item-name">{name}</p>
                   </div>
@@ -29,13 +29,13 @@ export default class MiniCartItem extends Component {
                       {handleDisplayProductPrice(prices, currentCurrency)}
                     </span>
                   </div>
-                  {attributes.length ? (
+                  {/* {attributes.length ? (
                     <div>
                       <span className="item-size">{attributes[0].item}</span>
                     </div>
                   ) : (
                     ''
-                  )}
+                  )} */}
                 </div>
                 <div className="mini-cart-item-counter">
                   <button
@@ -53,7 +53,7 @@ export default class MiniCartItem extends Component {
                   </button>
                 </div>
                 <div className="mini-cart-item-image">
-                  <img src={gallery} alt="product" />
+                  <img src={gallery[0]} alt="product" />
                 </div>
               </React.Fragment>
             );

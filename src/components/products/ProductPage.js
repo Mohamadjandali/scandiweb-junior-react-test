@@ -87,7 +87,7 @@ export default class ProductPage extends Component {
               <div className="product-container">
                 <div className="product-images-list">
                   {gallery.map((image, index) =>
-                    this.displayProductImages(image, index, gallery)
+                    this.displayProductImages(image, index)
                   )}
                 </div>
                 <div className="product-image-container">
@@ -148,7 +148,7 @@ export default class ProductPage extends Component {
     );
   }
 
-  displayProductImages(image, imageIndex, images) {
+  displayProductImages(image, imageIndex) {
     return (
       <div
         className="product-image-item"
