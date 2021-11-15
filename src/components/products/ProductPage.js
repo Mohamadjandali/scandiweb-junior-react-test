@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import doAPIRequest from '../../request';
 import { APIContext } from '../../Context';
 import ProductAttributes from './ProductAttributes';
@@ -21,48 +21,46 @@ export default class ProductPage extends Component {
   }
 
   async componentDidMount() {
+    const { productId } = this.props.match.params;
     const [data, error] = await doAPIRequest(
-      'http://localhost:4000',
-      'POST',
-      { 'Content-Type': 'application/json' },
-      {
-        query: `
-          query {
-            product(id: "${this.props.match.params.productId}") {
+      `
+        query {
+          product(id: "${productId}") {
+            id,
+            name,
+            inStock,
+            gallery,
+            category,
+            brand
+            description,
+            prices {
+              currency,
+              amount
+            },
+            attributes {
               id,
-              name,
-              inStock,
-              gallery,
-              category,
-              brand
-              description,
-              prices {
-                currency,
-                amount
-              },
-              attributes {
-                id,
-                name
-                type,
-                items {
-                  displayValue,
-                  value,
-                  id
-                }
+              name
+              type,
+              items {
+                displayValue,
+                value,
+                id
               }
             }
           }
-        `,
-      }
+        }
+      `
     );
 
     if (error) {
       return this.setState({ err: error.message });
     }
 
+    const { product } = data.data;
+
     this.setState({
-      product: data.data.product,
-      productAttributes: data.data.product.attributes,
+      product: product,
+      productAttributes: product.attributes,
     });
   }
 
@@ -173,11 +171,12 @@ export default class ProductPage extends Component {
   }
 
   render() {
+    const { product, err } = this.state;
     return (
-      <React.Fragment>
-        {this.state.product && this.handleProductDisplay(this.state.product)}
-        {this.state.err && <h3>{this.state.err}</h3>}
-      </React.Fragment>
+      <Fragment>
+        {product && this.handleProductDisplay(product)}
+        {err && <h3>{err}</h3>}
+      </Fragment>
     );
   }
 }

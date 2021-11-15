@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './navbar.css';
 import Categories from '../categories/Categories';
 import Currencies from '../currencies/Currencies';
@@ -34,7 +34,7 @@ export default class Navbar extends Component {
       <APIContext.Consumer>
         {({ cart, err, currentCurrency, handleDisplayCartItemsQuantity }) => {
           return (
-            <React.Fragment>
+            <Fragment>
               <div className={this.state.toggleCart ? 'overlay' : ''}></div>
               {!err && (
                 <nav className="nav-bar">
@@ -88,7 +88,7 @@ export default class Navbar extends Component {
                   </div>
                 </nav>
               )}
-            </React.Fragment>
+            </Fragment>
           );
         }}
       </APIContext.Consumer>

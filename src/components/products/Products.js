@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { APIContext } from '../../Context';
 import currencyIcons from '../navbar/CurrencyIcons';
@@ -12,27 +12,18 @@ export default class Products extends Component {
     super(props);
     this.state = {
       products: [],
+      err: null,
     };
   }
 
   componentDidMount() {
-    const {
-      match: {
-        params: { category },
-      },
-    } = this.props;
+    const { category } = this.props.match.params;
     this.handleFetchCategory(category);
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      match: {
-        params: { category },
-      },
-    } = this.props;
-    const {
-      match: { params },
-    } = prevProps;
+    const { category } = this.props.match.params;
+    const { params } = prevProps.match;
 
     if (params.category !== category) {
       return this.handleFetchCategory(category);
@@ -43,52 +34,44 @@ export default class Products extends Component {
 
   async handleFetchCategory(category) {
     const [data, error] = await doAPIRequest(
-      'http://localhost:4000',
-      'POST',
-      { 'Content-Type': 'application/json' },
-      {
-        query: `
-          query {
-            category(input: {title: "${category}"}) {
-              name: ,
-              products {
+      `
+        query {
+          category(input: {title: "${category}"}) {
+            name: ,
+            products {
+              id,
+              name,
+              inStock,
+              description,
+              category,
+              brand,
+              gallery,
+              attributes {
                 id,
-                name,
-                inStock,
-                description,
-                category,
-                brand,
-                gallery,
-                attributes {
+                name
+                type,
+                items {
+                  displayValue,
+                  value,
                   id,
-                  name
-                  type,
-                  items {
-                    displayValue,
-                    value,
-                    id,
-                  }
-                },
-                prices {
-                  currency,
-                  amount
                 }
+              },
+              prices {
+                currency,
+                amount
               }
             }
           }
-        `,
-      }
+        }
+      `
     );
 
     if (error) {
-      return console.log(error.message);
+      console.log(error.message);
+      return this.setState({ err: error.message });
     }
 
-    const {
-      data: {
-        category: { name },
-      },
-    } = data;
+    const { name } = data.data.category;
 
     return this.setState({
       products: name,
@@ -126,8 +109,8 @@ export default class Products extends Component {
   }
 
   handleProductPriceDisplay(availableCurrencies, selectedCurrency) {
-    const productPrice = availableCurrencies.find((currency) => {
-      return currency.currency === selectedCurrency;
+    const productPrice = availableCurrencies.find(({ currency }) => {
+      return currency === selectedCurrency;
     });
 
     return (
@@ -139,27 +122,28 @@ export default class Products extends Component {
   }
 
   render() {
-    const { products } = this.state;
+    const { products, err } = this.state;
     return (
-      <React.Fragment>
-        <APIContext.Consumer>
-          {({ currentCurrency, handleAddProductToCart, err }) => {
-            return (
-              <ul className="products-list">
-                {products &&
-                  products.map((product) =>
+      <APIContext.Consumer>
+        {({ currentCurrency, handleAddProductToCart }) => {
+          return (
+            <Fragment>
+              {products && (
+                <ul className="products-list">
+                  {products.map((product) =>
                     this.handleProductDisplay(
                       product,
                       currentCurrency,
                       handleAddProductToCart
                     )
                   )}
-                {err && <h3>{err}</h3>}
-              </ul>
-            );
-          }}
-        </APIContext.Consumer>
-      </React.Fragment>
+                </ul>
+              )}
+              {err && <h3>{err}</h3>}
+            </Fragment>
+          );
+        }}
+      </APIContext.Consumer>
     );
   }
 }

@@ -26,28 +26,21 @@ export default class ContextProvider extends Component {
 
   async componentDidMount() {
     const [data, error] = await doAPIRequest(
-      'http://localhost:4000',
-      'POST',
-      { 'Content-Type': 'application/json' },
-      {
-        query: `
-          query {
-            categories {
-                name,
-            }
-            currencies
+      `
+        query {
+          categories {
+              name,
           }
-        `,
-      }
+          currencies
+        }
+      `
     );
 
     if (error) {
       return this.setState({ err: error.message });
     }
 
-    const {
-      data: { categories, currencies },
-    } = data;
+    const { categories, currencies } = data.data;
 
     this.setState({
       categories: categories,
