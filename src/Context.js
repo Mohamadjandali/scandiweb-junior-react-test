@@ -8,7 +8,6 @@ export default class ContextProvider extends Component {
     super(props);
     this.state = {
       categories: [],
-      products: [],
       currencies: [],
       cart: [],
       totalPrice: [],
@@ -35,29 +34,6 @@ export default class ContextProvider extends Component {
           query {
             categories {
                 name,
-                products {
-                  id,
-                  name,
-                  inStock,
-                  description,
-                  category,
-                  brand,
-                  gallery,
-                  attributes {
-                    id,
-                    name
-                    type,
-                    items {
-                      displayValue,
-                      value,
-                      id,
-                    }
-                  },
-                  prices {
-                    currency,
-                    amount
-                  }
-                }
             }
             currencies
           }
@@ -69,18 +45,14 @@ export default class ContextProvider extends Component {
       return this.setState({ err: error.message });
     }
 
-    let productsArray = data.data.categories.map((category) => {
-      return category.products;
-    });
-    let allProducts = productsArray[0].concat(productsArray[1]);
+    const {
+      data: { categories, currencies },
+    } = data;
 
     this.setState({
-      categories: data.data.categories,
-      products: allProducts,
-      currencies: data.data.currencies,
+      categories: categories,
+      currencies: currencies,
     });
-
-    console.log(this.state.products);
   }
 
   // Adds a product to the cart

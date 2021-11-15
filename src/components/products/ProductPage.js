@@ -161,7 +161,6 @@ export default class ProductPage extends Component {
   }
 
   handleProductAttributes(attributeName, attributeValue) {
-    console.log(attributeName, attributeValue);
     this.setState((prevState) => {
       return {
         productAttributes: prevState.productAttributes.map((attribute) => {
