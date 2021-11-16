@@ -86,7 +86,32 @@ export default class ContextProvider extends Component {
           ],
         };
       },
-      () => console.log(this.state.cart)
+      () => {
+        // console.log(this.state.cart);
+        // let sortedNames = [];
+        // this.state.cart.map((cartItem) => {
+        //   return sortedNames.push(...cartItem.attributes);
+        // })
+
+        // console.log(sortedNames.sort((a, b) => a.id - b.id));
+        const myData = []
+          .concat(this.state.cart)
+          .sort((a, b) => {
+            let firstAttributes = a.attributes.map((attr) => {
+              return attr.id;
+            });
+
+            let bAttributes = b.attributes.map((att) => {
+              return att.id;
+            });
+
+            console.log(firstAttributes);
+            return firstAttributes > bAttributes ? 1 : -1;
+          })
+          .map((item) => item);
+
+        console.log(myData);
+      }
     );
 
     return alert(`added ${name} to the cart`);

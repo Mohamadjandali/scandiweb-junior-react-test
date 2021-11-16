@@ -31,6 +31,18 @@ export default class MiniCart extends Component {
     }
   }
 
+  // Sorts the cart items by attributes
+  handleSortCartItems(cart) {
+    const filterCart = [];
+    return filterCart.concat(cart).sort((a, b) => {
+      let aAttributes = a.attributes.map((attr) => attr.id);
+
+      let bAttributes = b.attributes.map((attr) => attr.id);
+
+      return aAttributes > bAttributes ? 1 : -1;
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -48,13 +60,15 @@ export default class MiniCart extends Component {
                 </div>
                 <div className="mini-cart-items-container">
                   {cart &&
-                    cart.map((product) => (
-                      <MiniCartItem
-                        key={product.id}
-                        product={product}
-                        currentCurrency={currentCurrency}
-                      />
-                    ))}
+                    this.handleSortCartItems(cart).map((product) => {
+                      return (
+                        <MiniCartItem
+                          key={product.id}
+                          product={product}
+                          currentCurrency={currentCurrency}
+                        />
+                      );
+                    })}
                 </div>
                 <div className="cart-controlls-container">
                   <div className="total-price">
