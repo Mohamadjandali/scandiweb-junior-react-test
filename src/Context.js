@@ -52,26 +52,11 @@ export default class ContextProvider extends Component {
   handleAddProductToCart(product, selectedAttributes) {
     const { name, attributes } = product;
 
-    // Checking if the product has any available attributes
-    // if (item.attributes.length) {
-    //   //  checking if all the attributes are selected
-    //   const attribute = attributes.every((attr) => attr.hasOwnProperty('item'));
-
-    //   // if the user didnt add an attribute an alert will occuer and cancel the operation
-    //   if (!attribute) {
-    //     return alert('Please select all the properites for this product!');
-    //   }
-    // }
-
     // checks if the product is already in cart
-    const foundProduct = this.state.cart.find((cartItem) => {
-      return cartItem.name === name;
-    });
-
-    if (foundProduct) {
+    if (this.state.cart.find(cartItem => cartItem.name === name)) {
       return alert('this product is already in your cart');
     }
-
+    
     // add a product to the cart
     this.setState(
       (prevState) => {
@@ -87,30 +72,7 @@ export default class ContextProvider extends Component {
         };
       },
       () => {
-        // console.log(this.state.cart);
-        // let sortedNames = [];
-        // this.state.cart.map((cartItem) => {
-        //   return sortedNames.push(...cartItem.attributes);
-        // })
-
-        // console.log(sortedNames.sort((a, b) => a.id - b.id));
-        const myData = []
-          .concat(this.state.cart)
-          .sort((a, b) => {
-            let firstAttributes = a.attributes.map((attr) => {
-              return attr.id;
-            });
-
-            let bAttributes = b.attributes.map((att) => {
-              return att.id;
-            });
-
-            console.log(firstAttributes);
-            return firstAttributes > bAttributes ? 1 : -1;
-          })
-          .map((item) => item);
-
-        console.log(myData);
+        return console.log(this.state.cart);
       }
     );
 

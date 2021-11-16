@@ -32,11 +32,11 @@ export default class Products extends Component {
     return;
   }
 
-  async handleFetchCategory(category) {
+  async handleFetchCategory(categoryName) {
     const [data, error] = await doAPIRequest(
       `
         query {
-          category(input: {title: "${category}"}) {
+          category(input: {title: "${categoryName}"}) {
             name: ,
             products {
               id,

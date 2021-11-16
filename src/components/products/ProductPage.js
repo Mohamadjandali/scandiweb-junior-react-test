@@ -167,7 +167,7 @@ export default class ProductPage extends Component {
             : attribute;
         }),
       };
-    });
+    }, () => console.log(this.state.productAttributes)) ;
   }
 
   render() {
