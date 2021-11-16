@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import './navbar.css';
 import Categories from '../categories/Categories';
+import MiniCart from '../minicart/MiniCart';
+import currencyIcons from './CurrencyIcons';
 import Currencies from '../currencies/Currencies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIContext } from '../../Context';
 import { faShoppingCart, faSortDown } from '@fortawesome/free-solid-svg-icons';
-import MiniCart from '../cart/MiniCart';
-import currencyIcons from './CurrencyIcons';
 
 export default class Navbar extends Component {
   constructor(props) {

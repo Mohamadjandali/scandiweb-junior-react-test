@@ -53,10 +53,10 @@ export default class ContextProvider extends Component {
     const { name, attributes } = product;
 
     // checks if the product is already in cart
-    if (this.state.cart.find(cartItem => cartItem.name === name)) {
+    if (this.state.cart.find((cartItem) => cartItem.name === name)) {
       return alert('this product is already in your cart');
     }
-    
+
     // add a product to the cart
     this.setState(
       (prevState) => {

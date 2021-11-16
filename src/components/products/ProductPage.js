@@ -159,15 +159,18 @@ export default class ProductPage extends Component {
   }
 
   handleProductAttributes(attributeName, attributeValue) {
-    this.setState((prevState) => {
-      return {
-        productAttributes: prevState.productAttributes.map((attribute) => {
-          return attribute.name === attributeName
-            ? { name: attribute.name, value: attributeValue }
-            : attribute;
-        }),
-      };
-    }, () => console.log(this.state.productAttributes)) ;
+    this.setState(
+      (prevState) => {
+        return {
+          productAttributes: prevState.productAttributes.map((attribute) => {
+            return attribute.name === attributeName
+              ? { name: attribute.name, value: attributeValue }
+              : attribute;
+          }),
+        };
+      },
+      () => console.log(this.state.productAttributes)
+    );
   }
 
   render() {
