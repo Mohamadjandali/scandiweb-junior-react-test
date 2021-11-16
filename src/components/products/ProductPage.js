@@ -164,7 +164,10 @@ export default class ProductPage extends Component {
         return {
           productAttributes: prevState.productAttributes.map((attribute) => {
             return attribute.name === attributeName
-              ? { name: attribute.name, value: attributeValue }
+              ? {
+                  name: attribute.name,
+                  value: attributeValue,
+                }
               : attribute;
           }),
         };

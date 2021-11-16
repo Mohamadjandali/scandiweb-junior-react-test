@@ -158,7 +158,18 @@
   padding: 4px;
 }
 
-.cart-item-attribute-items .color {
+.cart-item-attribute-items .unactive-color {
   border: 1px solid black;
   padding: 0.5rem;
+  opacity: 0.4;
+}
+
+.cart-item-attribute-items .active-color {
+  border: 1px solid black;
+  padding: 0.5rem;
+}
+
+.activated {
+  background-color: black;
+  color: #fff;
 }

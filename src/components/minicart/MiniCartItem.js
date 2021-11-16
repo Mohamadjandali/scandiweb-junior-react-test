@@ -1,27 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { APIContext } from '../../Context';
+import MiniCartItemAttributes from './MiniCartItemAttributes';
 import currencyIcons from '../navbar/CurrencyIcons';
 
 export default class MiniCartItem extends Component {
-  handleDisplayCartItemAttributes({ name, items }, attributeIndex) {
-    return (
-      <div key={attributeIndex} className="cart-item-attributes">
-        <span className="cart-item-attribute-name">{name}:</span>
-        <ul className="cart-item-attribute-items">
-          {name === 'Color'
-            ? items.map((item, index) => (
-                <li
-                  key={index}
-                  className="color"
-                  style={{ backgroundColor: item.value }}
-                ></li>
-              ))
-            : items.map((item, index) => <li key={index}>{item.value}</li>)}
-        </ul>
-      </div>
-    );
-  }
-
   render() {
     const {
       product: { name, brand, gallery, prices, quantity, attributes },
@@ -48,11 +30,13 @@ export default class MiniCartItem extends Component {
                       {handleDisplayProductPrice(prices, currentCurrency)}
                     </span>
                   </div>
-                  {attributes.length
-                    ? attributes.map((attribute, index) =>
-                        this.handleDisplayCartItemAttributes(attribute, index)
-                      )
-                    : ''}
+                  {attributes &&
+                    attributes.map((attribute, index) => (
+                      <MiniCartItemAttributes
+                        attribute={attribute}
+                        key={index}
+                      />
+                    ))}
                 </div>
                 <div className="mini-cart-item-counter">
                   <button
