@@ -15,21 +15,15 @@ export default class Cart extends Component {
                   <h2>Your bag is empty! :(</h2>
                 ) : (
                   <div>
-                    {cart.map(({ id, item, quantity, attributes }) => (
-                      <CartItem
-                        key={item.name}
-                        quantity={quantity}
-                        product={item}
-                        attributes={attributes}
-                        id={id}
-                      />
+                    {cart.map((product, index) => (
+                      <CartItem key={index} product={product} />
                     ))}
-                    <div className="cart-list-controlls">
+                    {/* <div className="cart-list-controlls">
                       <h2>
                         TOTAL:{' '}
                         {handleTotalPrice(
                           cart,
-                          cart.map(({ item }) => item.prices),
+                          cart.map(({ prices }) => prices),
                           currentCurrency
                         )}{' '}
                         {currentCurrency}
@@ -40,7 +34,7 @@ export default class Cart extends Component {
                       >
                         CHECKOUT
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </React.Fragment>

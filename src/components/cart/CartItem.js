@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
+import currencyIcons from '../navbar/CurrencyIcons';
 
 export default class CartItem extends Component {
   displayProductPrice(availableCurrencies, selectedCurrency) {
@@ -7,15 +8,12 @@ export default class CartItem extends Component {
       return currency.currency === selectedCurrency;
     });
 
-    return `${productPrice.amount} ${productPrice.currency}`;
+    return productPrice.amount;
   }
 
   render() {
     const {
-      product: { name, prices, gallery, brand },
-      quantity,
-      attributes,
-      id,
+      product: { name, prices, gallery, brand, quantity, attributes, id },
     } = this.props;
     return (
       <div className="cart-item">
@@ -24,7 +22,7 @@ export default class CartItem extends Component {
             currentCurrency,
             handleIncrement,
             handleDecrement,
-            handleRemoveItemCart,
+            handleDisplayProductPrice,
           }) => {
             return (
               <React.Fragment>
@@ -34,21 +32,10 @@ export default class CartItem extends Component {
                     <h2>{name}</h2>
                   </div>
                   <h3 className="product-price">
-                    {this.displayProductPrice(prices, currentCurrency)}
+                    {currencyIcons(currentCurrency)}
+                    {handleDisplayProductPrice(prices, currentCurrency)}
                   </h3>
-                  <button
-                    onClick={() => handleRemoveItemCart(id)}
-                    className="cart-delete-product"
-                  >
-                    remove
-                  </button>
-                  {attributes.length ? (
-                    <div>
-                      <span className="item-size">{attributes[0].item}</span>
-                    </div>
-                  ) : (
-                    ''
-                  )}
+                  {attributes.length}
                 </div>
                 <div className="cart-count">
                   <div className="cart-item-counter">
@@ -61,7 +48,6 @@ export default class CartItem extends Component {
                     <span className="item-count">{quantity}</span>
                     <button
                       className="decrement"
-                      disabled={quantity === 1}
                       onClick={() => handleDecrement(name)}
                     >
                       -
