@@ -70,13 +70,15 @@ export default class ContextProvider extends Component {
             },
             ...prevState.cart,
           ],
-          cartItemAttributes: [
-            {
-              productId: id,
-              attributes: [...attributes],
-            },
-            ...prevState.cartItemAttributes,
-          ],
+          cartItemAttributes: !selectedAttributes
+            ? [
+                {
+                  productId: id,
+                  attributes: [...attributes],
+                },
+                ...prevState.cartItemAttributes,
+              ]
+            : [...selectedAttributes, ...prevState.cartItemAttributes],
         };
       },
       () => {

@@ -58,13 +58,22 @@ export default class ProductPage extends Component {
 
     const { product } = data.data;
 
-    this.setState({
-      product: product,
-      productAttributes: product.attributes,
+    this.setState((prevState) => {
+      return {
+        product: product,
+        productAttributes: [
+          {
+            productId: product.id,
+            attributes: [...product.attributes],
+          },
+          ...prevState.productAttributes,
+        ],
+      };
     });
   }
 
   handleProductDisplay({
+    id,
     name,
     brand,
     description,
@@ -106,6 +115,7 @@ export default class ProductPage extends Component {
                         productAttributes={this.state.productAttributes}
                         key={index}
                         attribute={attribute}
+                        productId={id}
                       />
                     ))}
                   </div>
@@ -122,7 +132,7 @@ export default class ProductPage extends Component {
                         onClick={() =>
                           handleAddProductToCart(
                             this.state.product,
-                            this.state.product.attributes
+                            this.state.productAttributes
                           )
                         }
                       >
@@ -158,15 +168,22 @@ export default class ProductPage extends Component {
     );
   }
 
-  handleProductAttributes(attributeName, attributeValue) {
+  handleProductAttributes(id, attributeName, attributeValue) {
     this.setState(
       (prevState) => {
         return {
           productAttributes: prevState.productAttributes.map((attribute) => {
-            return attribute.name === attributeName
+            return attribute.productId === id
               ? {
-                  name: attribute.name,
-                  value: attributeValue,
+                  ...attribute,
+                  attributes: attribute.attributes.map((item) => {
+                    return item.name === attributeName
+                      ? {
+                          name: attributeName,
+                          value: attributeValue,
+                        }
+                      : item;
+                  }),
                 }
               : attribute;
           }),

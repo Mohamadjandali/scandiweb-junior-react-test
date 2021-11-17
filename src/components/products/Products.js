@@ -97,10 +97,7 @@ export default class Products extends Component {
           </div>
         </Link>
         {inStock && (
-          <div
-            className="cart-btn"
-            onClick={() => addProductToCart(product, attributes)}
-          >
+          <div className="cart-btn" onClick={() => addProductToCart(product)}>
             <FontAwesomeIcon className="cart-svg" icon={faShoppingCart} />
           </div>
         )}
