@@ -10,6 +10,7 @@ export default class ContextProvider extends Component {
       categories: [],
       currencies: [],
       cart: [],
+      cartItemAttributes: [],
       totalPrice: [],
       err: null,
       currentCurrency: 'USD',
@@ -22,6 +23,7 @@ export default class ContextProvider extends Component {
     this.handleCheckoutOut = this.handleCheckoutOut.bind(this);
     this.handleDisplayCartItemsQuantity =
       this.handleDisplayCartItemsQuantity.bind(this);
+    this.handleCartItemAttributes = this.handleCartItemAttributes.bind(this);
   }
 
   async componentDidMount() {
@@ -50,7 +52,7 @@ export default class ContextProvider extends Component {
 
   // Adds a product to the cart
   handleAddProductToCart(product, selectedAttributes) {
-    const { name, attributes } = product;
+    const { id, name, attributes } = product;
 
     // checks if the product is already in cart
     if (this.state.cart.find((cartItem) => cartItem.name === name)) {
@@ -65,14 +67,20 @@ export default class ContextProvider extends Component {
             {
               ...product,
               quantity: 1,
-              attributes: selectedAttributes || attributes,
             },
             ...prevState.cart,
+          ],
+          cartItemAttributes: [
+            {
+              productId: id,
+              attributes: [...attributes],
+            },
+            ...prevState.cartItemAttributes,
           ],
         };
       },
       () => {
-        return console.log(this.state.cart);
+        return console.log(this.state.cart, this.state.cartItemAttributes);
       }
     );
 
@@ -173,15 +181,37 @@ export default class ContextProvider extends Component {
     return totalCartItemsQuantity;
   }
 
+  handleCartItemAttributes(id, cartItemAttributeName, cartItemvale) {
+    this.setState((prevState) => {
+      return {
+        cartItemAttributes: prevState.cartItemAttributes.map((attribute) => {
+          return attribute.productId === id
+            ? {
+                ...attribute,
+                attributes: attribute.attributes.map((item) => {
+                  return item.name === cartItemAttributeName
+                    ? {
+                        name: cartItemAttributeName,
+                        value: cartItemvale,
+                      }
+                    : item;
+                }),
+              }
+            : attribute;
+        }),
+      };
+    });
+  }
+
   render() {
     return (
       <APIContext.Provider
         value={{
           categories: this.state.categories,
-          products: this.state.products,
           currencies: this.state.currencies,
           currentCurrency: this.state.currentCurrency,
           cart: this.state.cart,
+          cartItemAttributes: this.state.cartItemAttributes,
           totalPrice: this.state.totalPrice,
           err: this.state.err,
           setCurrency: this.handleCurrencyChange,
@@ -192,6 +222,7 @@ export default class ContextProvider extends Component {
           handleDisplayProductPrice: this.handleDisplayProductPrice,
           handleCheckoutOut: this.handleCheckoutOut,
           handleDisplayCartItemsQuantity: this.handleDisplayCartItemsQuantity,
+          handleCartItemAttributes: this.handleCartItemAttributes,
         }}
       >
         {this.props.children}

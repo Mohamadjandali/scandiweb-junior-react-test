@@ -6,7 +6,7 @@ import currencyIcons from '../navbar/CurrencyIcons';
 export default class MiniCartItem extends Component {
   render() {
     const {
-      product: { name, brand, gallery, prices, quantity, attributes },
+      product: { id, name, brand, gallery, prices, quantity, attributes },
       currentCurrency,
     } = this.props;
     return (
@@ -35,6 +35,8 @@ export default class MiniCartItem extends Component {
                       <MiniCartItemAttributes
                         attribute={attribute}
                         key={index}
+                        miniCartItemName={name}
+                        cartItemId={id}
                       />
                     ))}
                 </div>
