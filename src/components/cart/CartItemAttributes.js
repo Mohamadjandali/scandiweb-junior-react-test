@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 
-export default class MiniCartItemAttributes extends Component {
+export default class CartItemAttributes extends Component {
   render() {
     const {
       attribute: { name, items },

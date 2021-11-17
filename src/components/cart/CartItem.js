@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { APIContext } from '../../Context';
 import currencyIcons from '../navbar/CurrencyIcons';
+import CartItemAttributes from './CartItemAttributes';
 
 export default class CartItem extends Component {
   displayProductPrice(availableCurrencies, selectedCurrency) {
@@ -35,7 +36,15 @@ export default class CartItem extends Component {
                     {currencyIcons(currentCurrency)}
                     {handleDisplayProductPrice(prices, currentCurrency)}
                   </h3>
-                  {attributes.length}
+                  {attributes &&
+                    attributes.map((attribute, index) => (
+                      <CartItemAttributes
+                        key={index}
+                        cartItemId={id}
+                        attribute={attribute}
+                        cartItemName={name}
+                      />
+                    ))}
                 </div>
                 <div className="cart-count">
                   <div className="cart-item-counter">
