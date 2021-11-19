@@ -20,6 +20,14 @@
   justify-content: space-around;
 }
 
+.cart-item-brand {
+  font-weight: 600;
+}
+
+.cart-item-name {
+  font-weight: 400;
+}
+
 .cart-count {
   display: flex;
   justify-content: space-around;

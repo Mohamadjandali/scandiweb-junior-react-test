@@ -4,6 +4,10 @@
   margin: 0px;
 }
 
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
 img {
   object-fit: contain;
   width: 250px;

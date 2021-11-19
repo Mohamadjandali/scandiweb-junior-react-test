@@ -60,8 +60,8 @@ export default class CartItem extends Component {
               <div className="cart-item">
                 <div className="cart-item-info">
                   <div>
-                    <h2>{brand}</h2>
-                    <h2>{name}</h2>
+                    <h2 className="cart-item-brand">{brand}</h2>
+                    <h2 className="cart-item-name">{name}</h2>
                   </div>
                   <h3 className="product-price">
                     {currencyIcons(currentCurrency)}
