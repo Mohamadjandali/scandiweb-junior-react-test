@@ -11,7 +11,7 @@ export default class CartItemAttributes extends Component {
       <APIContext.Consumer>
         {({ handleCartItemAttributes, cartItemAttributes }) => {
           return (
-            <div className="cart-item-attributes">
+            <div className="cart-item-attribute">
               <span className="cart-item-attribute-name">{name}:</span>
               <ul className="cart-item-attribute-items">
                 {name === 'Color'
@@ -45,7 +45,7 @@ export default class CartItemAttributes extends Component {
                             )
                           )
                             ? 'activated'
-                            : ''
+                            : 'unactivated'
                         }
                         onClick={() =>
                           handleCartItemAttributes(cartItemId, name, item.value)

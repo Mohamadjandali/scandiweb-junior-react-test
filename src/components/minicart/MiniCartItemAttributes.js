@@ -13,7 +13,7 @@ export default class MiniCartItemAttributes extends Component {
           return (
             <div className="cart-item-attributes">
               <span className="cart-item-attribute-name">{name}:</span>
-              <ul className="cart-item-attribute-items">
+              <ul className="minicart-item-attribute-items">
                 {name === 'Color'
                   ? items.map((item, index) => (
                       <li
