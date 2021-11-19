@@ -60,31 +60,26 @@ export default class ContextProvider extends Component {
     }
 
     // add a product to the cart
-    this.setState(
-      (prevState) => {
-        return {
-          cart: [
-            {
-              ...product,
-              quantity: 1,
-            },
-            ...prevState.cart,
-          ],
-          cartItemAttributes: !selectedAttributes
-            ? [
-                {
-                  productId: id,
-                  attributes: [...attributes],
-                },
-                ...prevState.cartItemAttributes,
-              ]
-            : [...selectedAttributes, ...prevState.cartItemAttributes],
-        };
-      },
-      () => {
-        return console.log(this.state.cart, this.state.cartItemAttributes);
-      }
-    );
+    this.setState((prevState) => {
+      return {
+        cart: [
+          {
+            ...product,
+            quantity: 1,
+          },
+          ...prevState.cart,
+        ],
+        cartItemAttributes: !selectedAttributes
+          ? [
+              {
+                productId: id,
+                attributes: [...attributes],
+              },
+              ...prevState.cartItemAttributes,
+            ]
+          : [...selectedAttributes, ...prevState.cartItemAttributes],
+      };
+    });
 
     return alert(`added ${name} to the cart`);
   }

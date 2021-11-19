@@ -96,7 +96,7 @@ export default class CartItem extends Component {
                   {gallery.map(
                     (image, index) =>
                       this.state.cartItemImageIndex === index && (
-                        <div className="cart-item-image">
+                        <div key={index} className="cart-item-image">
                           {gallery.length > 1 && (
                             <button
                               onClick={() =>

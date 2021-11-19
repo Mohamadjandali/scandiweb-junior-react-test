@@ -67,7 +67,6 @@ export default class Products extends Component {
     );
 
     if (error) {
-      console.log(error.message);
       return this.setState({ err: error.message });
     }
 
@@ -118,12 +117,14 @@ export default class Products extends Component {
   }
 
   render() {
+    const { category } = this.props.match.params;
     const { products, err } = this.state;
     return (
       <APIContext.Consumer>
         {({ currentCurrency, handleAddProductToCart }) => {
           return (
             <Fragment>
+              <h2 className="category-page-header">{category}</h2>
               {products && (
                 <ul className="products-list">
                   {products.map((product) =>

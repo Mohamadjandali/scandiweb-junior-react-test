@@ -4,10 +4,15 @@
   margin: 3rem 2rem;
 }
 
+.category-page-header {
+  width: 1000px;
+  margin: 3rem auto;
+  font-weight: 400;
+}
+
 .products-item {
   display: flex;
   justify-content: center;
-  /* flex-direction: column; */
   margin: 0.5rem;
   position: relative;
 }

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { APIContext } from '../../Context';
 import './cart.css';
 import CartItem from './CartItem';
+import currencyIcons from '../navbar/CurrencyIcons';
 
 export default class Cart extends Component {
   render() {
@@ -28,24 +29,23 @@ export default class Cart extends Component {
                       <CartItem key={index} product={product} />
                     ))}
                   </ul>
+                  <div className="cart-list-controlls">
+                    <h2>
+                      TOTAL: {currencyIcons(currentCurrency)}
+                      {handleTotalPrice(
+                        cart,
+                        cart.map(({ prices }) => prices),
+                        currentCurrency
+                      )}{' '}
+                    </h2>
+                    <button
+                      className="checkout"
+                      onClick={() => handleCheckoutOut()}
+                    >
+                      CHECKOUT
+                    </button>
+                  </div>
                 </Fragment>
-                /* <div className="cart-list-controlls">
-                      <h2>
-                        TOTAL:{' '}
-                        {handleTotalPrice(
-                          cart,
-                          cart.map(({ prices }) => prices),
-                          currentCurrency
-                        )}{' '}
-                        {currentCurrency}
-                      </h2>
-                      <button
-                        className="checkout"
-                        onClick={() => handleCheckoutOut()}
-                      >
-                        CHECKOUT
-                      </button>
-                    </div> */
               )}
             </div>
           );

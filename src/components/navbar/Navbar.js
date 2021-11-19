@@ -30,12 +30,13 @@ export default class Navbar extends Component {
   }
 
   render() {
+    const { toggleCart, toggleCurrency } = this.state;
     return (
       <APIContext.Consumer>
         {({ cart, err, currentCurrency, handleDisplayCartItemsQuantity }) => {
           return (
             <Fragment>
-              <div className={this.state.toggleCart ? 'overlay' : ''}></div>
+              <div className={toggleCart ? 'overlay' : ''}></div>
               {!err && (
                 <nav className="nav-bar">
                   <Categories />
@@ -45,7 +46,7 @@ export default class Navbar extends Component {
                         className="currency-icon"
                         onClick={() =>
                           this.setState({
-                            toggleCurrency: !this.state.toggleCurrency,
+                            toggleCurrency: !toggleCurrency,
                           })
                         }
                       >
@@ -54,14 +55,14 @@ export default class Navbar extends Component {
                         </div>
                         <div
                           className={`arrow-down ${
-                            this.state.toggleCurrency ? 'transform' : ''
+                            toggleCurrency ? 'transform' : ''
                           }`}
                         >
                           <FontAwesomeIcon icon={faSortDown}></FontAwesomeIcon>
                         </div>
                       </div>
                       <Currencies
-                        toggleCurrency={this.state.toggleCurrency}
+                        toggleCurrency={toggleCurrency}
                         handleCurrencies={this.handleCurrencies}
                         wrapperRef={this.wrapperRef}
                       />
@@ -77,10 +78,10 @@ export default class Navbar extends Component {
                           </div>
                         )}
                       </div>
-                      {this.state.toggleCart && (
+                      {toggleCart && (
                         <MiniCart
                           toggleMiniCart={this.toggleMiniCart}
-                          toggleCart={this.state.toggleCart}
+                          toggleCart={toggleCart}
                           miniCartRef={this.miniCartRef}
                         />
                       )}
