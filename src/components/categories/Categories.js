@@ -17,19 +17,18 @@ export default class Categories extends Component {
   }
 
   render() {
+    const { toggle } = this.state;
     return (
       <div className="categories-list">
         <APIContext.Consumer>
           {({ categories }) => {
-            return categories.map((category, index) => (
+            return categories.map(({ name }, index) => (
               <span
-                key={category.name}
-                className={
-                  this.state.toggle === index ? 'underline-overlay' : ''
-                }
+                key={name}
+                className={toggle === index ? 'underline-overlay' : ''}
                 onClick={() => this.handleClass(index)}
               >
-                <NavLink to={`/${category.name}`}>{category.name}</NavLink>
+                <NavLink to={`/${name}`}>{name}</NavLink>
               </span>
             ));
           }}

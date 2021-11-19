@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './navbar.css';
 import Categories from '../categories/Categories';
+import MiniCart from '../minicart/MiniCart';
+import currencyIcons from './CurrencyIcons';
 import Currencies from '../currencies/Currencies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIContext } from '../../Context';
-import {
-  faShoppingCart,
-  faDollarSign,
-  faSortDown,
-} from '@fortawesome/free-solid-svg-icons';
-import MiniCart from '../cart/MiniCart';
+import { faShoppingCart, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 export default class Navbar extends Component {
   constructor(props) {
@@ -18,12 +15,14 @@ export default class Navbar extends Component {
       toggleCurrency: false,
       toggleCart: false,
     };
+    this.wrapperRef = React.createRef();
+    this.miniCartRef = React.createRef();
     this.handleCurrencies = this.handleCurrencies.bind(this);
     this.toggleMiniCart = this.toggleMiniCart.bind(this);
   }
 
-  handleCurrencies() {
-    this.setState({ toggleCurrency: !this.state.toggleCurrency });
+  handleCurrencies(toggle = true) {
+    this.setState({ toggleCurrency: toggle });
   }
 
   toggleMiniCart() {
@@ -31,61 +30,66 @@ export default class Navbar extends Component {
   }
 
   render() {
+    const { toggleCart, toggleCurrency } = this.state;
     return (
       <APIContext.Consumer>
-        {({ cart, err }) => {
+        {({ cart, err, currentCurrency, handleDisplayCartItemsQuantity }) => {
           return (
-            <React.Fragment>
-              <div
-                className={this.state.toggleCart ? 'overlay' : ''}
-                onClick={this.toggleMiniCart}
-              ></div>
+            <Fragment>
+              <div className={toggleCart ? 'overlay' : ''}></div>
               {!err && (
                 <nav className="nav-bar">
                   <Categories />
                   <div className="nav-bar-items">
-                    <div className="currencies">
+                    <div className="currencies" ref={this.wrapperRef}>
                       <div
                         className="currency-icon"
-                        onClick={this.handleCurrencies}
+                        onClick={() =>
+                          this.setState({
+                            toggleCurrency: !toggleCurrency,
+                          })
+                        }
                       >
                         <div className="dollar-sign">
-                          <FontAwesomeIcon
-                            icon={faDollarSign}
-                          ></FontAwesomeIcon>
+                          {currencyIcons(currentCurrency)}
                         </div>
                         <div
                           className={`arrow-down ${
-                            this.state.toggleCurrency ? 'transform' : ''
+                            toggleCurrency ? 'transform' : ''
                           }`}
                         >
                           <FontAwesomeIcon icon={faSortDown}></FontAwesomeIcon>
                         </div>
                       </div>
                       <Currencies
-                        toggleCurrency={this.state.toggleCurrency}
+                        toggleCurrency={toggleCurrency}
                         handleCurrencies={this.handleCurrencies}
+                        wrapperRef={this.wrapperRef}
                       />
                     </div>
-                    <div className="cart">
+                    <div className="cart" ref={this.miniCartRef}>
                       <div className="cart-logo" onClick={this.toggleMiniCart}>
                         <FontAwesomeIcon
                           icon={faShoppingCart}
                         ></FontAwesomeIcon>
                         {cart.length >= 1 && (
                           <div className="items-count">
-                            <span>{cart.length}</span>
+                            <span>{handleDisplayCartItemsQuantity()}</span>
                           </div>
                         )}
                       </div>
-                      {this.state.toggleCart && (
-                        <MiniCart toggleMiniCart={this.toggleMiniCart} />
+                      {toggleCart && (
+                        <MiniCart
+                          toggleMiniCart={this.toggleMiniCart}
+                          toggleCart={toggleCart}
+                          miniCartRef={this.miniCartRef}
+                        />
                       )}
                     </div>
                   </div>
                 </nav>
               )}
-            </React.Fragment>
+            </Fragment>
           );
         }}
       </APIContext.Consumer>

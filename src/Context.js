@@ -8,85 +8,54 @@ export default class ContextProvider extends Component {
     super(props);
     this.state = {
       categories: [],
-      products: [],
       currencies: [],
       cart: [],
+      cartItemAttributes: [],
       totalPrice: [],
       err: null,
       currentCurrency: 'USD',
     };
-    this.handleAddItemToCart = this.handleAddItemToCart.bind(this);
+    this.handleAddProductToCart = this.handleAddProductToCart.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
-    this.handleRemoveItemCart = this.handleRemoveItemCart.bind(this);
+    this.handleRemoveCartItem = this.handleRemoveCartItem.bind(this);
     this.handleCheckoutOut = this.handleCheckoutOut.bind(this);
+    this.handleDisplayCartItemsQuantity =
+      this.handleDisplayCartItemsQuantity.bind(this);
+    this.handleCartItemAttributes = this.handleCartItemAttributes.bind(this);
   }
 
   async componentDidMount() {
     const [data, error] = await doAPIRequest(
-      'http://localhost:4000',
-      'POST',
-      { 'Content-Type': 'application/json' },
-      {
-        query: `
-          query {
-            categories {
-                name,
-                products {
-                  id,
-                  name,
-                  inStock,
-                  description,
-                  category,
-                  brand,
-                  gallery,
-                  prices {
-                    currency,
-                    amount
-                  }
-                }
-            }
-            currencies
+      `
+        query {
+          categories {
+              name,
           }
-        `,
-      }
+          currencies
+        }
+      `
     );
 
     if (error) {
       return this.setState({ err: error.message });
     }
 
-    let productsArray = data.data.categories.map((category) => {
-      return category.products;
-    });
-    let allProducts = productsArray[0].concat(productsArray[1]);
+    const { categories, currencies } = data.data;
 
     this.setState({
-      categories: data.data.categories,
-      products: allProducts,
-      currencies: data.data.currencies,
+      categories: categories,
+      currencies: currencies,
     });
   }
 
-  handleAddItemToCart(item, attributes) {
-    // Checking if the product has any available attributes
-    if (item.attributes.length) {
-      //  checking if all the attributes are selected
-      const attribute = attributes.every((attr) => attr.hasOwnProperty('item'));
-
-      // if the user didnt add an attribute an alert will occuer and cancel the operation
-      if (!attribute) {
-        return alert('Please select all the properites for this product!');
-      }
-    }
+  // Adds a product to the cart
+  handleAddProductToCart(product, selectedAttributes) {
+    const { id, name, attributes } = product;
 
     // checks if the product is already in cart
-    const foundProduct = this.state.cart.find((product) => {
-      return product.item.name === item.name;
-    });
-
-    if (foundProduct) {
+    if (this.state.cart.find((cartItem) => cartItem.name === name)) {
       return alert('this product is already in your cart');
     }
 
@@ -94,50 +63,72 @@ export default class ContextProvider extends Component {
     this.setState((prevState) => {
       return {
         cart: [
-          { id: item.id, item, quantity: 1, attributes },
+          {
+            ...product,
+            quantity: 1,
+          },
           ...prevState.cart,
         ],
+        cartItemAttributes: !selectedAttributes
+          ? [
+              {
+                productId: id,
+                attributes: [...attributes],
+              },
+              ...prevState.cartItemAttributes,
+            ]
+          : [...selectedAttributes, ...prevState.cartItemAttributes],
       };
     });
 
-    return alert(`added ${item.name} to the cart`);
+    return alert(`added ${name} to the cart`);
   }
 
-  handleIncrement(name) {
+  // Increases the cart item count
+  handleIncrement(productName) {
     this.setState((prevState) => {
       return {
-        cart: prevState.cart.map((product) => {
-          return product.item.name === name
+        cart: prevState.cart.map((cartItem) => {
+          return cartItem.name === productName
             ? {
-                id: product.id,
-                item: product.item,
-                quantity: product.quantity + 1,
-                attributes: product.attributes,
+                ...cartItem,
+                quantity: cartItem.quantity + 1,
               }
-            : product;
+            : cartItem;
         }),
       };
     });
   }
 
-  handleDecrement(name) {
-    this.setState((prevState) => {
-      return {
-        cart: prevState.cart.map((product) => {
-          return product.item.name === name
-            ? {
-                id: product.id,
-                item: product.item,
-                quantity: product.quantity - 1,
-                attributes: product.attributes,
-              }
-            : product;
-        }),
-      };
-    });
+  // Decreases the cart item count and if the cart item count becomes zero it will be removed
+  handleDecrement(productName) {
+    this.setState(
+      (prevState) => {
+        return {
+          cart: prevState.cart.map((cartItem) => {
+            return cartItem.name === productName
+              ? {
+                  ...cartItem,
+                  quantity: cartItem.quantity - 1,
+                }
+              : cartItem;
+          }),
+        };
+      },
+      () => {
+        this.state.cart.map((cartItem) => {
+          if (cartItem.quantity === 0) {
+            return this.handleRemoveCartItem(cartItem.id);
+          }
+
+          return cartItem;
+        });
+      }
+    );
   }
 
-  handleRemoveItemCart(productId) {
+  // Removes the a cart item. THIS FUNCTION ONLY TRIGGERS WHEN THE CART ITEM COUNT REACHES 0
+  handleRemoveCartItem(productId) {
     this.setState((prevState) => {
       return {
         cart: prevState.cart.filter((product) => product.id !== productId),
@@ -148,13 +139,15 @@ export default class ContextProvider extends Component {
   handleTotalPrice(cart, prices, selectedCurrency) {
     /*  looping over the cart items to get all prices and getting the first element 
     currency is equal to the selected state currenct  */
-    const cartItemsPrices = prices[0].findIndex(
+    const cartItemsPricesIndex = prices[0].findIndex(
       (price) => price.currency === selectedCurrency
     );
 
     // getting the total price
-    const newPrice = cart.reduce((total, item) => {
-      return total + item.item.prices[cartItemsPrices].amount * item.quantity;
+    const newPrice = cart.reduce((total, product) => {
+      return (
+        total + product.prices[cartItemsPricesIndex].amount * product.quantity
+      );
     }, 0);
 
     return Math.round(newPrice);
@@ -164,12 +157,24 @@ export default class ContextProvider extends Component {
     return this.setState({ currentCurrency: currency });
   }
 
-  handleDisplayProductPrice(availableCurrencies, selectedCurrency) {
-    const productPrice = availableCurrencies.find((currency) => {
-      return currency.currency === selectedCurrency;
+  handleDisplayProductPrice(productPrices, selectedCurrency) {
+    const productPrice = productPrices.find((price) => {
+      return price.currency === selectedCurrency;
     });
 
-    return `${productPrice.amount} ${productPrice.currency}`;
+    return `${productPrice.amount}`;
+  }
+
+  // Sorting the cart items by attributes
+  handleSortCartItems(cart) {
+    const filterCart = [];
+    return filterCart.concat(cart).sort((a, b) => {
+      let aAttributes = a.attributes.map((attr) => attr.id);
+
+      let bAttributes = b.attributes.map((attr) => attr.id);
+
+      return aAttributes > bAttributes ? 1 : -1;
+    });
   }
 
   handleCheckoutOut() {
@@ -177,25 +182,57 @@ export default class ContextProvider extends Component {
     alert('Thanks for your shopping');
   }
 
+  handleDisplayCartItemsQuantity() {
+    const totalCartItemsQuantity = this.state.cart.reduce((total, cartItem) => {
+      return total + cartItem.quantity;
+    }, 0);
+
+    return totalCartItemsQuantity;
+  }
+
+  handleCartItemAttributes(id, cartItemAttributeName, cartItemvale) {
+    this.setState((prevState) => {
+      return {
+        cartItemAttributes: prevState.cartItemAttributes.map((attribute) => {
+          return attribute.productId === id
+            ? {
+                ...attribute,
+                attributes: attribute.attributes.map((item) => {
+                  return item.name === cartItemAttributeName
+                    ? {
+                        name: cartItemAttributeName,
+                        value: cartItemvale,
+                      }
+                    : item;
+                }),
+              }
+            : attribute;
+        }),
+      };
+    });
+  }
+
   render() {
     return (
       <APIContext.Provider
         value={{
           categories: this.state.categories,
-          products: this.state.products,
           currencies: this.state.currencies,
           currentCurrency: this.state.currentCurrency,
           cart: this.state.cart,
+          cartItemAttributes: this.state.cartItemAttributes,
           totalPrice: this.state.totalPrice,
           err: this.state.err,
           setCurrency: this.handleCurrencyChange,
-          handleAddItemToCart: this.handleAddItemToCart,
+          handleAddProductToCart: this.handleAddProductToCart,
           handleIncrement: this.handleIncrement,
           handleDecrement: this.handleDecrement,
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
-          handleRemoveItemCart: this.handleRemoveItemCart,
           handleCheckoutOut: this.handleCheckoutOut,
+          handleSortCartItems: this.handleSortCartItems,
+          handleDisplayCartItemsQuantity: this.handleDisplayCartItemsQuantity,
+          handleCartItemAttributes: this.handleCartItemAttributes,
         }}
       >
         {this.props.children}

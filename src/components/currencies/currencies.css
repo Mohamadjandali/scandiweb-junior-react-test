@@ -19,6 +19,26 @@
   color: #30e324;
 }
 
+.currency-item {
+  display: flex;
+}
+
+.currency-item span {
+  margin-left: 0.5rem;
+}
+
 .hide {
   display: none;
+}
+
+.currency-overlay {
+  height: 100vh;
+}
+
+.currency-item-list {
+  display: flex;
+}
+
+.currency-icon {
+  margin-right: 4px;
 }

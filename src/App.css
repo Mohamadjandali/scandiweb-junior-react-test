@@ -4,8 +4,14 @@
   margin: 0px;
 }
 
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
 img {
-  max-width: 200px;
+  object-fit: contain;
+  width: 250px;
+  height: 230px;
 }
 
 a {

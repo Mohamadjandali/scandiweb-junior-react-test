@@ -1,53 +1,56 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { APIContext } from '../../Context';
 import './cart.css';
 import CartItem from './CartItem';
+import currencyIcons from '../navbar/CurrencyIcons';
 
 export default class Cart extends Component {
   render() {
     return (
-      <ul className="cart-list">
-        <APIContext.Consumer>
-          {({ cart, currentCurrency, handleTotalPrice, handleCheckoutOut }) => {
-            return (
-              <React.Fragment>
-                {!cart.length ? (
-                  <h2>Your bag is empty! :(</h2>
-                ) : (
-                  <div>
-                    {cart.map(({ id, item, quantity, attributes }) => (
-                      <CartItem
-                        key={item.name}
-                        quantity={quantity}
-                        product={item}
-                        attributes={attributes}
-                        id={id}
-                      />
-                    ))}
-                    <div className="cart-list-controlls">
-                      <h2>
-                        TOTAL:{' '}
-                        {handleTotalPrice(
-                          cart,
-                          cart.map(({ item }) => item.prices),
-                          currentCurrency
-                        )}{' '}
-                        {currentCurrency}
-                      </h2>
-                      <button
-                        className="checkout"
-                        onClick={() => handleCheckoutOut()}
-                      >
-                        CHECKOUT
-                      </button>
-                    </div>
+      <APIContext.Consumer>
+        {({
+          cart,
+          handleSortCartItems,
+          currentCurrency,
+          handleTotalPrice,
+          handleCheckoutOut,
+        }) => {
+          return (
+            <div className="cart-container">
+              {!cart.length ? (
+                <h2>Your cart is empty! :(</h2>
+              ) : (
+                <Fragment>
+                  <div className="cart-header">
+                    <h2>CART</h2>
                   </div>
-                )}
-              </React.Fragment>
-            );
-          }}
-        </APIContext.Consumer>
-      </ul>
+                  <ul className="cart-list">
+                    {handleSortCartItems(cart).map((product, index) => (
+                      <CartItem key={index} product={product} />
+                    ))}
+                  </ul>
+                  <div className="cart-list-controlls">
+                    <h2>
+                      TOTAL: {currencyIcons(currentCurrency)}
+                      {handleTotalPrice(
+                        cart,
+                        cart.map(({ prices }) => prices),
+                        currentCurrency
+                      )}{' '}
+                    </h2>
+                    <button
+                      className="checkout"
+                      onClick={() => handleCheckoutOut()}
+                    >
+                      CHECKOUT
+                    </button>
+                  </div>
+                </Fragment>
+              )}
+            </div>
+          );
+        }}
+      </APIContext.Consumer>
     );
   }
 }

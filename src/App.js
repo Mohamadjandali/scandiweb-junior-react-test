@@ -16,15 +16,15 @@ export class App extends Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <ContextProvider>
-            <Navbar />
+        <ContextProvider>
+          <Navbar />
+          <Switch>
             <Route path="/" exact render={() => <Redirect to="/tech" />} />
+            <Route path="/cart" exact component={Cart} />
             <Route path="/:category" exact component={Products} />
             <Route path="/:category/:productId" component={ProductPage} />
-            <Route path="/cart" component={Cart} />
-          </ContextProvider>
-        </Switch>
+          </Switch>
+        </ContextProvider>
       </Router>
     );
   }

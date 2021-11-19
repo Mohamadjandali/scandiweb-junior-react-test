@@ -1,9 +1,13 @@
-export default async function doAPIRequest(url, method, headers, body) {
+export default async function doAPIRequest(query) {
   try {
-    const response = await fetch(url, {
-      method,
-      headers,
-      body: JSON.stringify(body),
+    const response = await fetch('http://localhost:4000', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: query,
+      }),
     });
 
     if (!response.ok) {

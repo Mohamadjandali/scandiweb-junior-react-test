@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import doAPIRequest from '../../request';
 import { APIContext } from '../../Context';
 import ProductAttributes from './ProductAttributes';
 import parse from 'html-react-parser';
+import currencyIcons from '../navbar/CurrencyIcons';
 import './productpage.css';
 
 export default class ProductPage extends Component {
@@ -20,52 +21,59 @@ export default class ProductPage extends Component {
   }
 
   async componentDidMount() {
+    const { productId } = this.props.match.params;
     const [data, error] = await doAPIRequest(
-      'http://localhost:4000',
-      'POST',
-      { 'Content-Type': 'application/json' },
-      {
-        query: `
-          query {
-            product(id: "${this.props.match.params.productId}") {
+      `
+        query {
+          product(id: "${productId}") {
+            id,
+            name,
+            inStock,
+            gallery,
+            category,
+            brand
+            description,
+            prices {
+              currency,
+              amount
+            },
+            attributes {
               id,
-              name,
-              inStock,
-              gallery,
-              category,
-              brand
-              description,
-              prices {
-                currency,
-                amount
-              },
-              attributes {
-                id,
-                name
-                type,
-                items {
-                  displayValue,
-                  value,
-                  id
-                }
+              name
+              type,
+              items {
+                displayValue,
+                value,
+                id
               }
             }
           }
-        `,
-      }
+        }
+      `
     );
 
     if (error) {
       return this.setState({ err: error.message });
     }
 
-    this.setState({
-      product: data.data.product,
-      productAttributes: data.data.product.attributes,
+    const { product } = data.data;
+
+    this.setState((prevState) => {
+      return {
+        product: product,
+        productAttributes: [
+          {
+            productId: product.id,
+            attributes: [...product.attributes],
+          },
+          ...prevState.productAttributes,
+        ],
+      };
     });
   }
 
   handleProductDisplay({
+    id,
     name,
     brand,
     description,
@@ -78,60 +86,67 @@ export default class ProductPage extends Component {
       <APIContext.Consumer>
         {({
           currentCurrency,
-          handleAddItemToCart,
+          handleAddProductToCart,
           handleDisplayProductPrice,
         }) => {
           return (
-            <div className="product-container">
-              <div className="images-list">
-                {gallery.map((image, index) =>
-                  this.displayProductImages(image, index)
-                )}
-              </div>
-              <div className="image-container">
-                <img
-                  src={gallery[this.state.productImageIndex]}
-                  alt="product"
-                />
-              </div>
-              <div className="product-status">
-                <div className="product-info">
-                  <h2>{brand}</h2>
-                  <h3>{name}</h3>
-                </div>
-                <ul className="product-attributes">
-                  {attributes.map((attribute) => (
-                    <ProductAttributes
-                      handleProductAttributes={this.handleProductAttributes}
-                      productAttributes={this.state.productAttributes}
-                      key={attribute.id}
-                      attribute={attribute}
-                    />
-                  ))}
-                </ul>
-                <div className="product-price">
-                  <h3>Price:</h3>
-                  <h3>{handleDisplayProductPrice(prices, currentCurrency)}</h3>
-                </div>
-                <div className="add-product">
-                  {inStock ? (
-                    <button
-                      onClick={() =>
-                        handleAddItemToCart(
-                          this.state.product,
-                          this.state.productAttributes
-                        )
-                      }
-                    >
-                      ADD TO CART
-                    </button>
-                  ) : (
-                    <h3>This product is out of stock</h3>
+            <div className="product-page-container">
+              <div className="product-container">
+                <div className="product-images-list">
+                  {gallery.map((image, index) =>
+                    this.displayProductImages(image, index)
                   )}
                 </div>
-                <div className="product-description">
-                  {/* Parsing the desciption */}
-                  {parse(description)}
+                <div className="product-image-container">
+                  <img
+                    src={gallery[this.state.productImageIndex]}
+                    alt="product"
+                  />
+                </div>
+                <div className="product-status">
+                  <div className="product-info">
+                    <h2>{brand}</h2>
+                    <h3>{name}</h3>
+                  </div>
+                  <div className="product-attributes">
+                    {attributes.map((attribute, index) => (
+                      <ProductAttributes
+                        handleProductAttributes={this.handleProductAttributes}
+                        productAttributes={this.state.productAttributes}
+                        key={index}
+                        attribute={attribute}
+                        productId={id}
+                      />
+                    ))}
+                  </div>
+                  <div className="product-price">
+                    <h3>Price:</h3>
+                    <h3>
+                      <span>{currencyIcons(currentCurrency)}</span>
+                      {handleDisplayProductPrice(prices, currentCurrency)}
+                    </h3>
+                  </div>
+                  <div className="add-product">
+                    {inStock ? (
+                      <button
+                        onClick={() =>
+                          handleAddProductToCart(
+                            this.state.product,
+                            this.state.productAttributes
+                          )
+                        }
+                      >
+                        ADD TO CART
+                      </button>
+                    ) : (
+                      <h3>This product is out of stock</h3>
+                    )}
+                  </div>
+                  <div>
+                    <ul className="description-list">
+                      {parse(description.replace(/h3/g, 'li'))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -144,6 +159,7 @@ export default class ProductPage extends Component {
   displayProductImages(image, imageIndex) {
     return (
       <div
+        className="product-image-item"
         key={imageIndex}
         onClick={() => this.setState({ productImageIndex: imageIndex })}
       >
@@ -152,12 +168,22 @@ export default class ProductPage extends Component {
     );
   }
 
-  handleProductAttributes(attributeName, attributeValue) {
+  handleProductAttributes(id, attributeName, attributeValue) {
     this.setState((prevState) => {
       return {
         productAttributes: prevState.productAttributes.map((attribute) => {
-          return attribute.name === attributeName
-            ? { name: attribute.name, item: attributeValue }
+          return attribute.productId === id
+            ? {
+                ...attribute,
+                attributes: attribute.attributes.map((item) => {
+                  return item.name === attributeName
+                    ? {
+                        name: attributeName,
+                        value: attributeValue,
+                      }
+                    : item;
+                }),
+              }
             : attribute;
         }),
       };
@@ -165,11 +191,12 @@ export default class ProductPage extends Component {
   }
 
   render() {
+    const { product, err } = this.state;
     return (
-      <React.Fragment>
-        {this.state.product && this.handleProductDisplay(this.state.product)}
-        {this.state.err && <h3>{this.state.err}</h3>}
-      </React.Fragment>
+      <Fragment>
+        {product && this.handleProductDisplay(product)}
+        {err && <h3>{err}</h3>}
+      </Fragment>
     );
   }
 }

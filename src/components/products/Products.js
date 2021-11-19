@@ -1,60 +1,146 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { APIContext } from '../../Context';
+import currencyIcons from '../navbar/CurrencyIcons';
+import doAPIRequest from '../../request';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import './products.css';
 
 export default class Products extends Component {
-  handleProductOutput(
-    { name, id, gallery, category, prices, inStock },
-    selectedCategory,
-    currency
-  ) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      err: null,
+    };
+  }
+
+  componentDidMount() {
+    const { category } = this.props.match.params;
+    this.handleFetchCategory(category);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { category } = this.props.match.params;
+    const { params } = prevProps.match;
+
+    if (params.category !== category) {
+      return this.handleFetchCategory(category);
+    }
+
+    return;
+  }
+
+  async handleFetchCategory(categoryName) {
+    const [data, error] = await doAPIRequest(
+      `
+        query {
+          category(input: {title: "${categoryName}"}) {
+            name: ,
+            products {
+              id,
+              name,
+              inStock,
+              description,
+              category,
+              brand,
+              gallery,
+              attributes {
+                id,
+                name
+                type,
+                items {
+                  displayValue,
+                  value,
+                  id,
+                }
+              },
+              prices {
+                currency,
+                amount
+              }
+            }
+          }
+        }
+      `
+    );
+
+    if (error) {
+      return this.setState({ err: error.message });
+    }
+
+    const { name } = data.data.category;
+
+    return this.setState({
+      products: name,
+    });
+  }
+
+  handleProductDisplay(product, currency, addProductToCart) {
+    const { name, id, gallery, category, prices, inStock, brand } = product;
     return (
-      category === selectedCategory && (
-        <li key={id}>
-          <Link to={`/${category}/${id}`}>
-            <div className={`product ${inStock ? '' : 'unavailable-product'}`}>
-              {inStock ? (
-                ''
-              ) : (
-                <span className="out-of-stock">Out of stock</span>
-              )}
-              <img src={gallery[0]} />
-              <h3>{name}</h3>
-              <span>{this.handleProductPriceOutput(prices, currency)}</span>
-            </div>
-          </Link>
-        </li>
-      )
+      <li
+        key={id}
+        className={`products-item ${inStock ? '' : 'unavailable-product'}`}
+      >
+        <Link to={`/${category}/${id}`}>
+          {!inStock && <span className="out-of-stock">Out of stock</span>}
+          <div className="product-image">
+            <img src={gallery[0]} alt="product" />
+          </div>
+          <div>
+            <span>{`${brand} ${name}`}</span>
+            {this.handleProductPriceDisplay(prices, currency)}
+          </div>
+        </Link>
+        {inStock && (
+          <div className="cart-btn" onClick={() => addProductToCart(product)}>
+            <FontAwesomeIcon className="cart-svg" icon={faShoppingCart} />
+          </div>
+        )}
+      </li>
     );
   }
 
-  handleProductPriceOutput(availableCurrencies, selectedCurrency) {
-    const productPrice = availableCurrencies.find((currency) => {
-      return currency.currency === selectedCurrency;
+  handleProductPriceDisplay(availableCurrencies, selectedCurrency) {
+    const productPrice = availableCurrencies.find(({ currency }) => {
+      return currency === selectedCurrency;
     });
 
-    return `${productPrice.amount} ${productPrice.currency}`;
+    return (
+      <div className="product-amount">
+        <span>{currencyIcons(selectedCurrency)}</span>
+        <span>{productPrice.amount}</span>
+      </div>
+    );
   }
 
   render() {
     const { category } = this.props.match.params;
+    const { products, err } = this.state;
     return (
-      <div className="products-list">
-        <APIContext.Consumer>
-          {({ products, currentCurrency, err }) => {
-            return (
-              <React.Fragment>
-                {products &&
-                  products.map((product) =>
-                    this.handleProductOutput(product, category, currentCurrency)
+      <APIContext.Consumer>
+        {({ currentCurrency, handleAddProductToCart }) => {
+          return (
+            <Fragment>
+              <h2 className="category-page-header">{category}</h2>
+              {products && (
+                <ul className="products-list">
+                  {products.map((product) =>
+                    this.handleProductDisplay(
+                      product,
+                      currentCurrency,
+                      handleAddProductToCart
+                    )
                   )}
-                {err && <h3>{err}</h3>}
-              </React.Fragment>
-            );
-          }}
-        </APIContext.Consumer>
-      </div>
+                </ul>
+              )}
+              {err && <h3>{err}</h3>}
+            </Fragment>
+          );
+        }}
+      </APIContext.Consumer>
     );
   }
 }

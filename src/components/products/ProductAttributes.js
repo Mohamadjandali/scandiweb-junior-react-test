@@ -1,35 +1,44 @@
 import React, { Component } from 'react';
 
 export default class ProductAttributes extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      attributeIndex: null,
+    };
+  }
+
   render() {
     const {
+      productId,
       attribute: { name, items },
       handleProductAttributes,
-      productAttributes,
     } = this.props;
     return (
-      <li className="product-attribute-items">
+      <div className="attributes-container">
         <span className="attribute-name">{name}:</span>
-        <div className="attributes">
-          {items.map((item) => {
+        <ul className="attributes-list">
+          {items.map((item, index) => {
             return (
-              <span
-                onClick={() => handleProductAttributes(name, item.value)}
-                className={`attribute-id ${
-                  productAttributes.find(
-                    (attr) => attr.item === item.value && attr.name === name
-                  )
+              <li
+                onClick={() => {
+                  handleProductAttributes(productId, name, item.value);
+                  return this.setState({ attributeIndex: index });
+                }}
+                style={name === 'Color' ? { backgroundColor: item.id } : {}}
+                className={
+                  this.state.attributeIndex === index
                     ? 'activated-attribute'
-                    : ''
-                }`}
+                    : 'attribute'
+                }
                 key={item.id}
               >
-                {item.value}
-              </span>
+                {name === 'Color' ? <div className="color"></div> : item.id}
+              </li>
             );
           })}
-        </div>
-      </li>
+        </ul>
+      </div>
     );
   }
 }
