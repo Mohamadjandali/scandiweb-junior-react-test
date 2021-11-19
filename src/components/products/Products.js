@@ -79,8 +79,7 @@ export default class Products extends Component {
   }
 
   handleProductDisplay(product, currency, addProductToCart) {
-    const { name, id, gallery, category, prices, inStock, brand, attributes } =
-      product;
+    const { name, id, gallery, category, prices, inStock, brand } = product;
     return (
       <li
         key={id}

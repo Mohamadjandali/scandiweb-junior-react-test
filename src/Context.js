@@ -170,6 +170,18 @@ export default class ContextProvider extends Component {
     return `${productPrice.amount}`;
   }
 
+  // Sorting the cart items by attributes
+  handleSortCartItems(cart) {
+    const filterCart = [];
+    return filterCart.concat(cart).sort((a, b) => {
+      let aAttributes = a.attributes.map((attr) => attr.id);
+
+      let bAttributes = b.attributes.map((attr) => attr.id);
+
+      return aAttributes > bAttributes ? 1 : -1;
+    });
+  }
+
   handleCheckoutOut() {
     this.setState({ cart: [] });
     alert('Thanks for your shopping');
@@ -223,6 +235,7 @@ export default class ContextProvider extends Component {
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
           handleCheckoutOut: this.handleCheckoutOut,
+          handleSortCartItems: this.handleSortCartItems,
           handleDisplayCartItemsQuantity: this.handleDisplayCartItemsQuantity,
           handleCartItemAttributes: this.handleCartItemAttributes,
         }}

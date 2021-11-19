@@ -1,9 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { APIContext } from '../../Context';
 import currencyIcons from '../navbar/CurrencyIcons';
 import CartItemAttributes from './CartItemAttributes';
 
 export default class CartItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cartItemImageIndex: 0,
+    };
+    this.handleIncrementCartItemImageSlide =
+      this.handleIncrementCartItemImageSlide.bind(this);
+    this.handleDecrementCartItemImageSlide =
+      this.handleDecrementCartItemImageSlide.bind(this);
+  }
+
+  handleIncrementCartItemImageSlide(images) {
+    if (this.state.cartItemImageIndex === images.length - 1) {
+      return this.setState({ cartItemImageIndex: 0 });
+    }
+
+    return this.setState({
+      cartItemImageIndex: this.state.cartItemImageIndex + 1,
+    });
+  }
+
+  handleDecrementCartItemImageSlide(images) {
+    if (this.state.cartItemImageIndex === 0) {
+      return this.setState({ cartItemImageIndex: images.length - 1 });
+    }
+
+    return this.setState({
+      cartItemImageIndex: this.state.cartItemImageIndex - 1,
+    });
+  }
+
   displayProductPrice(availableCurrencies, selectedCurrency) {
     const productPrice = availableCurrencies.find((currency) => {
       return currency.currency === selectedCurrency;
@@ -17,7 +48,7 @@ export default class CartItem extends Component {
       product: { name, prices, gallery, brand, quantity, attributes, id },
     } = this.props;
     return (
-      <div className="cart-item">
+      <Fragment>
         <APIContext.Consumer>
           {({
             currentCurrency,
@@ -26,7 +57,7 @@ export default class CartItem extends Component {
             handleDisplayProductPrice,
           }) => {
             return (
-              <React.Fragment>
+              <div className="cart-item">
                 <div className="cart-item-info">
                   <div>
                     <h2>{brand}</h2>
@@ -62,15 +93,40 @@ export default class CartItem extends Component {
                       -
                     </button>
                   </div>
-                  <div>
-                    <img src={gallery} alt="cart item" />
-                  </div>
+                  {gallery.map(
+                    (image, index) =>
+                      this.state.cartItemImageIndex === index && (
+                        <div className="cart-item-image">
+                          {gallery.length > 1 && (
+                            <button
+                              onClick={() =>
+                                this.handleDecrementCartItemImageSlide(gallery)
+                              }
+                              className="cart-item-image-decrement"
+                            >
+                              {'<'}
+                            </button>
+                          )}
+                          <img src={image} alt="cart item" />
+                          {gallery.length > 1 && (
+                            <button
+                              onClick={() =>
+                                this.handleIncrementCartItemImageSlide(gallery)
+                              }
+                              className="cart-item-image-increment"
+                            >
+                              {'>'}
+                            </button>
+                          )}
+                        </div>
+                      )
+                  )}
                 </div>
-              </React.Fragment>
+              </div>
             );
           }}
         </APIContext.Consumer>
-      </div>
+      </Fragment>
     );
   }
 }

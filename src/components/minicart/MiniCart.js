@@ -31,23 +31,17 @@ export default class MiniCart extends Component {
     }
   }
 
-  // Sorts the cart items by attributes
-  handleSortCartItems(cart) {
-    const filterCart = [];
-    return filterCart.concat(cart).sort((a, b) => {
-      let aAttributes = a.attributes.map((attr) => attr.id);
-
-      let bAttributes = b.attributes.map((attr) => attr.id);
-
-      return aAttributes > bAttributes ? 1 : -1;
-    });
-  }
-
   render() {
     return (
       <React.Fragment>
         <APIContext.Consumer>
-          {({ cart, currentCurrency, handleTotalPrice, handleCheckoutOut }) => {
+          {({
+            cart,
+            currentCurrency,
+            handleSortCartItems,
+            handleTotalPrice,
+            handleCheckoutOut,
+          }) => {
             return (
               <div className={this.props.toggleCart ? 'mini-cart-list' : ''}>
                 <div className="mini-cart-count">
@@ -60,7 +54,7 @@ export default class MiniCart extends Component {
                 </div>
                 <div className="mini-cart-items-container">
                   {cart &&
-                    this.handleSortCartItems(cart).map((product) => {
+                    handleSortCartItems(cart).map((product) => {
                       return (
                         <MiniCartItem
                           key={product.id}
