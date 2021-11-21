@@ -6,7 +6,6 @@ import {
   Redirect,
 } from 'react-router-dom';
 import './App.css';
-import ContextProvider from './Context';
 import Navbar from './components/navbar/Navbar';
 import Products from './components/products/Products';
 import Cart from './components/cart/Cart';
@@ -16,15 +15,13 @@ export class App extends Component {
   render() {
     return (
       <Router>
-        <ContextProvider>
-          <Navbar />
-          <Switch>
-            <Route path="/" exact render={() => <Redirect to="/tech" />} />
-            <Route path="/cart" exact component={Cart} />
-            <Route path="/:category" exact component={Products} />
-            <Route path="/:category/:productId" component={ProductPage} />
-          </Switch>
-        </ContextProvider>
+        <Navbar />
+        <Switch>
+          <Route path="/" exact render={() => <Redirect to="/tech" />} />
+          <Route path="/cart" exact component={Cart} />
+          <Route path="/:category" exact component={Products} />
+          <Route path="/:category/:productId" component={ProductPage} />
+        </Switch>
       </Router>
     );
   }
