@@ -121,7 +121,7 @@ export default class Products extends Component {
     const { products, err } = this.state;
     return (
       <APIContext.Consumer>
-        {({ currentCurrency, handleAddProductToCart }) => {
+        {({ currentCurrency, handleNoProductAttributesToCart }) => {
           return (
             <Fragment>
               <h2 className="category-page-header">{category}</h2>
@@ -131,7 +131,7 @@ export default class Products extends Component {
                     this.handleProductDisplay(
                       product,
                       currentCurrency,
-                      handleAddProductToCart
+                      handleNoProductAttributesToCart
                     )
                   )}
                 </ul>

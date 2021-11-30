@@ -162,4 +162,6 @@
 .activated {
   background-color: black;
   color: #fff;
+  padding: 0.5rem;
+  font-size: 18px;
 }

@@ -42,6 +42,10 @@
   margin-top: 5px;
 }
 
+.product-amount span svg {
+  opacity: 0.6;
+}
+
 .cart-btn {
   background: #5ece7b;
   display: none;

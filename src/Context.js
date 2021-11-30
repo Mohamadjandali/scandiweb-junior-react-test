@@ -1,5 +1,6 @@
 import React, { Component, createContext } from 'react';
 import doAPIRequest from './request';
+import { v4 as uuidv4 } from 'uuid';
 
 export const APIContext = createContext();
 
@@ -24,6 +25,8 @@ export default class ContextProvider extends Component {
     this.handleDisplayCartItemsQuantity =
       this.handleDisplayCartItemsQuantity.bind(this);
     this.handleCartItemAttributes = this.handleCartItemAttributes.bind(this);
+    this.handleDuplicateProducts = this.handleDuplicateProducts.bind(this);
+    this.handleNoProductAttributesToCart = this.handleNoProductAttributesToCart.bind(this);
   }
 
   async componentDidMount() {
@@ -50,16 +53,108 @@ export default class ContextProvider extends Component {
     });
   }
 
-  // Adds a product to the cart
-  handleAddProductToCart(product, selectedAttributes) {
-    const { id, name, attributes } = product;
+  // This function generates a new id for the same product to differenciate between each cart item
+  handleDuplicateProducts(product, arrayOfAttributes) {
 
-    // checks if the product is already in cart
-    if (this.state.cart.find((cartItem) => cartItem.name === name)) {
-      return alert('this product is already in your cart');
+    // Generating a random id to the cart item to avoid duplication
+    console.log('duplicate here');
+    const randomId = uuidv4();
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        cart: [
+          {
+            ...product,
+            quantity: 1,
+            id: randomId,
+          },
+          ...prevState.cart,
+        ],
+        cartItemAttributes: [
+          {
+            productId: randomId,
+            attributes: arrayOfAttributes.hasOwnProperty('attributes') ? 
+              [...arrayOfAttributes.attributes]
+              : []
+          },
+          ...prevState.cartItemAttributes
+        ]
+      };
+    });
+
+    return alert(`added ${product.name} to the cart`);
+  }
+
+
+  handleNoProductAttributesToCart(product) {
+    const { id, name } = product
+
+    if (this.state.cart.find((item) => item.id === id)) {
+      return this.handleIncrement(id);
     }
 
-    // add a product to the cart
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        cart: [
+          {
+            ...product,
+            quantity: 1,
+          },
+          ...prevState.cart,
+        ],
+      }
+    });
+
+    return alert(`added ${name} to the cart`);
+  }
+
+
+  // Adds a product to the cart
+  handleAddProductToCart(product, selectedAttributes = {}) {
+    const { id, name } = product;
+
+    if (!selectedAttributes.hasOwnProperty('attributes')) {
+      return this.handleNoProductAttributesToCart(product);
+    }
+
+    // Copies the state array
+    const updatedCartItemAttributesState = this.state.cartItemAttributes.slice();
+
+    // check it the product thats being added is already in the cart
+    const existingCartItem = this.state.cart.find((item) => item.name === name);
+
+    // check if the product attributes has a selected value
+    let hasSelectedValues;
+    
+    if (selectedAttributes.hasOwnProperty('attributes')) {
+      hasSelectedValues = selectedAttributes.attributes.every(attribute => attribute.hasOwnProperty('value'));
+    }
+
+    let duplicateAttributes;
+
+    // try to find a product in the with the same attributes as the product that is being added
+    if (hasSelectedValues !== undefined) {
+      duplicateAttributes = updatedCartItemAttributesState.find((item) => {
+        if (item.hasOwnProperty('attributes')) {
+          return item.attributes.every((attr, index) => attr.value === selectedAttributes.attributes[index].value);
+        }
+        return false;
+      });
+    }
+
+    
+    if (existingCartItem && duplicateAttributes) {
+      return this.handleIncrement(duplicateAttributes.productId);
+    }
+    if (existingCartItem && !duplicateAttributes && selectedAttributes.hasOwnProperty('attributes')) return this.handleDuplicateProducts(product, selectedAttributes);
+    
+    
+    if (existingCartItem && !selectedAttributes.hasOwnProperty('attributes')) {
+      return this.handleIncrement(existingCartItem.id);
+    }
+
+
     this.setState((prevState) => {
       return {
         cart: [
@@ -69,15 +164,17 @@ export default class ContextProvider extends Component {
           },
           ...prevState.cart,
         ],
-        cartItemAttributes: !selectedAttributes
-          ? [
-              {
-                productId: id,
-                attributes: [...attributes],
-              },
-              ...prevState.cartItemAttributes,
-            ]
-          : [...selectedAttributes, ...prevState.cartItemAttributes],
+        cartItemAttributes: selectedAttributes.hasOwnProperty('attributes') ? [
+          {
+            ...selectedAttributes,
+          },
+          ...prevState.cartItemAttributes,
+        ] : [
+          {
+            productId: id,
+          },
+          ...prevState.cartItemAttributes,
+        ]
       };
     });
 
@@ -85,11 +182,11 @@ export default class ContextProvider extends Component {
   }
 
   // Increases the cart item count
-  handleIncrement(productName) {
+  handleIncrement(productId) {
     this.setState((prevState) => {
       return {
         cart: prevState.cart.map((cartItem) => {
-          return cartItem.name === productName
+          return cartItem.id === productId
             ? {
                 ...cartItem,
                 quantity: cartItem.quantity + 1,
@@ -101,12 +198,12 @@ export default class ContextProvider extends Component {
   }
 
   // Decreases the cart item count and if the cart item count becomes zero it will be removed
-  handleDecrement(productName) {
+  handleDecrement(productId) {
     this.setState(
       (prevState) => {
         return {
           cart: prevState.cart.map((cartItem) => {
-            return cartItem.name === productName
+            return cartItem.id === productId
               ? {
                   ...cartItem,
                   quantity: cartItem.quantity - 1,
@@ -128,10 +225,10 @@ export default class ContextProvider extends Component {
   }
 
   // Removes the a cart item. THIS FUNCTION ONLY TRIGGERS WHEN THE CART ITEM COUNT REACHES 0
-  handleRemoveCartItem(productId) {
+  handleRemoveCartItem(id) {
     this.setState((prevState) => {
       return {
-        cart: prevState.cart.filter((product) => product.id !== productId),
+        cart: prevState.cart.filter((product) => product.id !== id),
       };
     });
   }
@@ -190,7 +287,7 @@ export default class ContextProvider extends Component {
     return totalCartItemsQuantity;
   }
 
-  handleCartItemAttributes(id, cartItemAttributeName, cartItemvale) {
+  handleCartItemAttributes(id, cartItemAttributeName, cartItemvale, index) {
     this.setState((prevState) => {
       return {
         cartItemAttributes: prevState.cartItemAttributes.map((attribute) => {
@@ -233,6 +330,7 @@ export default class ContextProvider extends Component {
           handleSortCartItems: this.handleSortCartItems,
           handleDisplayCartItemsQuantity: this.handleDisplayCartItemsQuantity,
           handleCartItemAttributes: this.handleCartItemAttributes,
+          handleNoProductAttributesToCart: this.handleNoProductAttributesToCart,
         }}
       >
         {this.props.children}

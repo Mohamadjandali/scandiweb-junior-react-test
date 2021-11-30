@@ -38,9 +38,9 @@ export default class MiniCart extends Component {
           {({
             cart,
             currentCurrency,
-            handleSortCartItems,
             handleTotalPrice,
             handleCheckoutOut,
+            cartItemAttributes,
           }) => {
             return (
               <div className={this.props.toggleCart ? 'mini-cart-list' : ''}>
@@ -54,9 +54,11 @@ export default class MiniCart extends Component {
                 </div>
                 <div className="mini-cart-items-container">
                   {cart &&
-                    handleSortCartItems(cart).map((product) => {
+                    cart.map((product) => {
                       return (
                         <MiniCartItem
+                          cart={cart}
+                          cartItemAttributes={cartItemAttributes}
                           key={product.id}
                           product={product}
                           currentCurrency={currentCurrency}

@@ -9,7 +9,7 @@
   background-color: #fff;
   max-height: 70vh;
   padding: 0rem 2rem;
-  width: 500px;
+  width: 700px;
 }
 
 .mini-cart-items-container {
@@ -27,7 +27,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 30%;
+  width: 40%;
   padding-left: 0.5rem;
 }
 
@@ -117,16 +117,6 @@
   align-content: space-between;
 }
 
-.delete-product {
-  background-color: rgb(214, 19, 19);
-  color: rgb(252, 252, 252);
-  padding: 0.2rem;
-  border: 4px solid rgb(214, 19, 19);
-  margin-bottom: 0.4rem;
-  font-size: 16px;
-  cursor: pointer;
-}
-
 .item-price {
   margin-top: 3px;
   margin-bottom: 3px;
@@ -136,43 +126,26 @@
   padding-bottom: 1rem;
 }
 
-.cart-item-attributes {
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 3px;
-}
-
-.cart-item-attribute-name {
-  margin-bottom: 4px;
-}
-
-.minicart-item-attribute-items {
-  display: flex;
-  justify-content: space-around;
-}
-
-.minicart-item-attribute-items li {
+.active-color {
+  color: white;
   cursor: pointer;
-  border: 1px solid black;
-  padding: 4px;
-  margin: 0px 5px;
+  padding: 1rem;
+  border: 1px solid #000000;
 }
 
-.minicart-item-attribute-items .unactive-color {
-  border: 1px solid black;
-  padding: 0.6rem;
-  width: 25px;
-  opacity: 0.4;
-}
-
-.minicart-item-attribute-items .active-color {
-  border: 1px solid black;
-  padding: 0.6rem;
-  width: 35px;
-}
-
-.activated {
+.mini-cart-attribute-activated {
   background-color: black;
   color: #fff;
+  padding: 0.5rem;
 }
+
+.attribute {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0px;
+}
+
+/* .minicart-item-attributes {
+  display: flex;
+  justify-content: space-between;
+} */

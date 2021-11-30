@@ -13,6 +13,7 @@ export default class Cart extends Component {
           handleSortCartItems,
           currentCurrency,
           handleTotalPrice,
+          cartItemAttributes,
           handleCheckoutOut,
         }) => {
           return (
@@ -26,12 +27,16 @@ export default class Cart extends Component {
                   </div>
                   <ul className="cart-list">
                     {handleSortCartItems(cart).map((product, index) => (
-                      <CartItem key={index} product={product} />
+                      <CartItem 
+                        key={index} 
+                        product={product} 
+                        cartItemAttributes={cartItemAttributes}
+                      />
                     ))}
                   </ul>
                   <div className="cart-list-controlls">
                     <h2>
-                      TOTAL: {currencyIcons(currentCurrency)}
+                      TOTAL: <span>{currencyIcons(currentCurrency)}</span>
                       {handleTotalPrice(
                         cart,
                         cart.map(({ prices }) => prices),

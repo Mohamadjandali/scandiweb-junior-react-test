@@ -43,9 +43,18 @@ export default class CartItem extends Component {
     return productPrice.amount;
   }
 
+  handleGetAttributes(id) {
+    const foundAttributes = this.props.cartItemAttributes.slice();
+    const tes = foundAttributes.find((item) => {
+      return item.productId === id;
+    })
+
+    return tes ? tes.attributes : false;
+  }
+
   render() {
     const {
-      product: { name, prices, gallery, brand, quantity, attributes, id },
+      product: { name, prices, gallery, brand, quantity, id },
     } = this.props;
     return (
       <Fragment>
@@ -67,9 +76,9 @@ export default class CartItem extends Component {
                     {currencyIcons(currentCurrency)}
                     {handleDisplayProductPrice(prices, currentCurrency)}
                   </h3>
-                  {attributes &&
-                    attributes.map((attribute, index) => (
-                      <CartItemAttributes
+                  {this.handleGetAttributes(id) &&
+                    this.handleGetAttributes(id).map((attribute, index) => (
+                      attribute.value && <CartItemAttributes
                         key={index}
                         cartItemId={id}
                         attribute={attribute}
@@ -81,14 +90,14 @@ export default class CartItem extends Component {
                   <div className="cart-item-counter">
                     <button
                       className="increment"
-                      onClick={() => handleIncrement(name)}
+                      onClick={() => handleIncrement(id)}
                     >
                       +
                     </button>
                     <span className="item-count">{quantity}</span>
                     <button
                       className="decrement"
-                      onClick={() => handleDecrement(name)}
+                      onClick={() => handleDecrement(id)}
                     >
                       -
                     </button>

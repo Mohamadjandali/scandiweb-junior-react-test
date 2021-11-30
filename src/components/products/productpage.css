@@ -111,3 +111,7 @@
 .description-list p {
   margin-bottom: 1rem;
 }
+
+.price-icon span svg {
+  opacity: 0.7;
+}

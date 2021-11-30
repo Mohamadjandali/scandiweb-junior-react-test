@@ -11,7 +11,7 @@ export default class ProductPage extends Component {
     super();
     this.state = {
       product: null,
-      productAttributes: [],
+      productAttributes: {},
       productImageIndex: 0,
       err: null,
     };
@@ -58,17 +58,18 @@ export default class ProductPage extends Component {
 
     const { product } = data.data;
 
-    this.setState((prevState) => {
+    this.setState(() => {
       return {
         product: product,
-        productAttributes: [
-          {
-            productId: product.id,
-            attributes: [...product.attributes],
-          },
-          ...prevState.productAttributes,
-        ],
-      };
+        productAttributes: {
+          productId: product.id,
+          attributes: product.attributes.map((attribute) => {
+            return {
+              name: attribute.name,
+            }
+          }),
+        }
+      }
     });
   }
 
@@ -121,7 +122,7 @@ export default class ProductPage extends Component {
                   </div>
                   <div className="product-price">
                     <h3>Price:</h3>
-                    <h3>
+                    <h3 className="price-icon">
                       <span>{currencyIcons(currentCurrency)}</span>
                       {handleDisplayProductPrice(prices, currentCurrency)}
                     </h3>
@@ -129,12 +130,7 @@ export default class ProductPage extends Component {
                   <div className="add-product">
                     {inStock ? (
                       <button
-                        onClick={() =>
-                          handleAddProductToCart(
-                            this.state.product,
-                            this.state.productAttributes
-                          )
-                        }
+                        onClick={() => this.addProductToCartHandler(this.state.productAttributes, handleAddProductToCart)}
                       >
                         ADD TO CART
                       </button>
@@ -169,25 +165,30 @@ export default class ProductPage extends Component {
   }
 
   handleProductAttributes(id, attributeName, attributeValue) {
+
     this.setState((prevState) => {
       return {
-        productAttributes: prevState.productAttributes.map((attribute) => {
-          return attribute.productId === id
-            ? {
-                ...attribute,
-                attributes: attribute.attributes.map((item) => {
-                  return item.name === attributeName
-                    ? {
-                        name: attributeName,
-                        value: attributeValue,
-                      }
-                    : item;
-                }),
-              }
-            : attribute;
-        }),
+        productAttributes: {
+          productId: id,
+          attributes: prevState.productAttributes.attributes.map((attribute) => {
+            return attribute.name === attributeName
+              ? { ...attribute, value: attributeValue }
+              : attribute
+          })
+        }
+        
       };
     });
+  }
+
+
+
+  addProductToCartHandler(productAtt, addProductFunction) {
+    if (productAtt.attributes.find((item) => item.hasOwnProperty('value'))) {
+      return addProductFunction(this.state.product, this.state.productAttributes)
+    }
+
+    return addProductFunction(this.state.product, {});
   }
 
   render() {
