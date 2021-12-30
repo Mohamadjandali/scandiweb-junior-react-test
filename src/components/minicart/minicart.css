@@ -7,7 +7,7 @@
   top: 100%;
   z-index: 2;
   background-color: #fff;
-  max-height: 70vh;
+  max-height: 75vh;
   padding: 0rem 2rem;
   width: 700px;
 }
@@ -145,7 +145,19 @@
   margin: 5px 0px;
 }
 
-/* .minicart-item-attributes {
+.attribute-container {
   display: flex;
+  flex-direction: column;
+  margin: 0.2rem;
+}
+
+.attribute-container span {
+  margin-bottom: 0.4rem;
+}
+
+.attribute-values {
+  display: flex;
+  align-content: space-between;
   justify-content: space-between;
-} */
+  margin-bottom: 0.6rem;
+}

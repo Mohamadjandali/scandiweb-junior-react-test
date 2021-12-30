@@ -4,19 +4,9 @@ import MiniCartItemAttributes from './MiniCartItemAttributes';
 import currencyIcons from '../navbar/CurrencyIcons';
 
 export default class MiniCartItem extends Component {
-
-  handleGetAttributes(id) {
-    const foundAttributes = this.props.cartItemAttributes.slice();
-    const tes = foundAttributes.find((item) => {
-      return item.productId === id;
-    })
-
-    return tes ? tes.attributes : false;
-  }
-
   render() {
     const {
-      product: { id, name, brand, gallery, prices, quantity },
+      product: { id, name, brand, gallery, prices, quantity, attributes },
       currentCurrency,
     } = this.props;
     return (
@@ -40,15 +30,12 @@ export default class MiniCartItem extends Component {
                       {handleDisplayProductPrice(prices, currentCurrency)}
                     </span>
                   </div>
-                  {
-                    this.handleGetAttributes(id) && this.handleGetAttributes(id).map((attribute, index) => (
-                      attribute.value && 
-                        <MiniCartItemAttributes
-                          attribute={attribute}
-                          key={index}
-                        /> 
-                    )) 
-                  }
+                  {attributes.map((attribute) => (
+                    <MiniCartItemAttributes
+                      key={attribute.id}
+                      attribute={attribute}
+                    />
+                  ))}
                 </div>
                 <div className="mini-cart-item-counter">
                   <button
