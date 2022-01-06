@@ -78,7 +78,17 @@ export default class Products extends Component {
   }
 
   handleProductDisplay(product, currency, addProductToCart) {
-    const { name, id, gallery, category, prices, inStock, brand } = product;
+    const { name, id, gallery, category, prices, inStock, brand, attributes } =
+      product;
+    const productAttributes = {
+      productId: id,
+      attributes: attributes.map((attribute) => {
+        return {
+          name: attribute.name,
+          id: id,
+        };
+      }),
+    };
     return (
       <li
         key={id}
@@ -95,7 +105,10 @@ export default class Products extends Component {
           </div>
         </Link>
         {inStock && (
-          <div className="cart-btn" onClick={() => addProductToCart(product)}>
+          <div
+            className="cart-btn"
+            onClick={() => addProductToCart(product, productAttributes)}
+          >
             <FontAwesomeIcon className="cart-svg" icon={faShoppingCart} />
           </div>
         )}
@@ -121,7 +134,7 @@ export default class Products extends Component {
     const { products, err } = this.state;
     return (
       <APIContext.Consumer>
-        {({ currentCurrency, handleNoProductAttributesToCart }) => {
+        {({ currentCurrency, handleAddProductToCart }) => {
           return (
             <Fragment>
               <h2 className="category-page-header">{category}</h2>
@@ -131,7 +144,7 @@ export default class Products extends Component {
                     this.handleProductDisplay(
                       product,
                       currentCurrency,
-                      handleNoProductAttributesToCart
+                      handleAddProductToCart
                     )
                   )}
                 </ul>

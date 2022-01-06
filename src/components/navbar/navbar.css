@@ -67,3 +67,7 @@ li {
   display: flex;
   cursor: pointer;
 }
+
+svg {
+  display: block;
+}

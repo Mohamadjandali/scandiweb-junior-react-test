@@ -18,6 +18,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  width: 40%;
 }
 
 .cart-item-brand {
@@ -146,22 +147,72 @@
   overflow: hidden;
 }
 
-.cart-item-attribute-items .unactive-color {
-  border: 1px solid black;
-  padding: 0.6rem;
-  opacity: 0.35;
-  width: 25px;
-}
-
-.cart-item-attribute-items .active-color {
-  border: 1px solid black;
-  padding: 0.6rem;
-  width: 25px;
-}
-
 .activated {
   background-color: black;
   color: #fff;
-  padding: 0.5rem;
+  padding: 0.8rem;
   font-size: 18px;
+}
+
+.unactive-color {
+  padding: 1rem;
+  border: 1px solid black;
+  opacity: 0.4;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.active-color {
+  opacity: none;
+  padding: 1rem;
+  border: 1px solid black;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.cart-colors-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.cart-attribute-values {
+  display: flex;
+  justify-content: space-around;
+}
+
+.cart-attribute-values li {
+  width: 63px;
+  height: 45px;
+  text-align: center;
+  margin-right: 00.5rem;
+}
+
+.cart-attribute {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0px;
+}
+
+.active-cart-attribute {
+  background: #1d1f22;
+  border: 1px solid #1d1f22;
+  color: #ffffff;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.unactive-cart-attribute {
+  padding: 0.7rem;
+  background: rgb(255, 255, 255);
+  border: 1px solid #1d1f22;
+  color: #1d1f22;
+  padding: 0.5rem;
+  cursor: pointer;
+  opacity: 0.6;
+  font-weight: 600;
+}
+
+.cart-attribute-name {
+  font-weight: 500;
 }

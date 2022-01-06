@@ -69,7 +69,7 @@ export default class MiniCart extends Component {
                 <div className="cart-controlls-container">
                   <div className="total-price">
                     <span>Total:</span>
-                    <span className="price">
+                    <span className="total-price">
                       {currencyIcons(currentCurrency)}
                       {cart.length &&
                         handleTotalPrice(

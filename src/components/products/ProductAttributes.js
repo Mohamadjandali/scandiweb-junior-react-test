@@ -22,7 +22,7 @@ export default class ProductAttributes extends Component {
             return (
               <li
                 onClick={() => {
-                  handleProductAttributes(productId, name, item.value);
+                  handleProductAttributes(productId, name, item.value, item.id);
                   return this.setState({ attributeIndex: index });
                 }}
                 style={name === 'Color' ? { backgroundColor: item.id } : {}}

@@ -47,14 +47,14 @@ export default class CartItem extends Component {
     const foundAttributes = this.props.cartItemAttributes.slice();
     const tes = foundAttributes.find((item) => {
       return item.productId === id;
-    })
+    });
 
     return tes ? tes.attributes : false;
   }
 
   render() {
     const {
-      product: { name, prices, gallery, brand, quantity, id },
+      product: { name, prices, gallery, brand, quantity, id, attributes },
     } = this.props;
     return (
       <Fragment>
@@ -64,6 +64,8 @@ export default class CartItem extends Component {
             handleIncrement,
             handleDecrement,
             handleDisplayProductPrice,
+            handleActiveAttribute,
+            handleCartItemAttributes,
           }) => {
             return (
               <div className="cart-item">
@@ -76,15 +78,16 @@ export default class CartItem extends Component {
                     {currencyIcons(currentCurrency)}
                     {handleDisplayProductPrice(prices, currentCurrency)}
                   </h3>
-                  {this.handleGetAttributes(id) &&
-                    this.handleGetAttributes(id).map((attribute, index) => (
-                      attribute.value && <CartItemAttributes
-                        key={index}
-                        cartItemId={id}
-                        attribute={attribute}
-                        cartItemName={name}
-                      />
-                    ))}
+                  {attributes.map((attribute, index) => (
+                    <CartItemAttributes
+                      key={index}
+                      productId={id}
+                      attribute={attribute}
+                      cartItemName={name}
+                      handleActiveAttribute={handleActiveAttribute}
+                      handleCartItemAttributes={handleCartItemAttributes}
+                    />
+                  ))}
                 </div>
                 <div className="cart-count">
                   <div className="cart-item-counter">

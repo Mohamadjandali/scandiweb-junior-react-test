@@ -66,10 +66,11 @@ export default class ProductPage extends Component {
           attributes: product.attributes.map((attribute) => {
             return {
               name: attribute.name,
-            }
+              id: product.id,
+            };
           }),
-        }
-      }
+        },
+      };
     });
   }
 
@@ -123,14 +124,19 @@ export default class ProductPage extends Component {
                   <div className="product-price">
                     <h3>Price:</h3>
                     <h3 className="price-icon">
-                      <span>{currencyIcons(currentCurrency)}</span>
+                      {currencyIcons(currentCurrency)}
                       {handleDisplayProductPrice(prices, currentCurrency)}
                     </h3>
                   </div>
                   <div className="add-product">
                     {inStock ? (
                       <button
-                        onClick={() => this.addProductToCartHandler(this.state.productAttributes, handleAddProductToCart)}
+                        onClick={() =>
+                          handleAddProductToCart(
+                            this.state.product,
+                            this.state.productAttributes
+                          )
+                        }
                       >
                         ADD TO CART
                       </button>
@@ -164,31 +170,21 @@ export default class ProductPage extends Component {
     );
   }
 
-  handleProductAttributes(id, attributeName, attributeValue) {
-
+  handleProductAttributes(id, attributeName, attributeValue, itemId) {
     this.setState((prevState) => {
       return {
         productAttributes: {
           productId: id,
-          attributes: prevState.productAttributes.attributes.map((attribute) => {
-            return attribute.name === attributeName
-              ? { ...attribute, value: attributeValue }
-              : attribute
-          })
-        }
-        
+          attributes: prevState.productAttributes.attributes.map(
+            (attribute) => {
+              return attribute.name === attributeName
+                ? { ...attribute, value: attributeValue, id: itemId }
+                : attribute;
+            }
+          ),
+        },
       };
     });
-  }
-
-
-
-  addProductToCartHandler(productAtt, addProductFunction) {
-    if (productAtt.attributes.find((item) => item.hasOwnProperty('value'))) {
-      return addProductFunction(this.state.product, this.state.productAttributes)
-    }
-
-    return addProductFunction(this.state.product, {});
   }
 
   render() {

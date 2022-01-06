@@ -26,7 +26,9 @@ export default class ContextProvider extends Component {
       this.handleDisplayCartItemsQuantity.bind(this);
     this.handleCartItemAttributes = this.handleCartItemAttributes.bind(this);
     this.handleDuplicateProducts = this.handleDuplicateProducts.bind(this);
-    this.handleNoProductAttributesToCart = this.handleNoProductAttributesToCart.bind(this);
+    this.handleNoProductAttributesToCart =
+      this.handleNoProductAttributesToCart.bind(this);
+    this.handleActiveAttribute = this.handleActiveAttribute.bind(this);
   }
 
   async componentDidMount() {
@@ -55,9 +57,7 @@ export default class ContextProvider extends Component {
 
   // This function generates a new id for the same product to differenciate between each cart item
   handleDuplicateProducts(product, arrayOfAttributes) {
-
     // Generating a random id to the cart item to avoid duplication
-    console.log('duplicate here');
     const randomId = uuidv4();
     this.setState((prevState) => {
       return {
@@ -72,22 +72,19 @@ export default class ContextProvider extends Component {
         ],
         cartItemAttributes: [
           {
+            ...arrayOfAttributes,
             productId: randomId,
-            attributes: arrayOfAttributes.hasOwnProperty('attributes') ? 
-              [...arrayOfAttributes.attributes]
-              : []
           },
-          ...prevState.cartItemAttributes
-        ]
+          ...prevState.cartItemAttributes,
+        ],
       };
     });
 
     return alert(`added ${product.name} to the cart`);
   }
 
-
   handleNoProductAttributesToCart(product) {
-    const { id, name } = product
+    const { id, name } = product;
 
     if (this.state.cart.find((item) => item.id === id)) {
       return this.handleIncrement(id);
@@ -103,57 +100,44 @@ export default class ContextProvider extends Component {
           },
           ...prevState.cart,
         ],
-      }
+      };
     });
 
     return alert(`added ${name} to the cart`);
   }
 
-
   // Adds a product to the cart
-  handleAddProductToCart(product, selectedAttributes = {}) {
-    const { id, name } = product;
+  handleAddProductToCart(product, selectedAttributes) {
+    const { name } = product;
+    const { attributes } = selectedAttributes;
 
-    if (!selectedAttributes.hasOwnProperty('attributes')) {
+    const attributeValues = attributes.map((attribute) => attribute.value);
+    const attributeIds = attributes.map((attribute) => attribute.id);
+
+    const updatedCartAttributes = this.state.cartItemAttributes.slice();
+    const duplicateAttributes = updatedCartAttributes.find((item) => {
+      return item.attributes.every((attribute, index) => {
+        return (
+          attribute.value === attributeValues[index] &&
+          attribute.id === attributeIds[index]
+        );
+      });
+    });
+
+    const updatedCart = this.state.cart.slice();
+    const duplicateProducts = updatedCart.find((item) => item.name.match(name));
+
+    if (!product.attributes.length) {
       return this.handleNoProductAttributesToCart(product);
     }
 
-    // Copies the state array
-    const updatedCartItemAttributesState = this.state.cartItemAttributes.slice();
-
-    // check it the product thats being added is already in the cart
-    const existingCartItem = this.state.cart.find((item) => item.name === name);
-
-    // check if the product attributes has a selected value
-    let hasSelectedValues;
-    
-    if (selectedAttributes.hasOwnProperty('attributes')) {
-      hasSelectedValues = selectedAttributes.attributes.every(attribute => attribute.hasOwnProperty('value'));
-    }
-
-    let duplicateAttributes;
-
-    // try to find a product in the with the same attributes as the product that is being added
-    if (hasSelectedValues !== undefined) {
-      duplicateAttributes = updatedCartItemAttributesState.find((item) => {
-        if (item.hasOwnProperty('attributes')) {
-          return item.attributes.every((attr, index) => attr.value === selectedAttributes.attributes[index].value);
-        }
-        return false;
-      });
-    }
-
-    
-    if (existingCartItem && duplicateAttributes) {
+    if (duplicateAttributes !== undefined && duplicateProducts !== undefined) {
       return this.handleIncrement(duplicateAttributes.productId);
     }
-    if (existingCartItem && !duplicateAttributes && selectedAttributes.hasOwnProperty('attributes')) return this.handleDuplicateProducts(product, selectedAttributes);
-    
-    
-    if (existingCartItem && !selectedAttributes.hasOwnProperty('attributes')) {
-      return this.handleIncrement(existingCartItem.id);
-    }
 
+    if (duplicateAttributes === undefined && duplicateProducts !== undefined) {
+      return this.handleDuplicateProducts(product, selectedAttributes);
+    }
 
     this.setState((prevState) => {
       return {
@@ -164,17 +148,12 @@ export default class ContextProvider extends Component {
           },
           ...prevState.cart,
         ],
-        cartItemAttributes: selectedAttributes.hasOwnProperty('attributes') ? [
+        cartItemAttributes: [
           {
             ...selectedAttributes,
           },
           ...prevState.cartItemAttributes,
-        ] : [
-          {
-            productId: id,
-          },
-          ...prevState.cartItemAttributes,
-        ]
+        ],
       };
     });
 
@@ -262,18 +241,6 @@ export default class ContextProvider extends Component {
     return `${productPrice.amount}`;
   }
 
-  // Sorting the cart items by attributes
-  handleSortCartItems(cart) {
-    const filterCart = [];
-    return filterCart.concat(cart).sort((a, b) => {
-      let aAttributes = a.attributes.map((attr) => attr.id);
-
-      let bAttributes = b.attributes.map((attr) => attr.id);
-
-      return aAttributes > bAttributes ? 1 : -1;
-    });
-  }
-
   handleCheckoutOut() {
     this.setState({ cart: [] });
     alert('Thanks for your shopping');
@@ -287,7 +254,12 @@ export default class ContextProvider extends Component {
     return totalCartItemsQuantity;
   }
 
-  handleCartItemAttributes(id, cartItemAttributeName, cartItemvale, index) {
+  handleCartItemAttributes(
+    id,
+    cartItemAttributeName,
+    cartItemValue,
+    cartItemId
+  ) {
     this.setState((prevState) => {
       return {
         cartItemAttributes: prevState.cartItemAttributes.map((attribute) => {
@@ -298,7 +270,8 @@ export default class ContextProvider extends Component {
                   return item.name === cartItemAttributeName
                     ? {
                         name: cartItemAttributeName,
-                        value: cartItemvale,
+                        value: cartItemValue,
+                        id: cartItemId,
                       }
                     : item;
                 }),
@@ -307,6 +280,25 @@ export default class ContextProvider extends Component {
         }),
       };
     });
+
+    this.handleActiveAttribute(id, cartItemAttributeName, cartItemValue);
+  }
+
+  handleActiveAttribute(itemId, attributeName, attributeValue) {
+    const updatedCart = this.state.cartItemAttributes.slice();
+    const foundAttributes = updatedCart.find((item) => {
+      return item.productId === itemId;
+    });
+
+    if (foundAttributes) {
+      return foundAttributes.attributes.find((attribute) => {
+        return (
+          attribute.value === attributeValue && attribute.name === attributeName
+        );
+      });
+    }
+
+    return false;
   }
 
   render() {
@@ -327,10 +319,10 @@ export default class ContextProvider extends Component {
           handleTotalPrice: this.handleTotalPrice,
           handleDisplayProductPrice: this.handleDisplayProductPrice,
           handleCheckoutOut: this.handleCheckoutOut,
-          handleSortCartItems: this.handleSortCartItems,
           handleDisplayCartItemsQuantity: this.handleDisplayCartItemsQuantity,
           handleCartItemAttributes: this.handleCartItemAttributes,
           handleNoProductAttributesToCart: this.handleNoProductAttributesToCart,
+          handleActiveAttribute: this.handleActiveAttribute,
         }}
       >
         {this.props.children}

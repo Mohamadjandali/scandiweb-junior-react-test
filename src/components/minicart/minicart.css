@@ -126,13 +126,6 @@
   padding-bottom: 1rem;
 }
 
-.active-color {
-  color: white;
-  cursor: pointer;
-  padding: 1rem;
-  border: 1px solid #000000;
-}
-
 .mini-cart-attribute-activated {
   background-color: black;
   color: #fff;
@@ -158,6 +151,47 @@
 .attribute-values {
   display: flex;
   align-content: space-between;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-bottom: 0.6rem;
+}
+
+.active-attribute {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #1d1f22;
+  color: #1d1f22;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.unactive-attribute {
+  padding: 0.7rem;
+  background: rgba(166, 166, 166, 0.2);
+  border: 1px solid #a6a6a6;
+  color: #1d1f22;
+  padding: 0.5rem;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.colors-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.unactive-color {
+  padding: 0.8rem;
+  border: 1px solid black;
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+.active-color {
+  opacity: none;
+  padding: 0.8rem;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.total-price {
+  font-weight: 600;
 }

@@ -16,12 +16,15 @@ export default class MiniCartItem extends Component {
             handleIncrement,
             handleDecrement,
             handleDisplayProductPrice,
+            cartItemAttributes,
+            handleActiveAttribute,
+            handleCartItemAttributes,
           }) => {
             return (
               <div className="mini-cart-item">
                 <div className="mini-cart-item-info">
                   <div className="item-info">
-                    <p onClick={() => this.handleGetAttributes(id)}>{brand}</p>
+                    <p>{brand}</p>
                     <p className="item-name">{name}</p>
                   </div>
                   <div className="item-price">
@@ -32,6 +35,10 @@ export default class MiniCartItem extends Component {
                   </div>
                   {attributes.map((attribute) => (
                     <MiniCartItemAttributes
+                      productId={id}
+                      handleCartItemAttributes={handleCartItemAttributes}
+                      handleActiveAttribute={handleActiveAttribute}
+                      cartItemAttributes={cartItemAttributes}
                       key={attribute.id}
                       attribute={attribute}
                     />

@@ -26,10 +26,10 @@ export default class Cart extends Component {
                     <h2>CART</h2>
                   </div>
                   <ul className="cart-list">
-                    {handleSortCartItems(cart).map((product, index) => (
-                      <CartItem 
-                        key={index} 
-                        product={product} 
+                    {cart.map((product, index) => (
+                      <CartItem
+                        key={index}
+                        product={product}
                         cartItemAttributes={cartItemAttributes}
                       />
                     ))}
